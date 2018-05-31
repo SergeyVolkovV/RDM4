@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<runtimeconfig>
+  <contributedConfigs>
+    <config class="com.ataccama.dqc.processor.support.UrlResourceContributor">
+      <urls>
+        <url password="crypted:AES:S08XSi8a6//Npwh5m8aGx6D7LGEJXnkwP+5tB5Buth8=" name="rdmapp" user="alice" url="http://localhost:8081/rdm"/>
+        <url name="rdmpublish" url="http://localhost:8888"/>
+      </urls>
+    </config>
+  </contributedConfigs>
+  <dataSources>
+    <dataSource password="crypted:AES:zQw6GNFqlyWT6q17rn3k3j0TgtUH/7dLjupThrYh4i0=" name="RDM@Oracle:localhost/test" driverclass="oracle.jdbc.OracleDriver" user="RDM" url="jdbc:oracle:thin:@localhost:1521:test"/>
+    <dataSource password="crypted:AES:JbEeJeB2Znvde/uDS/kyw9H2F+OBSz1P6VidOLz+jC8=" name="rdm_db" driverclass="oracle.jdbc.OracleDriver" user="RDM" url="jdbc:oracle:thin:@localhost:1521:test"/>
+    <dataSource password="crypted:AES:XwZaL5cqz2JdUkY8gRv+Z4sZ/tJ5iai8kmLCMTczRis=" name="HR@Oracle:localhost/test" driverclass="oracle.jdbc.OracleDriver" user="HR" url="jdbc:oracle:thin:@localhost:1521:test"/>
+    <dataSource password="crypted:AES:si6Oi8YcOtAbDIb2Uoz1LrzOmi5RBLlJwbTtW+L3bE0=" name="rdmt_db" driverclass="oracle.jdbc.OracleDriver" user="rdmt" url="jdbc:oracle:thin:@localhost:1521:test"/>
+    <dataSource password="crypted:AES:L+VYOHlIF21i+HGOITdwVb7KifumH0/lefZUIyN7J/g=" name="HR" driverclass="oracle.jdbc.OracleDriver" user="HR" url="jdbc:oracle:thin:@localhost:1521:test"/>
+  </dataSources>
+  <pathVariables>
+    <pathVariable name="EXT_NEW" value="C:\INSTALL\Ataccama-rdm-11.3.0.manual-2017-11-22_02-11-05-x86_64\workspace\Workflow Tutorials\data\ext_new"/>
+    <pathVariable name="EWF_COMPONENTS" value="C:\INSTALL\Ataccama-rdm-11.3.0.manual-2017-11-22_02-11-05-x86_64\workspace\Workflow Tutorials\components"/>
+    <pathVariable name="EWF_DATA" value="C:\INSTALL\Ataccama-rdm-11.3.0.manual-2017-11-22_02-11-05-x86_64\workspace\Workflow Tutorials\data"/>
+  </pathVariables>
+  <parallelismLevel>1</parallelismLevel>
+</runtimeconfig>
