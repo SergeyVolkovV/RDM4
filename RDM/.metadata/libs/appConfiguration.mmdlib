@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metametadata-library>
+	<nodes>
+		<node icon="icons/gears_run.png" name="appConfiguration" id="AppConfiguration" label="App Configuration">
+			<subNodes>
+				<subNode min="1" max="1" id="configXml"/>
+				<subNode min="1" max="1" id="helpXml"/>
+				<subNode min="1" max="1" id="hierarchiesXml"/>
+				<subNode min="1" max="1" id="inputsXml"/>
+				<subNode min="1" max="1" id="loggingXml"/>
+				<subNode min="1" max="1" id="modelXml"/>
+				<subNode min="1" max="1" id="securityXml"/>
+				<subNode min="1" max="1" id="systemsXml"/>
+				<subNode min="1" max="1" id="tasksXml"/>
+				<subNode min="1" max="1" id="validatorsXml"/>
+				<subNode min="1" max="1" id="welcomeXml"/>
+				<subNode min="1" max="1" id="workflowXml"/>
+				<subNode min="1" max="1" id="physicalAdjustmentsXml"/>
+				<subNode min="1" max="1" id="onPublishXml"/>
+				<subNode min="1" max="1" id="loginXml"/>
+			</subNodes>
+			<generators>
+				<gen showDialog="true" class="com.ataccama.ame.core.generators.PlaceholderGenerator"/>
+				<gen fileNameTemplate="etc/configurationFiles.zip" class="com.ataccama.ame.core.generators.ZipFileGenerator">
+					<entries>
+						<entrySet filename="etc\config.xml"/>
+						<entrySet filename="etc\help.xml"/>
+						<entrySet filename="etc\hierarchies.xml"/>
+						<entrySet filename="etc\inputs.xml"/>
+						<entrySet filename="etc\logging.xml"/>
+						<entrySet filename="etc\model.xml"/>
+						<entrySet filename="etc\systems.xml"/>
+						<entrySet filename="etc\tasks.xml"/>
+						<entrySet filename="etc\users.xml"/>
+						<entrySet filename="etc\validators.xml"/>
+						<entrySet filename="etc\welcome.xml"/>
+						<entrySet filename="etc\workflow.xml"/>
+						<entrySet filename="etc\onPublishOutTransformation.xsl"/>
+						<entrySet filename="etc\login.xml"/>
+					</entries>
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="modelXml" id="modelXml" label="File model.xml">
+			<subNodes>
+        
+      </subNodes>
+			<editors>
+				<editor fileNameTemplate="etc/model.xml" label="Open model.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/model.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/model_xml.xsl">
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="hierarchiesXml" id="hierarchiesXml" label="File hierarchies.xml">
+			<subNodes/>
+			<editors>
+				<editor fileNameTemplate="etc/hierarchies.xml" label="Open hierarchies.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/hierarchies.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/hierarchies_xml.xsl">
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="systemsXml" id="systemsXml" label="File systems.xml">
+			<subNodes/>
+			<editors>
+				<editor fileNameTemplate="etc/systems.xml" label="Open systems.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/systems.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/systems_xml.xsl">
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="securityXml" id="securityXml" label="File security.xml">
+			<subNodes/>
+			<editors>
+				<editor fileNameTemplate="etc/users.xml" label="Open users.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/users.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/security_xml.xsl">
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+					</parameters>
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="tasksXml" id="tasksXml" label="File tasks.xml">
+			<subNodes/>
+			<editors>
+				<editor fileNameTemplate="etc/tasks.xml" label="Open tasks.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/tasks.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/tasks_xml.xsl">
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="workflowXml" id="workflowXml" label="File workflow.xml">
+			<subNodes/>
+			<editors>
+				<editor fileNameTemplate="etc/workflow.xml" label="Open workflow.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/workflow.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/workflow_xml.xsl">
+				</gen>
+			</generators>
+		</node><!--  LOAD plans --><!-- online services --><node icon="icons/xml.png" name="validatorsXml" id="validatorsXml" label="File validators.xml">
+			<editors>
+				<editor fileNameTemplate="etc/validators.xml" label="Open validators.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/validators.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/validators_xml.xsl">
+					<parameters>
+						<param name="syncOnPublishEvent" source="/syncTasks/syncOnPublishEvent"/>
+						<param name="servers" source="/servers"/>
+					</parameters>
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="inputsXml" id="inputsXml" label="File inputs.xml">
+			<editors>
+				<editor fileNameTemplate="etc/inputs.xml" label="Open inputs.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/inputs.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/inputs_xml.xsl">
+					<parameters>
+						<param name="rdmSystemRef" source="/systems"/>
+					</parameters>
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="configXml" id="configXml" label="File config.xml">
+			<editors>
+				<editor fileNameTemplate="etc/config.xml" label="Open config.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/config.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/config_xml.xsl">
+					<parameters>
+						<param name="servers" source="/servers"/>
+						<param name="appVariables" source="/appVariables"/>
+					</parameters>
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="welcomeXml" id="welcomeXml" label="File welcome.xml">
+			<editors>
+				<editor fileNameTemplate="etc/welcome.xml" label="Open welcome.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/welcome.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/welcome_xml.xsl">
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="helpXml" id="helpXml" label="File help.xml">
+			<editors>
+				<editor fileNameTemplate="etc/help.xml" label="Open help.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/help.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/help_xml.xsl">
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="loggingXml" id="loggingXml" label="File logging.xml">
+			<editors>
+				<editor fileNameTemplate="etc/logging.xml" label="Open logging.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/logging.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/logging_xml.xsl">
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/branch.png" name="initialLoadEwf" id="initialLoadEwf" label="Workflow initialLoad.ewf">
+			<editors>
+				<editor fileNameTemplate="Files/workflow/initialLoad.ewf" label="Open initialLoad.ewf" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="Files/workflow/initialLoad.ewf" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/initialLoad.xsl">
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="physicalAdjustmentsXml" id="physicalAdjustmentsXml" label="File physical-adjustments.xml">
+			<editors>
+				<editor fileNameTemplate="etc/physical-adjustments.xml" label="Open physical-adjustments.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/physical-adjustments.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/physical-adjustments_xml.xsl">
+			</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="onPublishXml" id="onPublishXml" label="File onPublishOutTransformation.xml">
+			<editors>
+				<editor fileNameTemplate="etc/onPublishOutTransformation.xsl" label="Open onPublishOutTransformation.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen destination="etc/onPublishOutTransformation.xsl" source="xslt/onPublishOutTransformation.xsl" class="com.ataccama.ame.core.generators.CopyFileGenerator">
+			<!-- Simple generator with two parameters, source and destination, which 
+				copies the file from source to destination location. "source" and "destination" 
+				parameters are label templates. -->
+		</gen>
+			</generators>
+		</node>
+		<node icon="icons/xml.png" name="loginXml" id="loginXml" label="File login.xml">
+			<editors>
+				<editor fileNameTemplate="etc/login.xml" label="Open login.xml" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<generators>
+				<gen fileNameTemplate="etc/login.xml" source="/" class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/login_xml.xsl">
+				</gen>
+			</generators>
+		</node>
+	</nodes>
+</metametadata-library>

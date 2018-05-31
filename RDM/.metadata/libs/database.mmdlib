@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metametadata-library>
+	<nodes>
+
+<!-- Physical model: databases: tables -->
+	
+		<node id="PhysicalTable" icon="icons/table.png" name="physicalTable" label="{@name}" explorerLeaf="true">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<attributes>
+				<attribute name="entity" type="string"/>
+				<attribute name="name" type="string"/>
+				<attribute name="role" type="string"/>
+				<attribute name="edit" type="boolean" defaultValue="false"/>
+				<attribute name="gpk" type="boolean" defaultValue="true"/>
+			</attributes>
+			<subNodes>
+				
+			
+      <subNode min="1" id="PhysicalTableColumns" max="1"/>
+      </subNodes>
+		</node>
+
+		<node id="PhysicalTableColumns" name="columns" label="Columns" expanded="true">
+			<subNodes>
+				<subNode min="0" id="PhysicalTableColumn" max="-1"/>
+			</subNodes>
+		</node>
+		<node id="PhysicalTableColumn" name="column" label="{@name}">
+			<attributes>
+				<attribute name="name" type="string"/>
+				<attribute name="type" type="string"/>
+				<attribute name="role" type="string"/>
+				<attribute name="dbType" type="string"/>
+			
+      </attributes>
+		</node>
+		
+		
+
+		<node id="PhysicalRel" icon="icons/fk.png" name="rel" label="{@name}" explorerLeaf="true">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<attributes>
+				<attribute name="name" type="string"/>
+				<attribute name="childTable" type="string"/>
+				<attribute name="parentTable" type="string"/>
+				<attribute name="gfk" type="boolean" defaultValue="false"/>
+			</attributes>
+			<subNodes>
+				<subNode min="1" id="PhysicalRelColumns" max="1"/>
+			</subNodes>
+		</node>
+		<node id="PhysicalRelColumns" name="columns" label="Columns" expanded="true">
+			<subNodes>
+				<subNode min="0" id="PhysicalRelColumn" max="-1"/>
+			</subNodes>
+		</node>
+		<node id="PhysicalRelColumn" name="column" label="{@name}">
+			<attributes>
+				<attribute name="parentColumn" type="string"/>
+				<attribute name="childColumn" type="string"/>
+			</attributes>
+		</node>
+	
+	
+	</nodes>
+</metametadata-library>

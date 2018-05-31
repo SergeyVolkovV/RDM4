@@ -1,0 +1,6 @@
+delimiter "<>";
+
+main(root,logicalModel) ::= <<Name;Type;Size;Mandatory
+<#loop $root/column; itemVar="it"><$it/@name>;<$logicalModel/domains/domain[@name=$it/@domain]/@type>;<$logicalModel/domains/domain[@name=$it/@domain]/@size>;<#if $it/@required=='true'><'*'><#endif>
+<#endloop>>>
+	

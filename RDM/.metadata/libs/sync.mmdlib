@@ -1,0 +1,957 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metametadata-library>
+	<nodes>
+		<node generated="false" icon="icons/synchronizationMenuIcon.png" name="syncTasks" id="SyncTasksNode" label="Synchronization">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<subNodes>
+				<subNode min="1" max="1" id="SyncDatabaseTasksNode"/>
+				<subNode min="1" max="1" id="SyncSFTPTasksNode"/>
+				<subNode min="1" max="1" id="SyncOnlineTasksNode"/>
+				<subNode min="1" max="1" id="SyncOnPublishEventNode"/>
+			</subNodes>
+			<generators/>
+			<description>The Synchronization node allows creating synchronization jobs between RDM and external consuming systems added in the Connected Systems node.</description>
+		</node>
+		<node icon="icons/tablesTree.png" name="syncDatabaseTask" explorerLeaf="false" id="SyncDatabaseTaskNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the synchronization task.</description>
+				</attribute>
+				<attribute defaultValue="false" name="useInputs" label="Use Reverse Synchronization" type="boolean" required="true">
+					<description>When checked, RDM will update its repository with new records from external databases configured for this synchronization job: a plan with the system_input suffix will be added to the generated synchronization workflow.</description>
+				</attribute>
+				<attribute defaultValue="Use global settings (from App Variables)" name="useUrlResourcesForAuthentication" label="Authentication Strategy" type="enum" required="true" enumValues="Use global settings (from App Variables),Use App Connection Credentials,Pass Credentials Manually"/>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/plans/synchronization/databases/{@name}_input.plan" label="Open input plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor fileNameTemplate="Files/plans/synchronization/databases/{@name}_synchronization.plan" label="Open synchronization plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor fileNameTemplate="Files/plans/synchronization/databases/{@name}_system_input.plan" label="Open system input plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor fileNameTemplate="Files/plans/synchronization/databases/{@name}_output.plan" label="Open output plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor fileNameTemplate="Files/workflows/{@name}.ewf" label="Open workflow" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor label="Delete synchronization task" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<generators>
+				<gen showDialog="false" label="Generate workflow and plans..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+				</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltPlanFileGenerator">
+					<fileNameTemplate>Files/plans/synchronization/databases/{@name}_input.plan</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="rdmTableRef" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSystemRef" source="/systems"/>
+						<param name="rdmDataSourceRef" source="/dataSources"/>
+					</parameters>
+					<templatePath>xslt/syncInterface_input.xsl</templatePath>
+				</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltPlanFileGenerator">
+					<fileNameTemplate>Files/plans/synchronization/databases/{@name}_synchronization.plan</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="rdmTableRef" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSystemRef" source="/systems"/>
+						<param name="rdmDataSourceRef" source="/dataSources"/>
+					</parameters>
+					<templatePath>xslt/syncInterface_synchronization.xsl</templatePath>
+				</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltPlanFileGenerator">
+					<fileNameTemplate>Files/plans/synchronization/databases/{@name}_system_input.plan</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="rdmTableRef" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSystemRef" source="/systems"/>
+						<param name="rdmDataSourceRef" source="/dataSources"/>
+					</parameters>
+					<templatePath>xslt/syncInterface_system_input.xsl</templatePath>
+				</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltPlanFileGenerator">
+					<fileNameTemplate>Files/plans/synchronization/databases/{@name}_output.plan</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="rdmTableRef" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSystemRef" source="/systems"/>
+						<param name="rdmDataSourceRef" source="/dataSources"/>
+					</parameters>
+					<templatePath>xslt/syncInterface_output.xsl</templatePath>
+				</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltPlanFileGenerator">
+					<fileNameTemplate>Files/workflows/{@name}.ewf</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="rdmTableRef" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSystemRef" source="/systems"/>
+						<param name="rdmDataSourceRef" source="/dataSources"/>
+					</parameters>
+					<templatePath>xslt/syncWorkflowEwf.xsl</templatePath>
+				</gen>
+			</generators>
+			<subNodes>
+				<subNode min="1" max="1" id="SyncDatabaseTaskTablesNode"/>
+			</subNodes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*]+</valueExpr>
+					<message>Unsupported characters are less than &gt; : &quot; / \ | ? *</message>
+				</validation>
+			</validations>
+		</node><!-- Physical model: tasks definition --><node expanded="true" name="syncTaskTables" id="SyncDatabaseTaskTablesNode" label="Tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncDatabaseTaskTableNode"/>
+			</subNodes>
+			<description>Allows adding tables defined in the Connected Systems node.</description>
+		</node>
+		<node icon="icons/table.png" name="syncTaskTable" id="SyncDatabaseTaskTableNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/systems/databaseSystems/databaseSystem/tables/table</selectPath>
+						<labelTemplate>{@name} (system: {ancestor::databaseSystem/@name})</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the table.</description>
+				</attribute>
+				<attribute name="system" label="System name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/systems/databaseSystems/databaseSystem</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the system the table is located in.</description>
+				</attribute>
+			</attributes>
+			<subNodes/>
+			<description>Allows adding tables defined in the Connected Systems node.</description>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node><!-- Physical model: plans definition --><node icon="icons/server_connection.png" name="syncDatabaseTasks" id="SyncDatabaseTasksNode" label="Database">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncDatabaseTaskNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New synchronization task..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>The Synchronization node allows creating DB synchronization jobs between RDM and external consuming systems added in the Databases in the Connected Systems node.</description>
+			<generators>
+				<gen showDialog="false" label="Generate workflows and plans..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+			</generators>
+		</node>
+		<node icon="icons/filetrans_connection.png" name="syncSFTPTasks" id="SyncSFTPTasksNode" label="File">
+			<subNodes>
+				<subNode min="1" max="1" id="SyncSFTPTasksENode"/>
+				<subNode min="1" max="1" id="SyncSFTPTasksINode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<description>The Synchronization node allows creating file synchronization jobs between RDM and external consuming systems added in the Servers in the Connected Systems node.</description>
+		</node>
+		<node icon="icons/file_transf_out.png" name="syncSFTPTasksE" id="SyncSFTPTasksENode" label="File (exports)">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncSFTPTaskENode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New synchronization task..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>Task for exporting data from RDM tables to text files. Additionally, files can be transferred to a remote server, one by one or as an archive. The configuration results in a set of plan files and one workflow .ewf file executing all relevant plans and performing additional tasks like compressing and uploading files to a remote server.</description>
+			<generators>
+				<gen showDialog="false" label="Generate workflows and plans..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+			</generators>
+		</node>
+		<node icon="icons/arrow_right_green.png" name="syncSFTPTaskE" id="SyncSFTPTaskENode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Task name.</description>
+				</attribute>
+				<attribute name="SFTPserver" label="Server name" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/systems/SFTPSystems/SFTPSystem</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of a previously defined server connection. To define a server connection, switch to the File Explorer view, right-click Databases &gt; New Server.</description>
+				</attribute>
+				<attribute name="targetDirectory" label="Remote Server Target Directory" type="string">
+					<description>Directory on the remote server to which the file with data is uploaded from the local server (containing the RDM Runtime and Online Server).</description>
+				</attribute>
+				<attribute name="filePath" label="Local Server Archive Directory" type="folder">
+					<description>Directory on the local server (containing the RDM Runtime and Online Server), to which the archive is saved.&lt;/br&gt;
+The path is relative to your RDM project folder and should point to a descendant of the Files folder. &lt;/br&gt;
+E.g. &#39;Files/data/FTs/exports&#39;</description>
+				</attribute>
+				<attribute name="fileName" label="Archive Name" type="string">
+					<description>File (text or archive) to download from the remote server.</description>
+				</attribute>
+				<attribute defaultValue="NONE" name="compression" label="Compression" type="enum" required="true" enumValues="NONE,GZIP,ZIP">
+					<description>Specifies the compression type (if any).</description>
+				</attribute>
+				<attribute visible="false" defaultValue="_export" name="suffix" type="string"/>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="SyncSFTPTaskExportsNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/workflows/{@name}_export.ewf" label="Open workflow" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor label="Delete synchronization task" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../syncSFTPTasksE/syncSFTPTaskE/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@targetDirectory</selectPath>
+					<valueExpr>^.*[^\\/]$</valueExpr>
+					<message>Directory path cannot end with &#39;/&#39; or &#39;\&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@filePath</selectPath>
+					<valueExpr>^.*[^\\/]$</valueExpr>
+					<message>Directory path cannot end with &#39;/&#39; or &#39;\&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*]+</valueExpr>
+					<message>Unsupported characters are less than &gt; : &quot; / \ | ? *</message>
+				</validation>
+			</validations>
+			<description>Task for exporting data from RDM tables to text files. Additionally, files can be transferred to a remote server, one by one or as an archive. The configuration results in a set of plan files and one workflow .ewf file executing all relevant plans and performing additional tasks like compressing and uploading files to a remote server.</description>
+			<generators>
+				<gen showDialog="false" label="Generate workflow and plan(s)..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltGenerator">
+					<fileNameTemplate>Files/workflows/{@name}_export.ewf</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="systems" source="/systems"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+					</parameters>
+					<templatePath>xslt/syncWorkflowFTEwf_export.xsl</templatePath>
+				</gen>
+			</generators>
+		</node>
+		<node expanded="true" name="syncSFTPTaskTables" id="SyncSFTPTaskTablesNode" label="Tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncSFTPTaskTableNode"/>
+			</subNodes>
+			<validations>
+				<validation message="Synchronization should contain at least one table" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+				<validation severity="info" class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[count(syncSFTPTaskTable) &gt; 1]</expression>
+					<message>The corresponding .plan file must be edited and checked for possible conflicts in column names when exporting more than one table at once.</message>
+				</validation>
+			</validations>
+			<description>The list of tables that whose data is exported within the task.</description>
+		</node>
+		<node icon="icons/table.png" name="syncSFTPTaskTable" id="SyncSFTPTaskTableNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of table.</description>
+				</attribute>
+				<attribute defaultValue="false" name="history" label="History" type="boolean" required="true">
+					<description>If checked, data from the ALL_HISTORY mode is downloaded together with currently published. Also a _hist suffix is added to the file name. See RDM Data Viewing Modes for more information on the ALL_HISTORY table.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../syncSFTPTaskTables/syncSFTPTaskTable/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+			</validations>
+			<description>The list of tables that whose data is exported within the task.</description>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node expanded="true" name="syncSFTPTaskExports" id="SyncSFTPTaskExportsNode" label="Exports">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncSFTPTaskExportNode"/>
+			</subNodes>
+			<validations>
+				<validation message="Synchronization should contain at least one export" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<description>The list of sub-tasks that export data from one or several table into one text file – a plan is generated for each export.
+</description>
+		</node>
+		<node icon="icons/document_out.png" name="syncSFTPTaskExport" id="SyncSFTPTaskExportNode" label="{@outputFileName}">
+			<attributes>
+				<attribute name="outputFileName" label="File name" type="string" required="true">
+					<description>RDM exports data to a file with this name (TXT and CSV files supported).</description>
+				</attribute>
+				<attribute defaultValue="false" name="overridePlan" type="boolean" required="true">
+					<description>If &lt;b&gt;false&lt;/b&gt; (default), only RDM Extended Reader step is generated/updated into the generated plan (other content being untouched) according to the logical model.
+If &lt;b&gt;true&lt;/b&gt;, set of default steps (i.e. Text File Writer) is always generated/updated automatically into the generated plan.</description>
+				</attribute>
+				<attribute name="fieldSeparator" label="Field separator" type="string" required="true">
+					<description>The symbol that separates columns in the text file.</description>
+				</attribute>
+				<attribute defaultValue="\r\n" name="lineSeparator" label="Line separator" type="string" required="true">
+					<description>The symbol that marks the end of the line: \r (MacOS 9 and older) , \n - (Linux and MacOs X), or \r\n (Windows).</description>
+				</attribute>
+				<attribute defaultValue="false" name="header" label="Write header" type="boolean" required="true">
+					<description>If checked, column headers are written to the text file together with data.</description>
+				</attribute>
+				<attribute name="filePath" label="File path" type="folder" required="false">
+					<description>Directory on the local server where to save the text file. &lt;/br&gt;
+The path is relative to your RDM project folder and should point to a descendant of the Files folder. &lt;/br&gt;
+E.g. &#39;Files/data/FTs/exports&#39;</description>
+				</attribute>
+				<attribute name="targetDirectory" label="Target directory" type="string">
+					<description>Directory on the remote server to which the file is sent.</description>
+				</attribute>
+				<attribute defaultValue="Use global settings (from App Variables)" name="useUrlResourcesForAuthentication" label="Authentication Strategy" type="enum" required="true" enumValues="Use global settings (from App Variables),Use App Connection Credentials,Pass Credentials Manually"/>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="SyncSFTPTaskTablesNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/plans/synchronization/FTs/exports/{ancestor::syncSFTPTaskE/@name}_{@outputFileName}_export.plan" label="Open Plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor label="Delete export" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../syncSFTPTaskExports/SyncSFTPTaskExport/@outputFileName</selectPath>
+					<message>Value @outputFileName is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>../../syncSFTPTaskExports/SyncSFTPTaskExport/@targetDirectory</selectPath>
+					<valueExpr>^.*[^\\/]$</valueExpr>
+					<message>Directory path cannot end with &#39;/&#39; or &#39;\&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>../../syncSFTPTaskExports/SyncSFTPTaskExport/@filePath</selectPath>
+					<valueExpr>^.*[^\\/]$</valueExpr>
+					<message>Directory path cannot end with &#39;/&#39; or &#39;\&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@outputFileName</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*]+</valueExpr>
+					<message>Unsupported characters are less than &gt; : &quot; / \ | ? *</message>
+				</validation>
+			</validations>
+			<description>The list of sub-tasks that export data from one or several table into one text file – a plan is generated for each export.
+</description>
+			<generators>
+				<gen showDialog="false" label="Generate plan..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltPlanFileGenerator">
+					<fileNameTemplate>Files/plans/synchronization/FTs/exports/{ancestor::syncSFTPTaskE/@name}_{@outputFileName}_export.plan</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="syncSFTPTaskE" source="ancestor::syncSFTPTaskE"/>
+					</parameters>
+					<templatePath>xslt/syncInterfaceFT_export.xsl</templatePath>
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/file_transf_into.png" name="syncSFTPTasksI" id="SyncSFTPTasksINode" label="File (imports)">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncSFTPTaskINode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New synchronization task..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>Task for importing data to RDM tables from text files. Additionally, files can be downloaded from a remote server, one by one in separate tasks, or as an archive in one task. The configuration results in a set of plan files and one workflow .ewf file executing all relevant plans and performing additional tasks like downloading from a remote server, unpacking, and deleting files after importing.</description>
+			<generators>
+				<gen showDialog="false" label="Generate workflows and plans..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+			</generators>
+		</node>
+		<node icon="icons/arrow_left_blue.png" name="syncSFTPTaskI" id="SyncSFTPTaskINode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Task name.</description>
+				</attribute>
+				<attribute name="SFTPserver" label="Server name" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/systems/SFTPSystems/SFTPSystem</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of a previously defined server connection. To define a server connection, switch to the File Explorer view, right-click Servers &gt; New Server.</description>
+				</attribute>
+				<attribute name="targetDirectory" label="Local Server Downloads Directory" type="file">
+					<description>Directory on the local server (containing the RDM Runtime and Online Server) to which the file with data is downloaded from the remote server.&lt;/br&gt;
+The path is relative to your RDM project folder and should point to a descendant of the Files folder. &lt;/br&gt;
+E.g. &#39;Files/data/FTs/imports&#39;</description>
+				</attribute>
+				<attribute name="filePath" label="Remote Server Source Directory" type="string">
+					<description>Directory on the remote server containing the file to download to the local server.</description>
+				</attribute>
+				<attribute name="fileName" label="File Name" type="string">
+					<description>File (text or archive) to download from the remote server.</description>
+				</attribute>
+				<attribute defaultValue="NONE" name="compression" label="Compression" type="enum" enumValues="NONE,GZIP,ZIP">
+					<description>Specifies the compression type (if any).</description>
+				</attribute>
+				<attribute defaultValue="false" name="deleteFile" label="Delete file after import" type="boolean" required="true">
+					<description>If checked, the text files and archive (whole folder) are deleted after a successful import.</description>
+				</attribute>
+				<attribute visible="false" defaultValue="_import" name="suffix" type="string"/>
+				<attribute defaultValue="Use global settings (from App Variables)" name="useUrlResourcesForAuthentication" label="Authentication Strategy" type="enum" required="true" enumValues="Use global settings (from App Variables),Use App Connection Credentials,Pass Credentials Manually"/>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/workflows/{@name}_import.ewf" label="Open workflow" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor label="Delete synchronization task" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<subNodes>
+				<subNode min="1" max="1" id="SyncSFTPTaskImportsNode"/>
+			</subNodes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../syncSFTPTasksI/syncSFTPTaskI/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@targetDirectory</selectPath>
+					<valueExpr>^.*[^\\/]$</valueExpr>
+					<message>Directory path cannot end with &#39;/&#39; or &#39;\&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@filePath</selectPath>
+					<valueExpr>^.*[^\\/]$</valueExpr>
+					<message>Directory path cannot end with &#39;/&#39; or &#39;\&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*]+</valueExpr>
+					<message>Unsupported characters are less than &gt; : &quot; / \ | ? *</message>
+				</validation>
+			</validations>
+			<description>Task for importing data to RDM tables from text files. Additionally, files can be downloaded from a remote server, one by one in separate tasks, or as an archive in one task. The configuration results in a set of plan files and one workflow .ewf file executing all relevant plans and performing additional tasks like downloading from a remote server, unpacking, and deleting files after importing.</description>
+			<generators>
+				<gen showDialog="false" label="Generate workflow and plan(s)..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltGenerator">
+					<fileNameTemplate>Files/workflows/{@name}_import.ewf</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="systems" source="/systems"/>
+					</parameters>
+					<templatePath>xslt/syncWorkflowFTEwf_import.xsl</templatePath>
+				</gen>
+			</generators>
+		</node>
+		<node expanded="true" name="syncSFTPTaskImports" id="SyncSFTPTaskImportsNode" label="Tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncSFTPTaskImportNode"/>
+			</subNodes>
+			<validations>
+				<validation message="Synchronization should contain at least one table" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<description>The list of tables that are updated with the task.</description>
+		</node>
+		<node icon="icons/table.png" name="syncSFTPTaskImport" id="SyncSFTPTaskImportNode" label="{@tableName}">
+			<attributes>
+				<attribute name="tableName" label="Name" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of table.</description>
+				</attribute>
+			</attributes>
+			<subNodes/>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/plans/synchronization/FTs/imports/{ancestor::syncSFTPTaskI/@name}_{@tableName}_import.plan" label="Open Plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor label="Delete table" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../syncSFTPTaskImports/syncSFTPTaskImport/@tableName</selectPath>
+					<message>Value @tableName is not unique.</message>
+				</validation>
+			</validations>
+			<description>The list of tables that are updated with the task.</description>
+			<generators>
+				<gen showDialog="false" label="Generate plan..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltPlanFileGenerator">
+					<fileNameTemplate>Files/plans/synchronization/FTs/imports/{ancestor::syncSFTPTaskI/@name}_{@tableName}_import.plan</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="syncSFTPTaskI" source="ancestor::syncSFTPTaskI"/>
+					</parameters>
+					<templatePath>xslt/syncInterfaceFT_import.xsl</templatePath>
+				</gen>
+			</generators>
+		</node>
+		<node icon="icons/online_connection.png" name="syncOnlineTasks" id="SyncOnlineTasksNode" label="Online">
+			<subNodes>
+				<subNode min="1" max="1" id="SyncOnlineTasksENode"/>
+				<subNode min="1" max="1" id="SyncOnlineTasksINode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<description>The Synchronization node allows creating online synchronization jobs which can write and read data into/from RDM via SOAP over HTTP web service calls.</description>
+		</node>
+		<node icon="icons/online_out.png" name="syncOnlineTasksE" id="SyncOnlineTasksENode" label="Online (exports)">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncOnlineTaskENode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New Online task..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<generators>
+				<gen showDialog="false" label="Generate online files and plans..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+			</generators>
+		</node>
+		<node icon="icons/online_arrow_right_green.png" name="syncOnlineTaskE" id="SyncOnlineTaskENode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true"/>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="SyncOnlineTaskExportsNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/onlineServices/{@name}_export.online" label="Open online file" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor label="Delete online task" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<generators>
+				<gen showDialog="false" label="Generate online file and plan(s)..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltGenerator">
+					<fileNameTemplate>Files/onlineServices/{@name}_export.online</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="appVariables" source="/appVariables"/>
+					</parameters>
+					<templatePath>xslt/syncOnlineServiceConfig_export.xsl</templatePath>
+				</gen>
+			</generators>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*]+</valueExpr>
+					<message>Unsupported characters are less than &gt; : &quot; / \ | ? *</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="true" name="syncOnlineTaskExports" id="SyncOnlineTaskExportsNode" label="Exports">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncOnlineTaskExportNode"/>
+			</subNodes>
+			<validations>
+				<validation message="Synchronization should contain at least one task" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node icon="icons/online_out.png" name="syncOnlineTaskExport" explorerLeaf="false" id="SyncOnlineTaskExportNode" label="{@outputFileName}">
+			<attributes>
+				<attribute name="outputFileName" label="Name" type="string" required="true"/>
+				<attribute defaultValue="Use global settings (from App Variables)" name="useUrlResourcesForAuthentication" label="Authentication Strategy" type="enum" required="true" enumValues="Use global settings (from App Variables),Use App Connection Credentials,Pass Credentials Manually"/>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="SyncOnlineTaskTablesNode"/>
+				<subNode min="1" max="1" id="SyncOnlineTaskColumnsNode"/>
+			</subNodes>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/plans/synchronization/onlines/exports/{ancestor::syncOnlineTaskE/@name}_{@outputFileName}_export.plan" label="Open plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor label="Delete export" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../syncOnlineTaskExports/SyncOnlineTaskExport/@outputFileName</selectPath>
+					<message>Value @outputFileName is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="false">
+					<expression>.[(syncOnlineTaskColumns/syncOnlineTaskColumn or syncOnlineTaskTables/syncOnlineTaskTable/syncOnlineTaskTableColumns/syncOnlineTaskTableColumn) or (syncOnlineTaskTables/syncOnlineTaskTable/@allColumns=&#39;true&#39;)] </expression>
+					<message>There are no selected columns!</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@outputFileName</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*]+</valueExpr>
+					<message>Unsupported characters are less than &gt; : &quot; / \ | ? *</message>
+				</validation>
+			</validations>
+			<generators>
+				<gen label="Generate plan..." class="com.ataccama.ame.core.generators.XsltPlanFileGenerator">
+					<fileNameTemplate>Files/plans/synchronization/onlines/exports/{ancestor::syncOnlineTaskE/@name}_{@outputFileName}_export.plan</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+					</parameters>
+					<templatePath>xslt/syncInterfaceOnline_export.xsl</templatePath>
+				</gen>
+			</generators>
+		</node>
+		<node expanded="true" name="syncOnlineTaskTables" explorerLeaf="false" id="SyncOnlineTaskTablesNode" label="Tables" newTab="false">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncOnlineTaskTableNode"/>
+			</subNodes>
+			<validations>
+				<validation message="Synchronization should contain at least one table" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+				<validation severity="info" class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[count(syncOnlineTaskTable) &gt; 1]</expression>
+					<message>The corresponding .plan file must be edited when exporting more than one table at once. The corresponding .online file must be checked for possible conflicts in column names.</message>
+				</validation>
+			</validations>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node icon="icons/table.png" name="syncOnlineTaskTable" explorerLeaf="false" id="SyncOnlineTaskTableNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="false" name="history" label="History" type="boolean" required="true"/>
+				<attribute defaultValue="false" name="allColumns" label="Use All Columns" type="boolean" required="true"/>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../syncOnlineTaskTables/syncOnlineTaskTable/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[@allColumns=&#39;true&#39; and syncOnlineTaskTableColumns/syncOnlineTaskTableColumn]</expression>
+					<message>Option &quot;All Columns&quot; enabled. Remove selected columns from the list or disable option &quot;All Columns&quot;.</message>
+				</validation>
+			</validations>
+			<subNodes>
+				<subNode min="1" max="1" id="SyncOnlineTaskTableColumnsNode"/>
+			</subNodes>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node expanded="true" name="syncOnlineTaskColumns" explorerLeaf="false" id="SyncOnlineTaskColumnsNode" label="Additional output columns">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncOnlineTaskColumnNode"/>
+			</subNodes><!--<validations>
+				<validation message="Synchronization should contain at least one column" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>--><description>(Optional) These columns will be added to the output of the export operation. Edit the mapping in the corresponding .plan file.</description>
+		</node>
+		<node visible="false" name="syncOnlineTaskColumn" id="SyncOnlineTaskColumnNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true"/>
+				<attribute name="type" label="Type" type="enum" required="true" enumValues="STRING,INTEGER,LONG,DATETIME,BOOLEAN,FLOAT"/>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../syncOnlineTaskColumns/syncOnlineTaskColumn/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[(@name = ../../syncOnlineTaskTables/syncOnlineTaskTable/syncOnlineTaskTableColumns/syncOnlineTaskTableColumn/@name)]</expression>
+					<message>Duplicate column &#39;{@name}&#39;!</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/online_in.png" name="syncOnlineTasksI" id="SyncOnlineTasksINode" label="Online (imports)">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncOnlineTaskINode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New Online task..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<generators>
+				<gen showDialog="false" label="Generate online files and plans..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+			</generators>
+		</node>
+		<node icon="icons/online_arrow_left_blue.png" name="syncOnlineTaskI" id="SyncOnlineTaskINode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true"/>
+				<attribute defaultValue="Use global settings (from App Variables)" name="useUrlResourcesForAuthentication" label="Authentication Strategy" type="enum" required="true" enumValues="Use global settings (from App Variables),Use App Connection Credentials,Pass Credentials Manually"/>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="SyncOnlineTaskImportsNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/onlineServices/{@name}_import.online" label="Open online file" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor label="Delete online task" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<generators>
+				<gen showDialog="false" label="Generate online file and plan(s)..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+				<gen class="com.ataccama.ame.core.generators.XsltGenerator">
+					<fileNameTemplate>Files/onlineServices/{@name}_import.online</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="appVariables" source="/appVariables"/>
+					</parameters>
+					<templatePath>xslt/syncOnlineServiceConfig_import.xsl</templatePath>
+				</gen>
+			</generators>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*]+</valueExpr>
+					<message>Unsupported characters are less than &gt; : &quot; / \ | ? *</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="true" name="syncOnlineTaskImports" id="SyncOnlineTaskImportsNode" label="Tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncOnlineTaskImportNode"/>
+			</subNodes>
+			<validations>
+				<validation message="Synchronization should contain at least one table" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+		</node>
+		<node icon="icons/table.png" name="syncOnlineTaskImport" id="SyncOnlineTaskImportNode" label="{@tableName}">
+			<attributes>
+				<attribute name="tableName" label="Name" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="false" name="incremental" label="Incremental" type="boolean" required="true"/>
+			</attributes>
+			<subNodes/>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/plans/synchronization/onlines/imports/{ancestor::syncOnlineTaskI/@name}_{@tableName}_import.plan" label="Open plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor label="Delete table" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../syncOnlineTaskImports/syncOnlineTaskImport/@tableName</selectPath>
+					<message>Value @tableName is not unique.</message>
+				</validation>
+			</validations>
+			<generators>
+				<gen label="Generate plan..." class="com.ataccama.ame.core.generators.XsltPlanFileGenerator">
+					<fileNameTemplate>Files/plans/synchronization/onlines/imports/{ancestor::syncOnlineTaskI/@name}_{@tableName}_import.plan</fileNameTemplate>
+					<source>.</source>
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="syncOnlineTaskI" source="ancestor::syncOnlineTaskI"/>
+					</parameters>
+					<templatePath>xslt/syncInterfaceOnline_import.xsl</templatePath>
+				</gen>
+			</generators>
+		</node>
+		<node name="syncOnlineTaskTableColumns" id="SyncOnlineTaskTableColumnsNode" label="Columns">
+			<subNodes>
+				<subNode min="0" max="-1" id="SyncOnlineTaskTableColumnNode"/>
+			</subNodes>
+		</node>
+		<node name="syncOnlineTaskTableColumn" id="SyncOnlineTaskTableColumnNode" label="{@name}">
+			<attributes>
+				<attribute name="name" type="string">
+					<valuesProvider fillColumns="true" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/tables/table[@name=$current/ancestor::syncOnlineTaskTable/@name]/columns/column/@name</selectPath>
+					</valuesProvider>
+				</attribute>
+			</attributes>
+		</node>
+		<node visible="true" icon="icons/file_transf_out.png" name="syncOnPublishEvent" id="SyncOnPublishEventNode" label="On Publish" visibleInParent="true">
+			<subNodes>
+				<subNode min="1" max="1" id="FilteredTablesNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor fileNameTemplate="Files/plans/synchronization/onPublish/onPublishHandler.plan" label="Open plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor fileNameTemplate="Files/onlineServices/rdmOnPublishHandler.online" label="Open Online File" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<attributes>
+				<attribute defaultValue="false" name="enable" type="boolean" required="true"/>
+				<attribute defaultValue="rdmOnPublishHandler" name="name" label="Name (Location)" type="string" required="false"/>
+				<attribute name="url" label="Publish Service Url" type="string" required="false">
+					<valuesProvider severity="info" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/servers/genericServer/@name</selectPath>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="rdmOnPublishService" name="soapAction" type="string" required="false"/>
+				<attribute defaultValue="http://www.example.com/ws" name="soapEnvNamespace" label="Soap Namespace" type="string" required="false"/>
+				<attribute defaultValue="SOAP_1_1" name="soapVersion" type="enum" required="true" enumValues="SOAP_1_1,SOAP_1_2"/>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<severity>ERROR</severity>
+					<inverseCondition>true</inverseCondition>
+					<expression>.[@enable=&#39;true&#39; and @name=&#39;&#39;]</expression>
+					<message>Attribute &#39;name&#39; (name) is required</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<severity>ERROR</severity>
+					<inverseCondition>true</inverseCondition>
+					<expression>.[@enable=&#39;true&#39; and @url=&#39;&#39;]</expression>
+					<message>Attribute &#39;url&#39; (url) is required</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<severity>ERROR</severity>
+					<inverseCondition>true</inverseCondition>
+					<expression>.[@enable=&#39;true&#39; and @soapAction=&#39;&#39;]</expression>
+					<message>Attribute &#39;soapAction&#39; (soapAction) is required</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<severity>ERROR</severity>
+					<inverseCondition>true</inverseCondition>
+					<expression>.[@enable=&#39;true&#39; and @soapEnvNamespace=&#39;&#39;]</expression>
+					<message>Attribute &#39;soapEnvNamespace&#39; (soapEnvNamespace) is required</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<severity>ERROR</severity>
+					<inverseCondition>true</inverseCondition>
+					<expression>.[@enable=&#39;true&#39; and @soapVersion=&#39;&#39;]</expression>
+					<message>Attribute &#39;soapVersion&#39; (soapVersion) is required</message>
+				</validation>
+			</validations>
+			<generators>
+				<gen fileNameTemplate="Files/plans/synchronization/onPublish/onPublishHandler.plan" label="Generate plan and online file" source="." class="com.ataccama.ame.core.generators.XsltPlanFileGenerator" templatePath="xslt/syncOnPublishHandler_plan.xsl">
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="domains" source="/logicalModel/domains"/>
+					</parameters>
+				</gen>
+				<gen fileNameTemplate="Files/onlineServices/rdmOnPublishHandler.online" source="." class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/syncOnPublishHandler_OnlineServiceConfig.xsl">
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="domains" source="/logicalModel/domains"/>
+					</parameters>
+				</gen>
+			</generators>
+		</node>
+		<node expanded="true" name="tables" id="FilteredTablesNode" label="Tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="FilteredTableNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<severity>ERROR</severity>
+					<selectPath>table/@name</selectPath>
+					<message>Value &#39;name&#39; must be unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="false" icon="icons/table.png" name="table" explorerLeaf="false" id="FilteredTableNode" label="Table {@name}">
+			<subNodes>
+				<subNode min="1" max="1" id="ExportValuesNode"/>
+			</subNodes>
+			<attributes>
+				<attribute name="name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+				</attribute>
+				<attribute visible="true" defaultValue="false" name="exportAllOldColumns" label="Export All Old Columns" type="boolean" required="true"/>
+				<attribute defaultValue="false" name="exportAllNewColumns" label="Export All New Columns" type="boolean" required="true"/>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<validations/>
+		</node>
+		<node expanded="true" name="exportValues" explorerLeaf="true" id="ExportValuesNode" label="Columns">
+			<subNodes>
+				<subNode min="0" max="-1" id="ExportValueNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<severity>ERROR</severity>
+					<selectPath>exportValue/@name</selectPath>
+					<message>Value &#39;name&#39; must be unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<severity>ERROR</severity>
+					<inverseCondition>true</inverseCondition>
+					<expression>.[../@exportAllNewColumns=&#39;true&#39; and exportValue[@newValue=&#39;true&#39;]]</expression>
+					<message>Option Export All New Columns is enabled. Disable this option or remove selected columns with checked new value.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<severity>ERROR</severity>
+					<inverseCondition>true</inverseCondition>
+					<expression>.[../@exportAllOldColumns=&#39;true&#39; and exportValue[@oldValue=&#39;true&#39;]]</expression>
+					<message>Option Export All Old Columns is enabled. Disable this option or remove selected columns with checked old value.</message>
+				</validation>
+			</validations>
+		</node>
+		<node name="exportValue" explorerLeaf="true" id="ExportValueNode">
+			<attributes>
+				<attribute name="name" type="string" required="true">
+					<valuesProvider fillColumns="true" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table[@name=$current/ancestor::table/@name]/columns/column</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+				</attribute>
+				<attribute visible="true" defaultValue="false" name="oldValue" type="boolean" required="true"/>
+				<attribute visible="true" defaultValue="true" name="newValue" type="boolean" required="true"/>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<severity>ERROR</severity>
+					<selectPath>@name</selectPath>
+					<message>Value &#39;{@name}&#39; must be unique.</message>
+				</validation>
+			</validations>
+		</node>
+	</nodes>
+</metametadata-library>

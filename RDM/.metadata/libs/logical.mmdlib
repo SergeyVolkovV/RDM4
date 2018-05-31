@@ -1,0 +1,1451 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metametadata-library>
+	<nodes><!-- Logical data model: tables --><node expanded="false" icon="icons/tablesTree.png" name="tables" id="LogicalTablesNode" label="Tables" newTab="true">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalTableNode"/>
+			</subNodes>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New table..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<generators>
+				<gen showDialog="false" label="Generate initial load plans..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+			</generators>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>table/@name</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>table/@label</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/table.png" name="table" explorerLeaf="true" id="LogicalTableNode" label="{@label} ({@name})">
+			<attributes>
+				<attribute name="name" label="Table name" type="string" required="true">
+					<description>Technical name of the table used in the configuration process (parent keys setup, SQL validations, etc.) and written to the database. The maximum length of the name is determined by the database type.</description>
+				</attribute>
+				<attribute name="label" label="Table label" type="string" required="true">
+					<description>Business name of the table as seen in the RDM web application.</description>
+				</attribute>
+				<attribute name="description" label="Table description" type="text">
+					<description>Short description of the table to be displayed in the RDM web application by clicking the Description button.</description>
+				</attribute>
+				<attribute defaultValue="false" name="batchInterface" label="Initial load" type="boolean" required="true">
+					<description>If checked, initial load plans are generated for this table.</description>
+				</attribute>
+				<attribute defaultValue="false" name="batchInterfaceHistory" label="Initial load - history" type="boolean" required="true">
+					<description>If checked, initial data load plans with historical data are generated for this table.</description>
+				</attribute>
+				<attribute defaultValue="Use global settings (from App Variables)" name="useUrlResourcesForAuthentication" label="Authentication Strategy for initial load plans" type="enum" required="true" enumValues="Use global settings (from App Variables),Use App Connection Credentials,Pass Credentials Manually"/>
+				<attribute defaultValue="false" name="showInAllTables" label="Show in all tables" type="boolean" required="true">
+					<description>Determines whether the table will be shown in the table summary accessible by double-clicking the Tables node in the web application.</description>
+				</attribute>
+				<attribute name="amountOfRecords" label="Expected number of records" type="string">
+					<description>Approximate number of records in the initial source tables (for documentation purposes only).</description>
+				</attribute>
+				<attribute name="amountOfChanges" label="Expected number of changes" type="string">
+					<description>Approximate number of records incoming into the system (for documentation purposes only).</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MaxLengthValidation">
+					<selectPath>@name</selectPath>
+					<maxLength>../../../setDatabases/setDatabase[@dbType = ../../appVariables/@dbType]/@tableLength</maxLength>
+					<message>Value &#39;{.}&#39; exceeds maximum allowed value length {ancestor::metadata/setDatabases/setDatabase[@dbType = ../../appVariables/@dbType]/@tableLength} char</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:.\\/|?*\s]+</valueExpr>
+					<message>Unsupported characters are &#39;less than&#39; &gt; : . &quot; / \ | ? * and white-space characters.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@name)=lower-case(following-sibling::table/@name) or lower-case(@name)=lower-case(preceding-sibling::table/@name)]</expression>
+					<message>&#39;{@name}&#39; is not unique value for attribute &#39;name&#39;</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@name)=lower-case(../../datasets/dataset[@enable=&#39;true&#39;]/@name)]</expression>
+					<message>There already exists a Data set with the name &#39;{@name}&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@name)=lower-case(../../views/view[@enable=&#39;true&#39;]/@nameView)]</expression>
+					<message>There already exists a View with the name &#39;{@name}&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>^[^0-9].*</valueExpr>
+					<message>Name must begin with an alphabetic character.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@label)=lower-case(../../datasets/dataset[@enable=&#39;true&#39;]/@label)]</expression>
+					<message>There already exists a Data set with the label &#39;{@label}&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@label)=lower-case(../../views/view[@enable=&#39;true&#39;]/@labelView)]</expression>
+					<message>There already exists a View with the label &#39;{@label}&#39;.</message>
+				</validation>
+			</validations>
+			<subNodes>
+				<subNode min="1" max="1" id="LogicalColumnsNode"/>
+				<subNode min="1" max="1" id="BusinessOwnerRolesNode"/>
+				<subNode min="1" max="1" id="BusinessOwnerAARolesNode"/>
+				<subNode min="1" max="1" id="LogicalValidationsNode"/>
+				<subNode min="1" max="1" id="LogicalGeneratorsNode"/>
+				<subNode min="1" max="1" id="BusinessDateColumnsNode"/>
+			</subNodes>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete table" class="com.ataccama.ame.core.editors.DeleteChild"/>
+				<editor fileNameTemplate="Files/plans/batchLoadPlans/{@name}.plan" label="Open initial load plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+				<editor fileNameTemplate="Files/plans/batchLoadPlans/{@name}_history.plan" label="Open initial load history plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<description>The Tables sub-node in the RDM Logical Model node allows creating tables of reference data (dictionaries), defining their structure, validations, and various other functions.</description>
+			<generators>
+				<gen fileNameTemplate="Files/plans/batchLoadPlans/{@name}.plan" ignoreEmptySource="true" label="Generate initial load plan(s)..." source=".[@batchInterface=&#39;true&#39;]" class="com.ataccama.ame.core.generators.XsltPlanFileGenerator" templatePath="xslt/batchInterface.xsl">
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+					</parameters>
+				</gen>
+				<gen fileNameTemplate="Files/plans/batchLoadPlans/{@name}_history.plan" ignoreEmptySource="true" label="Generate initial load history plan..." source=".[@batchInterfaceHistory=&#39;true&#39;]" class="com.ataccama.ame.core.generators.XsltPlanFileGenerator" templatePath="xslt/batchInterface_history.xsl">
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+					</parameters>
+				</gen>
+				<gen fileNameTemplate="Files/doc/bus/doc_{@name}.html" source="." class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/documentation_business_html.xsl">
+					<parameters>
+						<param name="rdmSecurityRef" source="/security"/>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSystemRef" source="/systems"/>
+						<param name="rdmWorkflowRef" source="/wfConfig"/>
+						<param name="rdmDataSourceRef" source="/dataSources"/>
+					</parameters>
+				</gen>
+				<gen fileNameTemplate="Files/doc/tech/doc_{@name}.html" source="." class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/documentation_technical_html.xsl">
+					<parameters>
+						<param name="rdmSecurityRef" source="/security"/>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSystemRef" source="/systems"/>
+						<param name="rdmWorkflowRef" source="/wfConfig"/>
+						<param name="rdmDataSourceRef" source="/dataSources"/>
+					</parameters>
+				</gen>
+			</generators>
+		</node>
+		<node expanded="true" name="columns" id="LogicalColumnsNode" label="Columns" newTab="true">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalColumnNode"/>
+			</subNodes>
+			<validations>
+				<validation message="Table should contain at least one column" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<description>The Columns tab allows adding columns to a table.</description>
+			<generators>
+				<gen class="com.ataccama.ame.core.generators.SimpleTemplateFileGenerator" templatePath="stringTemplates/documentation_technical_csv.stg">
+					<fileNameTemplate>Files/doc/csv/{../@name}.txt</fileNameTemplate>
+					<params>
+						<param expression="." name="root"/>
+						<param expression="/logicalModel" name="logicalModel"/>
+					</params>
+				</gen>
+			</generators>
+		</node>
+		<node expanded="false" name="column" explorerLeaf="true" id="LogicalColumnNode" label="{@label} ({@name}): {@domain}" sortChildren="false">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Technical name of the table used in the configuration process and written to the database. The maximum length of the name is determined by the database type.</description>
+				</attribute>
+				<attribute name="label" label="Label" type="string" required="false">
+					<description>Business name of the column as seen in the web application.</description>
+				</attribute>
+				<attribute name="domain" label="Domain" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/domains/domain</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Name of the column&#39;s domain.</description>
+				</attribute>
+				<attribute defaultValue="false" name="required" label="Required" type="boolean" required="true">
+					<description>Determines whether the column must possess a value or may remain empty.</description>
+				</attribute>
+				<attribute defaultValue="normal" name="displayMode" label="Display mode" type="enum" required="true" enumValues="normal,label">
+					<description>Sets special display properties for the column in the web application, with the following options: &lt;/br&gt;
+- normal - the column will not have any special properties&lt;/br&gt;
+- label - the column will have the following special properties&lt;/br&gt;
+-- values of this column will be displayed in combo-box options of a child table in the web application. See Lookups (combo-box lookup) in the RDM Web Application User Guide.&lt;/br&gt;
+-- values of this column will be displayed instead of corresponding foreign keys if Referenced data display mode is set to labels in Columns setup in the web application.&lt;/br&gt;
+-- values of this column will be displayed instead of corresponding foreign keys when viewing Hierarchies in the RDM web application.&lt;/br&gt;</description>
+				</attribute>
+				<attribute defaultValue="false" name="generated" label="Generated" type="boolean" required="true">
+					<description>Determines whether the values for the column are automatically generated on the side of the database. If checked, column value will be possible to enter only when creating a record; the column will be inactive when editing the record. In addition, if this column if entered in the ID generators tab, it will be inactive even when creating a record.</description>
+				</attribute>
+				<attribute visible="false" name="dbType" label="Databse type" type="string"/>
+				<attribute name="defaultValue" label="Default value" type="text">
+					<description>Default value for the column, which will be pre-filled when creating a new record in the web application.</description>
+				</attribute>
+				<attribute visible="false" defaultValue="false" name="generatedID" label="Automatic ID generator" type="boolean" required="false"/>
+				<attribute name="valuePresenter" label="Value Presenter" type="string" required="false">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/valuePresenters/valuePresenter</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Assigns one of previously defined value presenters to this column.</description>
+				</attribute>
+				<attribute name="description" label="Description" type="text">
+					<description>Free text describing the attribute; description will be visible upon hovering over the column name or in the table Description dialog.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MaxLengthValidation">
+					<selectPath>@name</selectPath>
+					<maxLength>../../../../../setDatabases/setDatabase[@dbType = ../../appVariables/@dbType]/@columnLength</maxLength>
+					<message>Value &#39;{.}&#39; exceeds maximum allowed value length {ancestor::metadata/setDatabases/setDatabase[@dbType = ../../appVariables/@dbType]/@columnLength} char</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../columns/column/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../columns/column[@label!=&#39;&#39;]/@label</selectPath>
+					<message>Value @label is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>^\S+(?: \S+)*$</valueExpr>
+					<message>Column name cannot start or end with white-space character.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>^[^0-9].*</valueExpr>
+					<message>Name must begin with an alphabetic character.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^.]+</valueExpr>
+					<message>Dot is unsupported character.</message>
+				</validation>
+			</validations>
+			<subNodes/>
+		</node><!-- Logical data model: relationships --><node expanded="false" icon="icons/relationships.png" name="relationships" explorerLeaf="false" id="LogicalRelationshipsNode" label="Relationships" newTab="true">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalRelationshipNode"/>
+			</subNodes>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New relationship..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>The Relationships sub-node in the RDM Logical Model node allows adding, modifying, and deleting parent-child relationships between tables of the RDM logical model.</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<severity>ERROR</severity>
+					<selectPath>relationship/@name</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/table.png" name="relationship" explorerLeaf="true" id="LogicalRelationshipNode" label="{@label} ({@name})">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the relationship used in the model configuration process. The maximum length of the name is determined by the database type.</description>
+				</attribute>
+				<attribute name="label" label="Label" type="string">
+					<description>Name of the relationship as seen in the web application.</description>
+				</attribute>
+				<attribute defaultValue="window" name="lookuptype" label="Lookup type" type="enum" required="true" enumValues="window,combo">
+					<description>Determines the appearance of the lookup to the parent table in the Create/Edit Detail dialog.&lt;/br&gt;
+- combo - displays a combo-box containing space-separated values of columns having the Display mode attribute set to label. See Columns.&lt;/br&gt;
+- window - opens a new dialog displaying all attributes of the parent table.&lt;/br&gt;</description>
+				</attribute>
+				<attribute name="parentTable" label="Parent table" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table/@name</selectPath>
+					</valuesProvider>
+					<description>Name of the parent table (the relationship arrow leads here).</description>
+				</attribute>
+				<attribute name="childTable" label="Child table" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table/@name</selectPath>
+					</valuesProvider>
+					<description>Name of the child table (the relationship arrow starts here).</description>
+				</attribute>
+				<attribute name="sqlCondition" syntax="sql" label="Filter" type="text">
+					<description>An SQL condition that makes only a subset of parent records satisfying this condition to be available for the child table.&lt;/br&gt;
+The condition should contain the part of an SQL query following the where logical operator. The syntax generally depends on the database type used, with one important distinction: child table column names should be put in $, e.g., $child_column_name$</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MaxLengthValidation">
+					<selectPath>@name</selectPath>
+					<maxLength>../../../setDatabases/setDatabase[@dbType = ../../appVariables/@dbType]/gpkLength/@gpkLength</maxLength>
+					<message>Value &#39;{.}&#39; exceeds maximum allowed value length {ancestor::metadata/setDatabases/setDatabase[@dbType = ../../appVariables/@dbType]/gpkLength/@gpkLength} char</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:.\\/|?*\s]+</valueExpr>
+					<message>Unsupported characters are &#39;less than&#39; &gt; : &quot; / \ | ? * and white-space characters.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@name)=lower-case(following-sibling::table/@name) or lower-case(@name)=lower-case(preceding-sibling::table/@name)]</expression>
+					<message>&#39;{@name}&#39; is not unique value for attribute &#39;name&#39;</message>
+				</validation>
+			</validations>
+			<subNodes>
+				<subNode min="1" max="1" id="LogicalForeignKeyNode"/>
+				<subNode min="1" max="1" id="OrderRelationshipsNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete relationship" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<description>The Relationships sub-node in the RDM Logical Model node allows adding, modifying, and deleting parent-child relationships between tables of the RDM logical model.</description>
+		</node>
+		<node expanded="true" name="representativeForeignKey" id="LogicalForeignKeyNode" label="Foreign key">
+			<validations>
+				<validation message="There must be at least one combination of parent and child column defined" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalForeignKeyItemNode"/>
+			</subNodes>
+			<description>Defines the columns of the parent and child table that create the relationship.</description>
+		</node>
+		<node name="column" explorerLeaf="true" id="LogicalForeignKeyItemNode" label="{@parentColumn} &lt;- {@childColumn}">
+			<subNodes>
+				<subNode min="1" max="1" id="ccColumnDataTypesNode"/>
+			</subNodes>
+			<attributes>
+				<attribute name="parentColumn" label="Parent column" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table[@name=$current/ancestor::relationship/@parentTable]/columns/column</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the column in the parent table.</description>
+				</attribute>
+				<attribute name="childColumn" label="Child column" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table[@name=$current/ancestor::relationship/@childTable]/columns/column</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the column in the child table.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<expression>.[ccColumnDataTypes/@parent = ccColumnDataTypes/@child]</expression>
+					<message>Columns &#39;{@parentColumn}&#39; ({ccColumnDataTypes/@parent}) and &#39;{@childColumn}&#39; ({ccColumnDataTypes/@child}) has different domain type.</message>
+				</validation>
+			</validations>
+			<description>Defines the columns of the parent and child table that create the relationship.</description>
+		</node><!-- Logical data model: entity groups --><!-- Logical data model: hierarchies --><!-- Logical data model: domains --><node icon="icons/domains.png" name="domains" id="DomainsNode" label="Domains" newTab="true">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New domain..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<subNodes>
+				<subNode min="0" max="-1" id="DomainNode"/>
+			</subNodes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>domain/@name</selectPath>
+					<message>&#39;{.}&#39; is not unique value for attribute &#39;name&#39;</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/table.png" name="domain" explorerLeaf="true" id="DomainNode" label="{@name} ({@type})" sortChildren="true">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the domain.</description>
+				</attribute>
+				<attribute name="type" label="Type" type="enum" required="true" enumValues="STRING,INTEGER,LONG,DATETIME,BOOLEAN,FLOAT,MNREFERENCES">
+					<description>DQC data type to which the domain is mapped.</description>
+				</attribute>
+				<attribute name="min" label="Min" type="long_integer">
+					<description>Definition of the minimum value (specified only for FLOAT, INTEGER and LONG data type).</description>
+				</attribute>
+				<attribute name="max" label="Max" type="long_integer">
+					<description>Definition of the maximum value (specified only for FLOAT, INTEGER and LONG data type).</description>
+				</attribute>
+				<attribute name="regexp" label="Regular expression" type="string">
+					<description>Regular expression that validates the input (specified only for STRING data type).</description>
+				</attribute>
+				<attribute name="size" label="Size" type="integer">
+					<description>Limits the number of characters that can be entered into the field; used primarily for STRING values; FLOAT and INTEGER attributes will be converted to STRING to check their size.</description>
+				</attribute>
+				<attribute name="validationMsg" label="Validation message" type="string">
+					<description>Message that appears in the web application when domain-defined constraints are violated.</description>
+				</attribute>
+				<attribute name="fkTable" label="FK table" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Name of the referenced table (specified only for MNREFERENCES type).</description>
+				</attribute>
+				<attribute name="format" label="Format" type="string">
+					<description>Custom formats to change the way RDM displays domain (specified for BOOLEAN, DATETIME, FLOAT, INTEGER and LONG data type).</description>
+				</attribute>
+				<attribute name="rowsCount" label="Number of lines" type="integer">
+					<description>Determines the number of rows that are displayed in the create/edit dialog in the RDM web application (specified only for STRING data type).</description>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete domain" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<description>Domains are custom constraints, assigned to table columns.</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@name)=lower-case(following-sibling::domain/@name) or lower-case(@name)=lower-case(preceding-sibling::domain/@name)]</expression>
+					<message>&#39;{@name}&#39; is not unique value for attribute &#39;name&#39;</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:.\\/|?*\s]+</valueExpr>
+					<message>Unsupported characters are &#39;less than&#39; &gt; : &quot; / \ | ? * and white-space characters.</message>
+				</validation>
+			</validations>
+			<subNodes>
+				<subNode min="1" max="1" id="DqcTypeNode"/>
+			</subNodes>
+		</node>
+		<node icon="icons/value_presenters.png" name="valuePresenters" id="ValuePresentersNode" label="Value Presenters" newTab="true">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New value presenter..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<subNodes>
+				<subNode min="0" max="-1" id="ValuePresenterNode"/>
+			</subNodes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>valuePresenter/@name</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/table.png" name="valuePresenter" explorerLeaf="false" id="ValuePresenterNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the value presenter.</description>
+				</attribute>
+				<attribute name="template" label="Template" type="text" required="true">
+					<description/>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete value presenter" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<description/>
+			<validations/>
+		</node>
+		<node expanded="true" name="businessOwnerRoles" id="BusinessOwnerRolesNode" label="Business owners&#39; roles">
+			<subNodes>
+				<subNode min="0" max="-1" id="BusinessOwnerRoleNode"/>
+			</subNodes>
+			<description>Roles that will have editing rights for this table (use content assist to select roles) (for documentation purposes only).</description>
+		</node>
+		<node name="businessOwnerRole" id="BusinessOwnerRoleNode" label="Business owners&#39; role">
+			<attributes>
+				<attribute name="role" label="Role" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/security/fileRepository/roles/role</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Name of role.</description>
+				</attribute>
+			</attributes>
+			<description>Roles that will have editing rights for this table (use content assist to select roles) (for documentation purposes only).</description>
+		</node>
+		<node expanded="true" name="validations" id="LogicalValidationsNode" label="Validations" newTab="true">
+			<subNodes>
+				<subNode min="1" max="1" id="LogicalUniqueKeysNode"/>
+				<subNode min="1" max="1" id="LogicalExpressionValidationsNode"/>
+				<subNode min="1" max="1" id="LogicalSqlValidationsNode"/>
+				<subNode min="1" max="1" id="LogicalOnlineValidationsNode"/>
+				<subNode min="1" max="1" id="LogicalOnlineEnrichersNode"/>
+			</subNodes>
+			<description>Validations tab allows defining various instant and web-service-based validations for the current table.</description>
+		</node>
+		<node expanded="true" name="expressionValidations" id="LogicalExpressionValidationsNode" label="Expression validations">
+			<attributes>
+        
+        
+      </attributes>
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalExpressionValidationNode"/>
+			</subNodes>
+			<description>This section allows defining expressions for validating input data using the Ataccama DQC syntax. You can define multiple expression validations for each table.</description>
+		</node>
+		<node name="expressionValidation" id="LogicalExpressionValidationNode" label="Expression validation">
+			<attributes>
+				<attribute name="expression" label="Expression" type="expression" required="true">
+					<description>An Ataccama DQC expression validating input.</description>
+					<expressionProvider class="com.ataccama.ame.core.expressions.ExpressionPathValuesProvider">
+						<sources>
+							<source name="domains">
+								<selectPath>ancestor::table/columns/column</selectPath>
+								<nameTemplate>{@name}</nameTemplate>
+								<dataTypeTemplate>{/logicalModel/domains/domain[@name=$current/@domain]/dqcType/@dqcType}</dataTypeTemplate>
+								<labelTemplate>{@name} ({/logicalModel/domains/domain[@name=$current/@domain]/@type})</labelTemplate>
+							</source>
+						</sources>
+					</expressionProvider>
+				</attribute>
+				<attribute defaultValue="true" name="enable" type="boolean" required="true"/>
+				<attribute name="message" label="Message" type="string">
+					<description>The message that will be shown when the validation is violated.</description>
+				</attribute>
+				<attribute name="column" description="Column which is displayed along with the validation message." label="Column" type="string" required="false">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>../../../../columns/column</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+				</attribute>
+			</attributes>
+			<description>This section allows defining expressions for validating input data using the Ataccama DQC syntax. You can define multiple expression validations for each table.</description>
+		</node>
+		<node expanded="true" name="sqlValidations" id="LogicalSqlValidationsNode" label="SQL validations">
+			<attributes>
+      </attributes>
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalSqlValidationNode"/>
+			</subNodes>
+			<description>This section allows defining complex validations that utilize SQL scripts for validations across columns, rows of the table for which it is defined and other tables.</description>
+		</node>
+		<node name="sqlValidation" id="LogicalSqlValidationNode" label="SQL validation">
+			<attributes>
+				<attribute name="sqlexpression" syntax="sql" label="SQL expression" type="text" required="true" height="15">
+					<description>An SQL SELECT statement that validates a record being created or edited.</description>
+				</attribute>
+				<attribute defaultValue="true" name="enable" type="boolean" required="true"/>
+				<attribute name="message" label="Validation message" type="string" required="true">
+					<description>A message shown when the validation is not passed.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="InvolvedTables"/>
+			</subNodes>
+			<description>This section allows defining complex validations that utilize SQL scripts for validations across columns, rows of the table for which it is defined and other tables.</description>
+		</node>
+		<node expanded="true" name="InvolvedTables" id="InvolvedTables" label="Other involved tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="InvolvedTable"/>
+			</subNodes>
+			<description>If the SQL expression uses other tables in addition to the table to which it is applied, all these table must be listed here.</description>
+		</node>
+		<node name="InvolvedTable" id="InvolvedTable">
+			<attributes>
+				<attribute name="tablename" label="Table name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Name of table.</description>
+				</attribute>
+			</attributes>
+			<description>If the SQL expression uses other tables in addition to the table to which it is applied, all these table must be listed here.</description>
+		</node>
+		<node expanded="true" name="onlineValidations" id="LogicalOnlineValidationsNode" label="Online validations">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalOnlineValidationNode"/>
+			</subNodes>
+			<description>This section allows selecting previously defined online services for validating input. Online services are created from plans or components and are served by the DQC Server.</description>
+		</node>
+		<node name="onlineValidation" id="LogicalOnlineValidationNode" label="Online validation">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the online service.</description>
+				</attribute>
+				<attribute defaultValue="true" name="enable" type="boolean" required="true"/>
+				<attribute name="url" label="Location" type="string" required="true">
+					<description>URL location of the service in the following format: http://[host]:[port]/[service_name]</description>
+				</attribute>
+				<attribute name="soapAction" label="Soap action" type="string" required="true">
+					<description>Usually matches the name of the service and describes the SOAP action (services are typically of the SOAP type in DQC and RDM)</description>
+				</attribute>
+				<attribute name="soapEnvNamespace" label="Namespace" type="string" required="true">
+					<description>Namespace of the service.</description>
+				</attribute>
+				<attribute defaultValue="1.1" name="soapVersion" label="Soap Version" type="enum" required="true" enumValues="1.1,1.2">
+					<description>SOAP version of the defined service (1.1 or 1.2).</description>
+				</attribute>
+			</attributes>
+			<description>This section allows selecting previously defined online services for validating input. Online services are created from plans or components and are served by the DQC Server.</description>
+		</node>
+		<node expanded="true" name="onlineEnrichers" id="LogicalOnlineEnrichersNode" label="Online enrichers">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalOnlineEnricherNode"/>
+			</subNodes>
+			<description>This section allows selecting previously defined online services to enrich a record being created or edited with data. This feature is called via the Enrich button in the Create/Edit Detail dialog in the web application.</description>
+		</node>
+		<node name="onlineEnricher" id="LogicalOnlineEnricherNode" label="Online enricher">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the online service.</description>
+				</attribute>
+				<attribute name="url" label="Location" type="string" required="true">
+					<description>URL location of the service in the following format: http://[host]:[port]/[service_name]</description>
+				</attribute>
+				<attribute name="soapAction" label="Soap action" type="string" required="true">
+					<description>Usually matches the name of the service and describes the SOAP action (services are typically of the SOAP type in DQC and RDM).</description>
+				</attribute>
+				<attribute name="soapEnvNamespace" label="Namespace" type="string" required="true">
+					<description>Namespace of the service.</description>
+				</attribute>
+				<attribute defaultValue="1.1" name="soapVersion" label="Soap Version" type="string" required="true" enumValues="1.1,1.2">
+					<description>SOAP version of the defined service (1.1 or 1.2)</description>
+				</attribute>
+			</attributes>
+			<description>This section allows selecting previously defined online services to enrich a record being created or edited with data. This feature is called via the Enrich button in the Create/Edit Detail dialog in the web application.</description>
+		</node>
+		<node expanded="true" name="uniqueKeys" id="LogicalUniqueKeysNode" label="Unique keys">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalUniqueKeyNode"/>
+			</subNodes>
+			<description>This section allows defining unique keys. You can create multiple unique keys, and each key can be composed of multiple columns. However, only one unique key can be selected as the primary key.</description>
+		</node>
+		<node name="uniqueKey" id="LogicalUniqueKeyNode" label="Unique key">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the unique key (must be unique)</description>
+				</attribute>
+				<attribute defaultValue="false" name="primary" label="Primary key" type="boolean" required="true">
+					<description>Determines whether the unique key is the primary key for the table. This is also the key connecting this table to a child table which has a column with a corresponding mnreferences-based domain.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>ancestor::logicalModel/tables/table/validations/uniqueKeys/uniqueKey/@name</selectPath>
+					<message>Value &quot;Unique key name&quot; is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../uniqueKey[@primary=&#39;true&#39;]/@primary</selectPath>
+					<message>Only one key can be set as primary.</message>
+				</validation><!-- 
+			<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+				<expression>../uniqueKey[@primary=&#39;true&#39;]/@primary</expression>
+				 <message>At least one key must be set as primary.</message>
+			</validation>
+			--></validations>
+			<subNodes>
+				<subNode min="1" max="1" id="LogicalUniqueKeyColumnsNode"/>
+			</subNodes>
+			<description>This section allows defining unique keys. You can create multiple unique keys, and each key can be composed of multiple columns. However, only one unique key can be selected as the primary key.</description>
+		</node>
+		<node expanded="true" name="uniqueKeyColumns" id="LogicalUniqueKeyColumnsNode" label="Columns">
+			<validations>
+				<validation message="Unique key should contain at least one column" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalUniqueKeyColumnNode"/>
+			</subNodes>
+			<description>Fill in the columns composing the unique key to the Name column.</description>
+		</node>
+		<node name="uniqueKeyColumn" id="LogicalUniqueKeyColumnNode" label="Column">
+			<attributes>
+				<attribute name="name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table[@name=$current/ancestor::table/@name]/columns/column|ancestor::logicalModel/tables/table[@name=$current/ancestor::table/@name]/systemColumns/systemColumn</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+				</attribute>
+			</attributes>
+			<description>Fill in the columns composing the unique key to the Name column.</description>
+		</node>
+		<node icon="icons/views.png" name="views" id="ViewsNode" label="Views">
+			<subNodes>
+				<subNode min="0" max="-1" id="ViewNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New view..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>Views provide users of the RDM web application with a logical subset of chosen tables. Views are composed of two or more tables joined into one record grouping.</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>view[@enable=&#39;true&#39;]/@nameView</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>view[@enable=&#39;true&#39;]/@labelView</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/view.png" name="view" explorerLeaf="true" id="ViewNode" label="{@labelView}">
+			<attributes>
+				<attribute defaultValue="true" name="enable" label="Enable" type="boolean" required="true"/>
+				<attribute name="nameView" label="Name" type="string" required="true">
+					<description>Technical name of the view used in model configuration.</description>
+				</attribute>
+				<attribute name="labelView" label="Label" type="string" required="true">
+					<description>Name of the view as seen in the web application.</description>
+				</attribute>
+				<attribute name="description" extendable="true" label="View description" type="text">
+					<description>Description of the view to be displayed in the web application by clicking the Description button.</description>
+				</attribute>
+				<attribute defaultValue="false" name="showInAllTables" label="Show in all tables" type="boolean" required="true">
+					<description>Determines whether the view will be shown in the table summary accessible by double-clicking the Tables node in the web application.</description>
+				</attribute>
+				<attribute name="name" label="Base entity" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table/@name</selectPath>
+					</valuesProvider>
+					<description>The child table, from which to start building the view (children of this table will not be available, only parents).</description>
+				</attribute>
+				<attribute name="sqlCondition" syntax="sql" label="Filter" type="text">
+					<description>An SQL condition that makes only a subset of parent records satisfying this condition to be available for the child table.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MaxLengthValidation">
+					<selectPath>@nameView</selectPath>
+					<maxLength>../../../setDatabases/setDatabase[@dbType = ../../appVariables/@dbType]/@columnLength</maxLength>
+					<message>Value &#39;{.}&#39; exceeds maximum allowed value length {ancestor::metadata/setDatabases/setDatabase[@dbType = ../../appVariables/@dbType]/@columnLength} char</message>
+				</validation><!-- Unique ALIAS in all view is not working
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+  					<selectPath>ancestor::view//viewColumns/viewColumn/@alias</selectPath>
+ 					<message>Value @alias is not unique.</message>
+				</validation> 	
+				--><validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@nameView</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*\s]+</valueExpr>
+					<message>Unsupported characters are &#39;less than&#39; &gt; : &quot; / \ | ? * and white-space characters.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@nameView)=lower-case(../../datasets/dataset[@enable=&#39;true&#39;]/@name) and @enable=&#39;true&#39;]</expression>
+					<message>There already exists a Data set with the name &#39;{@nameView}&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@nameView)=lower-case(../../tables/table/@name) and @enable=&#39;true&#39;]</expression>
+					<message>There already exists a Table with the name &#39;{@nameView}&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@labelView)=lower-case(../../datasets/dataset[@enable=&#39;true&#39;]/@label) and @enable=&#39;true&#39;]</expression>
+					<message>There already exists a Data set with the label &#39;{@labelView}&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@labelView)=lower-case(../../tables/table/@label) and @enable=&#39;true&#39;]</expression>
+					<message>There already exists a Table with the label &#39;{@labelView}&#39;.</message>
+				</validation>
+			</validations>
+			<subNodes>
+				<subNode min="1" max="1" id="ViewColumnsNode"/>
+				<subNode min="1" max="1" id="ViewParentTablesNode"/>
+				<subNode min="1" max="1" id="viewColumnsOrderNode"/>
+			</subNodes>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete view" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<description>Views provide users of the RDM web application with a logical subset of chosen tables. Views are composed of two or more tables joined into one record grouping.</description>
+		</node>
+		<node expanded="true" visible="true" name="viewColumns" id="ViewColumnsNode" label="Columns" newTab="false">
+			<validations>
+				<validation message="View should contain at least one column" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<subNodes>
+				<subNode min="0" max="-1" id="ViewColumnNode"/>
+			</subNodes>
+			<description>Allows selecting columns from the base entity, which will be used to construct the view.</description>
+		</node>
+		<node name="viewColumn" explorerLeaf="true" id="ViewColumnNode" label="{@name}" sortChildren="false">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider fillColumns="true" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table[@name=$current/../../../@name]/columns/column</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Technical name of the column.</description>
+				</attribute>
+				<attribute name="label" label="Label" type="string">
+					<description>Name of the column as seen in the web application.</description>
+				</attribute>
+				<attribute name="alias" label="Alias name" type="string" required="true">
+					<description>Alias of the column as seen in the web application; has to be unique across the whole view.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>@alias</selectPath>
+					<valueExpr>^[\p{L}\p{Digit}]{1}[\p{L}\p{Digit}_]*$</valueExpr>
+					<message>Alias must contain only characters A-Za-z0-9_</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@alias</selectPath>
+					<valueExpr>^[^0-9].*</valueExpr>
+					<message>Alias must begin with an alphabetic character.</message>
+				</validation>
+			</validations>
+			<description>Allows selecting columns from the base entity, which will be used to construct the view.</description>
+		</node>
+		<node expanded="true" name="viewParentTables" id="ViewParentTablesNode" label="Parent tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="ViewParentTableNode"/>
+			</subNodes>
+			<description>Allows selecting parent tables for constructing the view.</description>
+		</node>
+		<node name="viewParentTable" id="ViewParentTableNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/relationships/relationship[@childTable=$current/../../../@name]</selectPath>
+						<labelTemplate>{@parentTable} - ({@label})</labelTemplate>
+						<valueTemplate>{@parentTable}</valueTemplate>
+					</valuesProvider>
+					<description>Technical name of a parent table used in model configuration.</description>
+				</attribute>
+				<attribute name="label" label="Label" type="string">
+					<description>Name of the parent table as seen in the web application by clicking the Description button.</description>
+				</attribute>
+				<attribute name="relationship" label="Relationship" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/relationships/relationship[@parentTable=$current/../@name]</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the relationship between the parent table and the base entity.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="ViewColumnsNode"/>
+				<subNode min="1" max="1" id="ViewParentTablesNode"/>
+			</subNodes>
+			<description>Allows selecting parent tables for constructing the view.</description>
+		</node>
+		<node icon="icons/categories.png" name="categories" id="CategoriesNode" label="Categories">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New category..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<subNodes>
+				<subNode min="0" max="-1" id="CategoryNode"/>
+			</subNodes>
+			<description>Categories group related tables, views, and hierarchies.</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>category/@name</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>category/@label</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/category.png" name="category" explorerLeaf="true" id="CategoryNode" label="Category: {@label}">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete category" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Technical name of the category used in model configuration.</description>
+				</attribute>
+				<attribute name="label" label="Label" type="string">
+					<description>Name of the category as seen in the web application.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:.\\/|?*\s]+</valueExpr>
+					<message>Unsupported characters are &#39;less than&#39; &gt; : &quot; / \ | ? * and white-space characters.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@name)=lower-case(following-sibling::table/@name) or lower-case(@name)=lower-case(preceding-sibling::table/@name)]</expression>
+					<message>&#39;{@name}&#39; is not unique value for attribute &#39;name&#39;</message>
+				</validation>
+			</validations>
+			<subNodes>
+				<subNode min="1" max="1" id="CategoryItemTablesNode"/>
+				<subNode min="1" max="1" id="CategoryItemViewsNode"/>
+				<subNode min="1" max="1" id="CategoryItemHierarchiesNode"/>
+				<subNode min="1" max="1" id="CategoryItemsCategoriesNode"/>
+			</subNodes>
+			<description>Categories group related tables, views, and hierarchies.</description>
+		</node>
+		<node expanded="true" name="categoryItemsCategories" id="CategoryItemsCategoriesNode" label="Subcategories">
+			<subNodes>
+				<subNode min="0" max="-1" id="CategoryItemCategoryNode"/>
+			</subNodes>
+			<description>Allows creating a subcategory with the same configuration parameters as above.</description>
+		</node>
+		<node name="categoryItemCategory" id="CategoryItemCategoryNode" label="Category item category">
+			<subNodes>
+				<subNode min="1" max="1" id="CategoryItemTablesNode"/>
+				<subNode min="1" max="1" id="CategoryItemViewsNode"/>
+				<subNode min="1" max="1" id="CategoryItemHierarchiesNode"/>
+				<subNode min="1" max="1" id="CategoryItemsCategoriesNode"/>
+			</subNodes>
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of category.</description>
+				</attribute>
+			</attributes>
+			<description>Allows creating a subcategory with the same configuration parameters as above.</description>
+		</node>
+		<node expanded="true" name="categoryItemTables" id="CategoryItemTablesNode" label="Tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="CategoryItemTableNode"/>
+			</subNodes>
+			<description>Allows adding previously defined tables to the category.</description>
+		</node>
+		<node name="categoryItemTable" id="CategoryItemTableNode" label="Category item table">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table/@name</selectPath>
+					</valuesProvider>
+					<description>Name of table.</description>
+				</attribute>
+			</attributes>
+			<description>Allows adding previously defined tables to the category.</description>
+		</node>
+		<node expanded="true" name="categoryItemViews" id="CategoryItemViewsNode" label="Views">
+			<subNodes>
+				<subNode min="0" max="-1" id="CategoryItemViewNode"/>
+			</subNodes>
+			<description>Allows adding previously defined views to the category.</description>
+		</node>
+		<node name="categoryItemView" id="CategoryItemViewNode" label="Category item views">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/views/view/@nameView</selectPath>
+					</valuesProvider>
+					<description>Name of view.</description>
+				</attribute>
+			</attributes>
+			<description>Allows adding previously defined views to the category.</description>
+		</node>
+		<node expanded="true" name="categoryItemHierarchies" id="CategoryItemHierarchiesNode" label="Hierarchies">
+			<subNodes>
+				<subNode min="0" max="-1" id="CategoryItemHierarchyNide"/>
+			</subNodes>
+			<description>Allows adding previously defined hierarchies to the category.</description>
+		</node>
+		<node name="categoryItemHierarchy" id="CategoryItemHierarchyNide" label="Category item hierarchy">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/hierarchies/hierarchy/@hierarchyName</selectPath>
+					</valuesProvider>
+					<description>Name of hierarchy.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+        
+        
+        
+      </subNodes>
+			<description>Allows adding previously defined hierarchies to the category.</description>
+		</node>
+		<node expanded="true" name="businessOwnerRolesAA" id="BusinessOwnerAARolesNode" label="Business owners&#39; of additional attributes roles">
+			<subNodes>
+				<subNode min="0" max="-1" id="businessOwnerRoleAANode"/>
+			</subNodes>
+			<description>Roles that will have publishing rights for this table (use content assist to select roles) (for documentation purposes only).</description>
+		</node>
+		<node name="businessOwnerAA" id="businessOwnerRoleAANode" label="Business owners of additional attributes&#39; role">
+			<attributes>
+				<attribute name="role" label="Role" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/security/fileRepository/roles/role</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+				</attribute>
+			</attributes>
+			<description>Roles that will have publishing rights for this table (use content assist to select roles) (for documentation purposes only).</description>
+		</node>
+		<node expanded="true" name="viewColumnsOrder" id="viewColumnsOrderNode" label="Column order">
+			<subNodes>
+				<subNode min="0" max="-1" id="viewColumnOrderNode"/>
+			</subNodes>
+			<description>Allows ordering columns in the view. Alias names must be used.</description>
+		</node>
+		<node name="viewColumnOrder" explorerLeaf="true" id="viewColumnOrderNode" label="{@name}" sortChildren="false">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::view/viewColumns/viewColumn/@alias|ancestor::view/viewColumns/viewColumn[@alias=&#39;&#39;]/@name|ancestor::view/viewParentTables//viewColumn/@alias|ancestor::view/viewParentTables//viewColumn[@alias=&#39;&#39;]/@name</selectPath>
+						<labelTemplate>{.}</labelTemplate>
+						<valueTemplate>{.}</valueTemplate>
+					</valuesProvider>
+					<description>Column name.</description>
+				</attribute>
+			</attributes>
+			<description>Allows ordering columns in the view. Alias names must be used.</description>
+		</node>
+		<node expanded="true" name="idGenerators" id="LogicalGeneratorsNode" label="ID Generators" newTab="true">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalGeneratorNode"/>
+			</subNodes>
+			<description>The ID Generators tab allows assigning columns which will have automatically generated IDs; manual assigning or changing of such a column&#39;s value is not possible. These columns also need to have the Generated option checked.</description>
+		</node>
+		<node name="generator" explorerLeaf="true" id="LogicalGeneratorNode" label="Generator" sortChildren="false">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table[@name=$current/ancestor::table/@name]/columns/column[@domain=/logicalModel/domains/domain[@type=&#39;INTEGER&#39;]/@name or @domain=/logicalModel/domains/domain[@type=&#39;LONG&#39;]/@name]</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Column name.</description>
+				</attribute>
+			</attributes>
+			<description>The ID Generators tab allows assigning columns which will have automatically generated IDs; manual assigning or changing of such a column&#39;s value is not possible. These columns also need to have the Generated option checked.</description>
+		</node>
+		<node icon="icons/hierarchies.png" name="hierarchies" id="HierarchiesNode" label="Hierarchies" newTab="true">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New hierarchy..." class="com.ataccama.ame.core.editors.CreateChild">
+		</editor>
+			</editors>
+			<subNodes>
+				<subNode min="0" max="-1" id="HierarchyNode"/>
+			</subNodes>
+			<description>Hierarchies allow users of the web application viewing data based on parent-child relationships between tables.</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>hierarchy[@enable=&#39;true&#39;]/@hierarchyName</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>hierarchy[@enable=&#39;true&#39;]/@hierarchyLabel</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/hierarchy.png" name="hierarchy" explorerLeaf="true" id="HierarchyNode" label="{@hierarchyName}">
+			<attributes>
+				<attribute defaultValue="true" name="enable" label="Enable" type="boolean" required="true"/>
+				<attribute name="hierarchyName" label="Hierarchy name" type="string" required="true">
+					<description>Technical name of the hierarchy used in model configuration.</description>
+				</attribute>
+				<attribute name="hierarchyLabel" label="Hierarchy label" type="string" required="true">
+					<description>Name of the hierarchy as seen in the web application.</description>
+				</attribute>
+				<attribute name="name" label="Root table" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table/@name</selectPath>
+					</valuesProvider>
+					<description>Name of the table that will be the top level node of the hierarchy.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@hierarchyName</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:.\\/|?*\s]+</valueExpr>
+					<message>Unsupported characters are &#39;less than&#39; &gt; : &quot; / \ | ? * and white-space characters.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@hierarchyName)=lower-case(following-sibling::table/@hierarchyName) or lower-case(@hierarchyName)=lower-case(preceding-sibling::table/@hierarchyName)]</expression>
+					<message>&#39;{@hierarchyName}&#39; is not unique value for attribute &#39;name&#39;</message>
+				</validation>
+			</validations>
+			<subNodes>
+				<subNode min="1" max="1" id="OrderHierarchiesNode"/>
+				<subNode min="1" max="1" id="HierarchyChildTablesNode"/>
+				<subNode min="1" max="1" id="HierarchyViewsNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete hierarchy" class="com.ataccama.ame.core.editors.DeleteChild"/>
+				<editor fileNameTemplate="Files/plans/synchronization/hierarchies/{@hierarchyName}_export.plan" label="Open export plan" class="com.ataccama.ame.core.editors.FileOpener"/>
+			</editors>
+			<description>Hierarchies allow users of the web application viewing data based on parent-child relationships between tables.</description>
+			<generators>
+				<gen showDialog="false" label="Generate export plan..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+		</gen>
+				<gen fileNameTemplate="Files/plans/synchronization/hierarchies/{@hierarchyName}_export.plan" source="." class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/hierarchies_export.xsl"><!-- XSLT-based file generator that stores the result of XSLT transformation 
+				to the specified file. --><parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+					</parameters>
+				</gen>
+			</generators>
+		</node>
+		<node expanded="true" name="hierarchyChildTables" id="HierarchyChildTablesNode" label="Child tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="HierarchyChildTableNode"/>
+			</subNodes>
+			<description>Allows adding child tables into the hierarchy.</description>
+		</node>
+		<node name="hierarchyChildTable" id="HierarchyChildTableNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/relationships/relationship[@parentTable=$current/../../../@name]</selectPath>
+						<labelTemplate>{@childTable} - ({@label})</labelTemplate>
+						<valueTemplate>{@childTable}</valueTemplate>
+					</valuesProvider>
+					<description>Name of a child table.</description>
+				</attribute>
+				<attribute name="label" label="Label" type="string">
+					<description>Name of the child table as seen in the web application.</description>
+				</attribute>
+				<attribute name="relationship" label="Relationship" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/relationships/relationship[@childTable=$current/../@name and @parentTable=$current/../../../@name]</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the relationship between the parent and the child table.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="OrderHierarchyChildTablesNode"/>
+				<subNode min="1" max="1" id="HierarchyChildTablesNode"/>
+				<subNode min="1" max="1" id="HierarchyViewsNode"/>
+				<subNode min="1" max="1" id="cc_HierarchyChildTableNode"/>
+			</subNodes>
+			<description>Allows adding child tables into the hierarchy.</description>
+		</node>
+		<node expanded="true" name="hierarchyViews" id="HierarchyViewsNode" label="Hierarchy views">
+			<subNodes>
+				<subNode min="0" max="-1" id="HierarchyViewNode"/>
+			</subNodes>
+			<description>Allows adding an already defined view to the hierarchy. The view should placed at a level of the hierarchy where its base table corresponds to either a child or parent table of that hierarchy level.</description>
+		</node>
+		<node expanded="false" name="hierarchyView" id="HierarchyViewNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/views/view[@name=/logicalModel/relationships/relationship[@parentTable=$current/ancestor::hierarchyChildTable/@name or @parentTable=$current/ancestor::hierarchy/@name]/@childTable]/@nameView</selectPath>
+					</valuesProvider>
+					<description>Name of view.</description>
+				</attribute>
+			</attributes>
+			<description>Allows adding an already defined view to the hierarchy. The view should placed at a level of the hierarchy where its base table corresponds to either a child or parent table of that hierarchy level.</description>
+			<subNodes>
+				<subNode min="1" max="1" id="OrderViewsNode"/>
+			</subNodes>
+		</node>
+		<node visible="false" generated="true" name="cc_HierarchyChildTableNode" id="cc_HierarchyChildTableNode" label="cc_HierarchyChildTableNode">
+			<subNodes>
+				<subNode min="0" max="-1" id="cc_view"/>
+			</subNodes>
+			<description>Allows defining other levels of child tables.</description>
+		</node>
+		<node generated="true" name="cc_view" id="cc_view" label="cc_view">
+			<attributes>
+				<attribute name="name" type="string"/>
+				<attribute name="nameView" type="string"/>
+			</attributes>
+		</node>
+		<node expanded="false" icon="icons/data_sets.png" name="datasets" id="DatasetsNode" label="Data sets" newTab="true">
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New data set..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<subNodes>
+				<subNode min="0" max="-1" id="DatasetNode"/>
+			</subNodes>
+			<description>Data sets are custom reports formed by querying the RDM Repository with SQL. Any SQL functions and clauses for selecting data can be used, like AVG, COUNT, SUM, JOIN, etc.</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>dataset[@enable=&#39;true&#39;]/@name</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>dataset[@enable=&#39;true&#39;]/@label</selectPath>
+					<message>Value &#39;{.}&#39; is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/data_set.png" name="dataset" explorerLeaf="true" id="DatasetNode" label="{@label} ({@name})">
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<attributes>
+				<attribute defaultValue="true" name="enable" label="Enable" type="boolean" required="true"/>
+				<attribute name="name" label="Dataset name" type="string" required="true">
+					<description>Technical name of the data set written to the database.</description>
+				</attribute>
+				<attribute name="label" label="Dataset label" type="string" required="true">
+					<description>Name of the data set as seen in the web application.</description>
+				</attribute>
+				<attribute name="description" extendable="false" label="Dataset description" type="text">
+					<description>Free text describing the data set.</description>
+				</attribute>
+				<attribute defaultValue="false" name="supportsIncremental" label="Support all history" type="boolean" required="true">
+					<description>If &lt;B&gt;true&lt;/B&gt;, all history/incremental mode is enabled
+(i.e. all the changes ever made to all records are computed).</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="DatasetColumnsNode"/>
+				<subNode min="1" max="1" id="DatasetOrderColumnsNode"/>
+				<subNode min="1" max="1" id="DatasetSourceNode"/>
+			</subNodes>
+			<description>Data sets are custom reports formed by querying the RDM Repository with SQL. Any SQL functions and clauses for selecting data can be used, like AVG, COUNT, SUM, JOIN, etc.</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*\s]+</valueExpr>
+					<message>Unsupported characters are &#39;less than&#39; &gt; : &quot; / \ | ? * and white-space characters.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@name)=lower-case(../../views/view[@enable=&#39;true&#39;]/@nameView) and @enable=&#39;true&#39;]</expression>
+					<message>There already exists a View with the name &#39;{@name}&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@name)=lower-case(../../tables/table/@name) and @enable=&#39;true&#39;]</expression>
+					<message>There already exists a Table with the name &#39;{@name}&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@label)=lower-case(../../views/view[@enable=&#39;true&#39;]/@labelView) and @enable=&#39;true&#39;]</expression>
+					<message>There already exists a View with the label &#39;{@label}&#39;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[lower-case(@label)=lower-case(../../tables/table/@label) and @enable=&#39;true&#39;]</expression>
+					<message>There already exists a Table with the label &#39;{@label}&#39;.</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="true" name="columns" id="DatasetColumnsNode" label="Columns" newTab="true">
+			<subNodes>
+				<subNode min="0" max="-1" id="DatasetColumnNode"/>
+			</subNodes>
+			<validations>
+				<validation message="Dataset should contain at least one column" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<description>Columns tab specifies the attributes of the generated table (based on the SQL query).</description>
+		</node>
+		<node expanded="false" name="datasetColumn" explorerLeaf="true" id="DatasetColumnNode" label="{@label} ({@name}): {@type}" sortChildren="false">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Technical name of the column (or its alias) as written in the SQL query.</description>
+				</attribute>
+				<attribute name="label" label="Label" type="string" required="true">
+					<description>Name of the data set as seen in the web application.</description>
+				</attribute>
+				<attribute name="type" label="Type" type="enum" required="true" enumValues="string,integer,datetime,long,boolean,float">
+					<description>Data type of the column.</description>
+				</attribute>
+				<attribute name="format" label="Format" type="string">
+					<description>Value display format. Custom formats to change the way RDM displays domain (specified for BOOLEAN, DATETIME, FLOAT, INTEGER and LONG data type).</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../columns/datasetColumn/@name</selectPath>
+					<message>Column name is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../columns/datasetColumn/@label</selectPath>
+					<message>Column label is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>^[^0-9].*</valueExpr>
+					<message>Name must begin with an alphabetic character.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^.]+</valueExpr>
+					<message>Dot is unsupported character.</message>
+				</validation>
+			</validations>
+			<description>Columns tab specifies the attributes of the generated table (based on the SQL query).</description>
+		</node>
+		<node expanded="true" name="orderColumns" id="DatasetOrderColumnsNode" label="Order columns" newTab="true">
+			<subNodes>
+				<subNode min="0" max="-1" id="DatasetOrderColumnNode"/>
+			</subNodes>
+			<description>Order columns tab specifies the attribute(s) by which the results are sorted</description>
+			<validations>
+				<validation message="Dataset should contain at least one order column" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+		</node>
+		<node expanded="false" name="column" explorerLeaf="true" id="DatasetOrderColumnNode" label="{@name}" sortChildren="false">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>../../../columns/datasetColumn</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Name of column.</description>
+				</attribute>
+				<attribute defaultValue="false" name="orderDescending" columnWidth="10" label="Descending" type="boolean" required="true"/>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../orderColumns/column/@name</selectPath>
+					<message>Column name is not unique.</message>
+				</validation>
+			</validations>
+			<description>Order columns tab specifies the attribute(s) by which the results are sorted</description>
+		</node>
+		<node expanded="true" name="source" id="DatasetSourceNode" label="SQL Query" newTab="true">
+			<attributes>
+				<attribute name="sqlSource" syntax="sql" extendable="true" label="SQL source" type="text" required="true">
+					<description>SQL Query tab specifies the SQL query that generates this data set. 
+&lt;/br&gt;
+While the general format of the query and SQL functions are used, there are a few requirements to the SQL queries used for generating data sets:
+ &lt;/br&gt;
+1. The resulting column names should conform to the naming of rules of the database used: the safest way is to use letter, number and the underscore. This can be easily achieved by using the SQL Aliases: as.
+ &lt;/br&gt;
+2. Table names should be specified as follows: $table_[actual_table_name]$. For example, for table CITY,  $table_CITY$ should be used.</description>
+				</attribute>
+			</attributes>
+			<description>SQL Query tab specifies the SQL query that generates this data set. 
+&lt;/br&gt;
+While the general format of the query and SQL functions are used, there are a few requirements to the SQL queries used for generating data sets:
+ &lt;/br&gt;
+1. The resulting column names should conform to the naming of rules of the database used: the safest way is to use letter, number and the underscore. This can be easily achieved by using the SQL Aliases: as.
+ &lt;/br&gt;
+2. Table names should be specified as follows: $table_[actual_table_name]$. For example, for table CITY,  $table_CITY$ should be used.</description>
+		</node>
+		<node expanded="true" name="businessDateColumns" id="BusinessDateColumnsNode" label="Business Date Columns" newTab="true">
+			<attributes>
+				<attribute name="bdFromColumn" label="Business date from" type="string" required="false">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table[@name=$current/ancestor::table/@name]/columns/column[@domain=/logicalModel/domains/domain[@type=&#39;DATETIME&#39;]/@name]</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Column name.</description>
+				</attribute>
+				<attribute name="bdToColumn" label="Business date to" type="string" required="false">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::logicalModel/tables/table[@name=$current/ancestor::table/@name]/columns/column[@domain=/logicalModel/domains/domain[@type=&#39;DATETIME&#39;]/@name]</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Column name.</description>
+				</attribute>
+			</attributes>
+			<description>The Business Date Columns allows specifying two columns that will mark the beginning (Business date FROM field) and the end (Business date TO) of record validity. These columns must have a datetime-based domain.</description>
+		</node>
+		<node expanded="false" visible="false" generated="true" name="dqcType" explorerLeaf="true" id="DqcTypeNode" sortChildren="false" visibleInParent="false">
+			<attributes>
+				<attribute name="dqcType" type="string"/>
+			</attributes>
+		</node>
+		<node visible="false" generated="true" name="ccColumnDataTypes" id="ccColumnDataTypesNode" visibleInParent="false">
+			<attributes>
+				<attribute name="parent" type="string"/>
+				<attribute name="child" type="string"/>
+			</attributes>
+		</node>
+		<node expanded="true" name="orderHierarchies" id="OrderHierarchiesNode" label="Order by">
+			<subNodes>
+				<subNode min="0" max="-1" id="OrderHierarchyNode"/>
+			</subNodes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<severity>ERROR</severity>
+					<selectPath>orderHierarchy/@name</selectPath>
+					<message>Order column &#39;{.}&#39; must be unique.</message>
+				</validation>
+			</validations>
+			<description>Order by definition for the current hierarchy level.
+This influences the order in which data is displayed in the web application.</description>
+		</node>
+		<node name="orderHierarchy" id="OrderHierarchyNode">
+			<attributes>
+				<attribute name="name" label="Column" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/tables/table[@name=$current/ancestor::hierarchy/@name]/columns/column/@name</selectPath>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="false" name="desc" label="Order descending" type="boolean" required="true">
+					<description>Specifies the sort direction.</description>
+				</attribute>
+			</attributes>
+			<subNodes/>
+		</node>
+		<node expanded="true" name="orderViews" id="OrderViewsNode" label="Order by">
+			<subNodes>
+				<subNode min="0" max="-1" id="OrderViewNode"/>
+			</subNodes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<severity>ERROR</severity>
+					<selectPath>orderView/@name</selectPath>
+					<message>Order column &#39;{.}&#39; must be unique.</message>
+				</validation>
+			</validations>
+			<description>Order by definition for the current hierarchy level.
+This influences the order in which data is displayed in the web application.</description>
+		</node>
+		<node name="orderView" id="OrderViewNode">
+			<attributes>
+				<attribute name="name" label="Column" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/views/view[@nameView = $current/ancestor::hierarchyView/@name]/viewColumns/viewColumn/@alias</selectPath>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="false" name="desc" label="Order descending" type="boolean" required="true">
+					<description>Specifies the sort direction.</description>
+				</attribute>
+			</attributes>
+		</node>
+		<node expanded="true" name="orderHierarchyChildTables" id="OrderHierarchyChildTablesNode" label="Order by">
+			<subNodes>
+				<subNode min="0" max="-1" id="OrderHierarchyChildTableNode"/>
+			</subNodes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<severity>ERROR</severity>
+					<selectPath>orderHierarchyChildTable/@name</selectPath>
+					<message>Order column &#39;{.}&#39; must be unique.</message>
+				</validation>
+			</validations>
+			<description>Order by definition for the current hierarchy level.
+This influences the order in which data is displayed in the web application.</description>
+		</node>
+		<node name="orderHierarchyChildTable" id="OrderHierarchyChildTableNode">
+			<attributes>
+				<attribute name="name" label="Column" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/tables/table[@name=$current/ancestor::hierarchyChildTable/@name]/columns/column/@name</selectPath>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="false" name="desc" label="Order descending" type="boolean" required="true">
+					<description>Specifies the sort direction.</description>
+				</attribute>
+			</attributes>
+		</node>
+		<node expanded="true" name="orderRelationships" id="OrderRelationshipsNode" label="Order by">
+			<subNodes>
+				<subNode min="0" max="-1" id="OrderRelationshipNode"/>
+			</subNodes>
+		</node>
+		<node name="orderRelationship" id="OrderRelationshipNode">
+			<attributes>
+				<attribute name="name" label="Column" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/tables/table[@name=$current/ancestor::relationship/@parentTable]/columns/column/@name</selectPath>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="false" name="desc" label="Order descending" type="boolean" required="true">
+					<description>Specifies the sort direction.</description>
+				</attribute>
+			</attributes>
+		</node>
+	</nodes>
+</metametadata-library>

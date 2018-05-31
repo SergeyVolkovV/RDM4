@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<manifest>
+  <name>Reference Data Manager</name>
+  <uid>6de69865-4c6f-39cb-a1e3-aad2f79530e7</uid>
+  <version>11.3.0.manual-2017-11-22_02-11-05</version>
+  <licenseOptions>
+    <option>Meta/RDM</option>
+  </licenseOptions>
+</manifest>

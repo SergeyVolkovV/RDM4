@@ -1,0 +1,102 @@
+<upgrades>
+  <upgrade fromVersion="7.0.2" toVersion="8.0.4" >
+    <transformers>
+      <transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/702_804.xsl"/>
+    </transformers>
+  </upgrade>
+  <upgrade fromVersion="8.0.4" toVersion="9.0.2" >
+    <transformers>
+      <transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/804_902.xsl"/>
+    </transformers>
+  </upgrade>
+  <upgrade fromVersion="9.0.2" toVersion="9.0.4" >
+    <transformers>
+      <transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/902_904.xsl"/>
+    </transformers>
+  </upgrade>
+  <upgrade fromVersion="9.0.4" toVersion="10.2.0" >
+    <transformers>
+      <transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/904_1020.xsl"/> 
+    </transformers>
+  </upgrade>     
+  <upgrade fromVersion="10.2.0" toVersion="10.3.0" >
+    <transformers>
+      <transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/1020_1030.xsl"/> 
+    </transformers>
+  </upgrade>  
+  <upgrade fromVersion="10.3.0" toVersion="10.3.1" >
+    <transformers>
+      <transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/1030_1031.xsl"/> 
+    </transformers>
+  </upgrade>  
+  <upgrade fromVersion="10.3.1" toVersion="10.5.1" >
+    <transformers>    	
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/1031_1051.xsl"/>      	
+    </transformers>
+  </upgrade>
+  <upgrade fromVersion="10.5.1" toVersion="10.6.0" >
+    <transformers>    	
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/1051_1060.xsl"/>    
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/batchInterfaceExport.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/batchInterfacesExport.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/batchInterfaces.xsl" /> 
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/cc_foreignKeyType.xsl" /> 
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/cc_HierarchyChildTableNode.xsl" /> 
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/cc_hierarchyParentTable.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/columnType.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/documentation_content.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncInterfaces_output.xsl" />  
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncInterfaces_input.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncInterfaces_synchronization.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncInterfaces_system_input.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncInterfacesFT_export.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncInterfacesFT_import.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncInterfacesOnline_export.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncInterfacesOnline_import.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncOnlineServiceConfigOnline_export.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncOnlineServiceConfigOnline_import.xsl" />      	
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncWorkflow.xsl" />      	
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncWorkflowFT_export.xsl" />      	
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/xslt/syncWorkflowFT_import.xsl" />     
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern=".metadata/libs/batchInterfaces.mmdlib" />      	  	
+    </transformers>
+  </upgrade>  
+  <upgrade fromVersion="10.6.0" toVersion="10.6.1" >
+    <transformers>    	
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/copy_metadata.xsl"/>
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.FileXslTransformer" filePattern="Files/workflows/*.ewf" transformation="upgrades/1062_1100_workflowVersionUpgrade.xsl" />           
+    </transformers>
+  </upgrade>
+  <upgrade fromVersion="10.6.1" toVersion="10.6.2" >
+    <transformers>    	
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/copy_metadata.xsl"/>           
+    </transformers>
+  </upgrade>  
+  <upgrade fromVersion="10.6.2" toVersion="11.0.0" >
+    <transformers>    	
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/1062_1100.xsl"/>  
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.FileXslTransformer" filePattern="Files/workflows/*.ewf" transformation="upgrades/1062_1100_workflowVersionUpgrade.xsl" />      	    	
+    </transformers>
+  </upgrade>     
+  <upgrade fromVersion="11.0.0" toVersion="11.1.0" >
+    <transformers>    	
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/1100_1110.xsl"/>
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.FileXslTransformer" filePattern="Files/plans/synchronization/onlines/imports/*.plan" transformation="upgrades/1100_1110_onlineImportPlanUpgrade.xsl" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.CopyFile" filePattern=".metadata/xslt/onPublishOutTransformation.xsl" to="etc" namePatternFrom ="xsl$" toLowerCase="false" namePatternTo="xsl" />      	    	    
+    </transformers>
+  </upgrade> 
+  <upgrade fromVersion="11.1.0" toVersion="11.2.0" >
+    <transformers>
+        <transformer class="com.ataccama.ame.ui.upgrade.transform.MetadataXslTransformer"  transformation="upgrades/1110_1120.xsl"/>
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern="Files/plans/synchronization/FTs/imports/errors/*.txt"/>
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern="Files/plans/synchronization/FTs/imports/errors/*.metaData"/>
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.CopyFile" filePattern="Files/plans/batchInterfacesExport/*" to="Files/plans/synchronization/FTs/exports" namePatternFrom ="(.*)\.plan" namePatternTo="batch_$1.csv_export.plan" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern="Files/plans/batchInterfacesExport/*.plan" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.CopyFile" filePattern="Files/plans/batchInterfacesExport/*" to="Files/plans/synchronization/FTs/exports"/>
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.CopyFile" filePattern="Files/plans/synchronization/*.*" to="Files/plans/synchronization/databases" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern="Files/plans/batchInterfacesExport" />
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.DeleteFile" filePattern="Files/plans/synchronization/*.*" />    
+      	<transformer class="com.ataccama.ame.ui.upgrade.transform.FileXslTransformer" filePattern="Files/plans/synchronization/FTs/exports/*.plan" transformation="upgrades/1110_1120_syncFileExportPlanUpgrade.xsl" />
+    </transformers>
+  </upgrade> 
+</upgrades>

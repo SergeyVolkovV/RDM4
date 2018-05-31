@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<purity-config version="11.3.0.manual-2017-11-22_02-11-05">
+	<references/>
+	<component-mappings>
+		<propertyMappings/>
+	</component-mappings>
+
+<!-- (1_REGION) --><step mode="NORMAL" className="com.ataccama.rdm.manager.steps.RdmSynchronizeStep" disabled="false" id="1_REGION">
+		<properties atDate="timestamp" tablename="REGION" url="rdmapp">
+			<columns>
+				<rdmStepColumn columnType="NORMAL" name="abbrev" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="name" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="province" type="STRING"/>
+				<rdmStepColumn columnType="CHANGE_TYPE" name="change_type" type="STRING"/>
+				<rdmStepColumn columnType="PRIMARY_KEY" name="primary_key" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="HCN" name="hcn" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="FROM" name="date_from" type="DATETIME"/>
+				<rdmStepColumn columnType="TO" name="date_to" type="DATETIME"/>
+			</columns>
+		</properties>
+		<visual-constraints layout="vertical" bounds="672,216,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="1_REGION"/>
+		<target endpoint="insert_1_REGION" step="Complex Xml Writer"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<!-- (2_CITY) --><step mode="NORMAL" className="com.ataccama.rdm.manager.steps.RdmSynchronizeStep" disabled="false" id="2_CITY">
+		<properties atDate="timestamp" tablename="CITY" url="rdmapp">
+			<columns>
+				<rdmStepColumn columnType="NORMAL" name="id" type="INTEGER"/>
+				<rdmStepColumn columnType="NORMAL" name="name" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="province" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="gps" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="logo" type="STRING"/>
+				<rdmStepColumn columnType="CHANGE_TYPE" name="change_type" type="STRING"/>
+				<rdmStepColumn columnType="PRIMARY_KEY" name="primary_key" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="HCN" name="hcn" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="FROM" name="date_from" type="DATETIME"/>
+				<rdmStepColumn columnType="TO" name="date_to" type="DATETIME"/>
+			</columns>
+		</properties>
+		<visual-constraints layout="vertical" bounds="528,216,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="2_CITY"/>
+		<target endpoint="insert_2_CITY" step="Complex Xml Writer"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<!-- (3_BRANCH) --><step mode="NORMAL" className="com.ataccama.rdm.manager.steps.RdmSynchronizeStep" disabled="false" id="3_BRANCH">
+		<properties atDate="timestamp" tablename="BRANCH" url="rdmapp">
+			<columns>
+				<rdmStepColumn columnType="NORMAL" name="name" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="code" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="branch_manager" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="phone" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="city" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="address" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="valid_from" type="DATETIME"/>
+				<rdmStepColumn columnType="NORMAL" name="valid_to" type="DATETIME"/>
+				<rdmStepColumn columnType="NORMAL" name="product_group" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="dwh_column" type="BOOLEAN"/>
+				<rdmStepColumn columnType="NORMAL" name="load_from" type="DATETIME"/>
+				<rdmStepColumn columnType="NORMAL" name="site" type="STRING"/>
+				<rdmStepColumn columnType="CHANGE_TYPE" name="change_type" type="STRING"/>
+				<rdmStepColumn columnType="PRIMARY_KEY" name="primary_key" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="HCN" name="hcn" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="FROM" name="date_from" type="DATETIME"/>
+				<rdmStepColumn columnType="TO" name="date_to" type="DATETIME"/>
+			</columns>
+		</properties>
+		<visual-constraints layout="vertical" bounds="384,216,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="3_BRANCH"/>
+		<target endpoint="insert_3_BRANCH" step="Complex Xml Writer"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<!-- (Complex Xml Writer) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.io.xml.writer.ComplexXmlWriter" disabled="false" id="Complex Xml Writer">
+		<properties fileName="Branch_Hierarchy_export.xml" maximumRecordsInMemory="10000" indenting="true" encoding="UTF-8">
+			<dataFormatParameters falseValue="false" dateTimeFormat="yyyy-MM-dd HH:mm:ss" decimalSeparator="." dayFormat="yyyy-MM-dd" trueValue="true" dateFormatLocale="en_US" thousandsSeparator=""/>
+			<objects>
+				<complexXmlWriterObjectStreamCfg template="&lt;PROVINCE&gt;&lt;id&gt;{id}&lt;/id&gt;&lt;name_english&gt;{name_english}&lt;/name_english&gt;&lt;name_french&gt;{name_french}&lt;/name_french&gt;&lt;abbreviation&gt;{abbreviation}&lt;/abbreviation&gt;&lt;flag&gt;{flag}&lt;/flag&gt;&lt;insert_1_REGION/&gt;&lt;/PROVINCE&gt;" name="insert_root_PROVINCE">
+					<subObjects>
+						<complexXmlWriterObjectSubstreamCfg template="&lt;REGION&gt;&lt;abbrev&gt;{abbrev}&lt;/abbrev&gt;&lt;name&gt;{name}&lt;/name&gt;&lt;province&gt;{province}&lt;/province&gt;&lt;insert_2_CITY/&gt;&lt;/REGION&gt;" columnBinding="abbreviation=province" name="insert_1_REGION">
+							<subObjects>
+								<complexXmlWriterObjectSubstreamCfg template="&lt;CITY&gt;&lt;id&gt;{id}&lt;/id&gt;&lt;name&gt;{name}&lt;/name&gt;&lt;province&gt;{province}&lt;/province&gt;&lt;gps&gt;{gps}&lt;/gps&gt;&lt;logo&gt;{logo}&lt;/logo&gt;&lt;insert_3_BRANCH/&gt;&lt;/CITY&gt;" columnBinding="abbrev=province" name="insert_2_CITY">
+									<subObjects>
+										<complexXmlWriterObjectSubstreamCfg template="&lt;BRANCH&gt;&lt;name&gt;{name}&lt;/name&gt;&lt;code&gt;{code}&lt;/code&gt;&lt;branch_manager&gt;{branch_manager}&lt;/branch_manager&gt;&lt;phone&gt;{phone}&lt;/phone&gt;&lt;city&gt;{city}&lt;/city&gt;&lt;address&gt;{address}&lt;/address&gt;&lt;valid_from&gt;{valid_from}&lt;/valid_from&gt;&lt;valid_to&gt;{valid_to}&lt;/valid_to&gt;&lt;product_group&gt;{product_group}&lt;/product_group&gt;&lt;dwh_column&gt;{dwh_column}&lt;/dwh_column&gt;&lt;load_from&gt;{load_from}&lt;/load_from&gt;&lt;site&gt;{site}&lt;/site&gt;&lt;/BRANCH&gt;" columnBinding="name=city" name="insert_3_BRANCH">
+											<subObjects/>
+										</complexXmlWriterObjectSubstreamCfg>
+									</subObjects>
+								</complexXmlWriterObjectSubstreamCfg>
+							</subObjects>
+						</complexXmlWriterObjectSubstreamCfg>
+					</subObjects>
+				</complexXmlWriterObjectStreamCfg>
+			</objects>
+			<template>&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;
+&lt;hierarchy name=&quot;Branch_Hierarchy&quot;&gt;
+	&lt;insert_root_PROVINCE/&gt;
+&lt;/hierarchy&gt;</template>
+		</properties>
+		<visual-constraints layout="vertical" bounds="600,432,-1,-1"/>
+	</step>
+
+
+
+<!-- (Multiplicator) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.flow.Multiplicator" disabled="false" id="Multiplicator">
+		<properties/>
+		<visual-constraints layout="vertical" bounds="600,120,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Multiplicator"/>
+		<target endpoint="parameters" step="1_REGION"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Multiplicator"/>
+		<target endpoint="parameters" step="2_CITY"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Multiplicator"/>
+		<target endpoint="parameters" step="3_BRANCH"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Multiplicator"/>
+		<target endpoint="parameters" step="root_PROVINCE"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<!-- (parameters_sync_FT_export) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.io.text.read.TextFileReader" disabled="false" id="parameters_sync_FT_export">
+		<properties lineMaxReadLength="65536" fileName="../../../data/parameters/parameters_sync_FT_export.csv" fieldSeparator=";" stringQualifierEscape="" numberOfLinesInFooter="0" compression="NONE" encoding="ISO-8859-1" lineSeparator="\r\n" stringQualifier="" numberOfLinesInHeader="1">
+			<columns>
+				<textReaderColumn name="username" ignore="false" type="STRING"/>
+				<textReaderColumn name="password" ignore="false" type="STRING"/>
+				<textReaderColumn name="timestamp" ignore="false" type="DATETIME">
+					<dataFormatParameters dateTimeFormat="yyyy-MM-dd HH:mm:ss" dateFormatLocale="en"/>
+				</textReaderColumn>
+				<textReaderColumn name="timestamp_increment" ignore="false" type="DATETIME">
+					<dataFormatParameters dateTimeFormat="yyyy-MM-dd HH:mm:ss" dateFormatLocale="en"/>
+				</textReaderColumn>
+			</columns>
+			<dataFormatParameters falseValue="false" dateTimeFormat="yy-MM-dd HH:mm:ss" decimalSeparator="." dayFormat="yy-MM-dd" trueValue="true" dateFormatLocale="en_US" thousandsSeparator=""/>
+			<errorHandlingStrategy rejectFileName="rejected.txt">
+				<errorInstructions>
+					<errorInstruction dataStrategy="READ_POSSIBLE" errorType="EXTRA_DATA" putToLog="true" putToReject="false"/>
+					<errorInstruction dataStrategy="STOP" errorType="LONG_LINE" putToLog="true" putToReject="true"/>
+					<errorInstruction dataStrategy="STOP" errorType="PROCESSING_ERROR" putToLog="true" putToReject="false"/>
+					<errorInstruction dataStrategy="READ_POSSIBLE" errorType="INVALID_DATE" putToLog="true" putToReject="false"/>
+					<errorInstruction dataStrategy="READ_POSSIBLE" errorType="SHORT_LINE" putToLog="true" putToReject="true"/>
+					<errorInstruction dataStrategy="NULL_VALUE" errorType="UNPARSABLE_FIELD" putToLog="true" putToReject="false"/>
+				</errorInstructions>
+			</errorHandlingStrategy>
+			<shadowColumns/>
+		</properties>
+		<visual-constraints layout="vertical" bounds="600,48,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="parameters_sync_FT_export"/>
+		<target endpoint="in" step="Multiplicator"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<!-- (root_PROVINCE) --><step mode="NORMAL" className="com.ataccama.rdm.manager.steps.RdmSynchronizeStep" disabled="false" id="root_PROVINCE">
+		<properties atDate="timestamp" tablename="PROVINCE" url="rdmapp">
+			<columns>
+				<rdmStepColumn columnType="NORMAL" name="id" type="INTEGER"/>
+				<rdmStepColumn columnType="NORMAL" name="name_english" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="name_french" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="abbreviation" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="flag" type="STRING"/>
+				<rdmStepColumn columnType="CHANGE_TYPE" name="change_type" type="STRING"/>
+				<rdmStepColumn columnType="PRIMARY_KEY" name="primary_key" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="HCN" name="hcn" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="FROM" name="date_from" type="DATETIME"/>
+				<rdmStepColumn columnType="TO" name="date_to" type="DATETIME"/>
+			</columns>
+		</properties>
+		<visual-constraints layout="vertical" bounds="816,216,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="root_PROVINCE"/>
+		<target endpoint="insert_root_PROVINCE" step="Complex Xml Writer"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<modelComment backgroundColor="255,128,255" borderColor="255,0,128" bounds="-144,0,532,121" foregroundColor="51,51,51">INSTRUCTIONS:
+--------------------------------------------------------
+1) insert input for parameters
+
+2) place Incremental Timestamp column to the RDM Extended Reader step if you want to use History table
+	</modelComment>
+
+</purity-config>

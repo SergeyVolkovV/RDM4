@@ -1,0 +1,749 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metametadata startPath="logicalModel/entities" rootNode="MetadataNode">
+	<imports>
+		<import file="libs/logical.mmdlib" prefix="logical"/>
+		<import file="libs/documentation.mmdlib" prefix="doc"/>
+		<import file="libs/database.mmdlib"/>
+		<import file="libs/systems.mmdlib" prefix="sys"/>
+		<import file="libs/workflows.mmdlib" prefix="wf"/>
+		<import file="libs/security.mmdlib" prefix="sec"/>
+		<import file="libs/sync.mmdlib" prefix="sync"/>
+		<import file="libs/appConfiguration.mmdlib" prefix="ac"/>
+	</imports>
+	<nodes><!--  overall structure --><node name="metadata" id="MetadataNode" label="Metadata">
+			<references>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/tables/table/@name">
+					<idRefs>
+						<idRef childId="wfConfig/entities/entity/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="logicalModel/tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="wfConfig/entities/entity" groupBy="@name" childId="workflows/workflow/steps/step/columns/column/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/tables/table/@name">
+					<idRefs>
+						<idRef childId="syncTasks/syncSFTPTasks/syncSFTPTasksE/syncSFTPTaskE/syncSFTPTaskExports/syncSFTPTaskExport/syncSFTPTaskTables/syncSFTPTaskTable/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/tables/table/@name">
+					<idRefs>
+						<idRef childId="syncTasks/syncSFTPTasks/syncSFTPTasksI/syncSFTPTaskI/syncSFTPTaskImports/syncSFTPTaskImport/@tableName"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/tables/table/@name">
+					<idRefs>
+						<idRef childId="syncTasks/syncOnlineTasks/syncOnlineTasksE/syncOnlineTaskE/syncOnlineTaskExports/syncOnlineTaskExport/syncOnlineTaskTables/syncOnlineTaskTable/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/tables/table/@name">
+					<idRefs>
+						<idRef childId="syncTasks/syncOnlineTasks/syncOnlineTasksI/syncOnlineTaskI/syncOnlineTaskImports/syncOnlineTaskImport/@tableName"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="logicalModel/tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="syncTasks/syncOnlineTasks/syncOnlineTasksE/syncOnlineTaskE/syncOnlineTaskExports/syncOnlineTaskExport/syncOnlineTaskTables/syncOnlineTaskTable" groupBy="@name" childId="syncOnlineTaskTableColumns/syncOnlineTaskTableColumn/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="systems/databaseSystems/databaseSystem/@name">
+					<idRefs>
+						<idRef childId="syncTasks/syncDatabaseTasks/syncDatabaseTask/syncTaskTables/syncTaskTable/@system"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="systems/databaseSystems/databaseSystem/tables/table/@name">
+					<idRefs>
+						<idRef childId="syncTasks/syncDatabaseTasks/syncDatabaseTask/syncTaskTables/syncTaskTable/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/tables/table/@name">
+					<idRefs>
+						<idRef childId="systems/databaseSystems/databaseSystem/tables/table/@synchronizeWith"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="logicalModel/tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="systems/databaseSystems/databaseSystem/tables/table" groupBy="@synchronizeWith" childId="columns/column/@mappedColumn"/>
+						<idRef childObject="systems/databaseSystems/databaseSystem/tables/table" groupBy="@synchronizeWith" childId="rdmKey/rdmSystemRel/@rdmColumn"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/tables/table/@name">
+					<idRefs>
+						<idRef childId="security/fileRepository/roles/role/roleEntities/roleTables/roleTable/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="logicalModel/tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="security/fileRepository/roles/role/roleEntities/roleTables/roleTable" groupBy="@name" childId="roleTableColumns/roleTableColumn/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/views/view/@nameView">
+					<idRefs>
+						<idRef childId="security/fileRepository/roles/role/roleEntities/roleViews/roleView/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="logicalModel/views/view" groupBy="@nameView" ignoreCaseInValue="true" parentId="viewColumns/viewColumn/@alias">
+					<idRefs>
+						<idRef childObject="security/fileRepository/roles/role/roleEntities/roleViews/roleView" groupBy="@name" childId="roleViewColumns/roleViewColumn/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="logicalModel/views/view" groupBy="@nameView" ignoreCaseInValue="true" parentId="viewParentTables/viewParentTable//viewColumns/viewColumn/@alias">
+					<idRefs>
+						<idRef childObject="security/fileRepository/roles/role/roleEntities/roleViews/roleView" groupBy="@name" childId="roleViewColumns/roleViewColumn/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/datasets/dataset/@name">
+					<idRefs>
+						<idRef childId="security/fileRepository/roles/role/roleEntities/roleDatasets/roleDataset/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="logicalModel/datasets/dataset" groupBy="@name" ignoreCaseInValue="true" parentId="columns/datasetColumn/@name">
+					<idRefs>
+						<idRef childObject="security/fileRepository/roles/role/roleEntities/roleDatasets/roleDataset" groupBy="@name" childId="roleDatasetColumns/roleDatasetColumn/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="logicalModel/tables/table/@name">
+					<idRefs>
+						<idRef childId="syncTasks/syncOnPublishEvent/tables/table/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="logicalModel/tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="syncTasks/syncOnPublishEvent/tables/table" groupBy="@name" childId="exportValues/exportValue/@name"/>
+					</idRefs>
+				</reference>
+			</references>
+			<subNodes>
+				<subNode min="1" max="1" id="LogicalNode"/>
+				<subNode min="1" max="1" id="sys.SystemsNode"/>
+				<subNode min="1" max="1" id="DatabaseNode"/>
+				<subNode min="1" max="1" id="wf.WorkflowConfigNode"/>
+				<subNode min="1" max="1" id="sec.SecurityNode"/>
+				<subNode min="1" max="1" id="sync.SyncTasksNode"/>
+				<subNode min="1" max="1" id="appVariables"/>
+				<subNode min="1" max="1" id="dataSourcesRoot"/>
+				<subNode min="1" max="1" id="serversRoot"/>
+				<subNode min="1" max="1" id="ac.AppConfiguration"/>
+				<subNode min="1" max="1" id="doc.documentationRoot"/>
+				<subNode min="1" max="1" id="TaskSchedulerNode"/>
+				<subNode min="1" max="1" id="SetDatabasesNode"/>
+				<subNode min="1" max="1" id="AuditingNode"/>
+			</subNodes>
+			<generators>
+				<gen showDialog="false" class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+				<!-- Generator does not generate any file, it merely causes the UI to show the Generate... action. -->
+				</gen>
+			</generators>
+		</node><!-- Logical --><node expanded="false" icon="icons/tablesMenuIcon.png" name="logicalModel" explorerLeaf="false" id="LogicalNode" label="RDM Logical Model">
+			<references>
+				<reference ignoreCaseInValue="true" parentId="tables/table/@name">
+					<idRefs>
+						<idRef childId="relationships/relationship/@parentTable"/>
+						<idRef childId="relationships/relationship/@childTable"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="domains/domain/@name">
+					<idRefs>
+						<idRef childId="tables/table/columns/column/@domain"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="tables/table/@name">
+					<idRefs>
+						<idRef childId="domains/domain/@fkTable"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="relationships/relationship" groupBy="@parentTable" childId="representativeForeignKey/column/@parentColumn"/>
+						<idRef childObject="relationships/relationship" groupBy="@childTable" childId="representativeForeignKey/column/@childColumn"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="tables/table" groupBy="@name" childId="validations/uniqueKeys/uniqueKey/uniqueKeyColumns/uniqueKeyColumn/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="views/view" groupBy="@name" childId="viewColumns/viewColumn/@name"/>
+						<idRef childObject="views/view/viewParentTables/viewParentTable" groupBy="@name" childId="viewColumns/viewColumn/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="views/view" groupBy="@nameView" ignoreCaseInValue="true" parentId="viewColumns/viewColumn/@alias">
+					<idRefs>
+						<idRef childObject="views/view" groupBy="@nameView" childId="viewColumnsOrder/viewColumnOrder/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="views/view" groupBy="@nameView" ignoreCaseInValue="true" parentId="viewParentTables/viewParentTable//viewColumns/viewColumn/@alias">
+					<idRefs>
+						<idRef childObject="views/view" groupBy="@nameView" childId="viewColumnsOrder/viewColumnOrder/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="tables/table/@name">
+					<idRefs>
+						<idRef childId="views/view/@name"/>
+						<idRef childId="views/view/viewParentTables/viewParentTable/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="tables/table/@name">
+					<idRefs>
+						<idRef childId="hierarchies/hierarchy/@name"/>
+						<idRef childId="hierarchies/hierarchy//hierarchyChildTables/hierarchyChildTable/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="relationships/relationship/@name">
+					<idRefs>
+						<idRef childId="hierarchies/hierarchy//hierarchyChildTables/hierarchyChildTable/@relationship"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="hierarchies/hierarchy" groupBy="@name" childId="orderHierarchies/orderHierarchie/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="views/view/@nameView">
+					<idRefs>
+						<idRef childId="hierarchies/hierarchy//hierarchyChildTables/hierarchyChildTable/hierarchyViews/hierarchyView/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="views/view" groupBy="@nameView" ignoreCaseInValue="true" parentId="viewColumns/viewColumn/@alias">
+					<idRefs>
+						<idRef childObject="hierarchies/hierarchy//hierarchyChildTables/hierarchyChildTable/hierarchyViews/hierarchyView" groupBy="@name" childId="orderViews/orderView/@name"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="views/view" groupBy="@nameView" ignoreCaseInValue="true" parentId="viewParentTables/viewParentTable//viewColumns/viewColumn/@alias">
+					<idRefs>
+						<idRef childObject="hierarchies/hierarchy//hierarchyChildTables/hierarchyChildTable/hierarchyViews/hierarchyView" groupBy="@name" childId="orderViews/orderView/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="tables/table/@name">
+					<idRefs>
+						<idRef childId="categories/category/categoryItemTables/categoryItemTable/@name"/>
+						<idRef childId="categories/category/categoryItemsCategories/categoryItemCategory//categoryItemTables/categoryItemTable/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="hierarchies/hierarchy/@hierarchyName">
+					<idRefs>
+						<idRef childId="categories/category/categoryItemHierarchies/categoryItemHierarchy/@name"/>
+						<idRef childId="categories/category/categoryItemsCategories/categoryItemCategory//categoryItemHierarchies/categoryItemHierarchy/@name"/>
+					</idRefs>
+				</reference>
+				<reference ignoreCaseInValue="true" parentId="views/view/@nameView">
+					<idRefs>
+						<idRef childId="categories/category/categoryItemViews/categoryItemView/@name"/>
+						<idRef childId="categories/category/categoryItemsCategories/categoryItemCategory//categoryItemViews/categoryItemView/@name"/>
+					</idRefs>
+				</reference>
+			</references>
+			<subNodes>
+				<subNode min="1" max="1" id="logical.LogicalTablesNode"/>
+				<subNode min="1" max="1" id="logical.LogicalRelationshipsNode"/>
+				<subNode min="1" max="1" id="logical.DomainsNode"/>
+				<subNode min="1" max="1" id="logical.ValuePresentersNode"/>
+				<subNode min="1" max="1" id="logical.HierarchiesNode"/>
+				<subNode min="1" max="1" id="logical.ViewsNode"/>
+				<subNode min="1" max="1" id="logical.CategoriesNode"/>
+				<subNode min="1" max="1" id="logical.DatasetsNode"/>
+			</subNodes>
+			<editors>
+				<editor class="com.ataccama.ame.core.editors.RelationEditor">
+					<tableTypes>
+						<tableType name="Table">
+							<tableContainerSelectorPath>tables</tableContainerSelectorPath>
+							<tableNamePath>@name</tableNamePath>
+							<columnSelectorPath>columns/column|systemColumns/column</columnSelectorPath><!--<columnDisplayTemplate>{@domain}: {@label} ({@name})</columnDisplayTemplate>--><columnDisplayTemplate>{@name}: {@domain}</columnDisplayTemplate>
+							<columnGroupPath>@role</columnGroupPath>
+							<entityActions>
+								<action selectorPath="." label="Edit entity..."/>
+								<action selectorPath="/plans/folder[@entity = $current/@name]/plan" label="Transformations" menu="true"/>
+								<action selectorPath="/database/*/physicalTable[@entity = $current/@name]" label="Physical tables" menu="true"/>
+							</entityActions>
+							<entityColorings>
+								<coloring color="#0080ff" test=".[@entityRole=&quot;entity&quot;]"/>
+								<coloring color="#800080" test=".[@entityRole=&quot;dictionary&quot;]"/>
+							</entityColorings>
+						</tableType>
+					</tableTypes>
+					<relationshipTypes>
+						<relationshipType name="Relation">
+							<relationshipContainerSelectorPath>relationships</relationshipContainerSelectorPath>
+							<relationshipNamePath>@name</relationshipNamePath>
+							<relationshipParentPath>@parentTable</relationshipParentPath>
+							<relationshipChildPath>@childTable</relationshipChildPath>
+						</relationshipType>
+					</relationshipTypes>
+				</editor>
+				<editor class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.imports.DatabaseStructureImporter">
+					<entityContainerPath>tables</entityContainerPath>
+					<entityNamePath>@name</entityNamePath>
+					<columnContainerPath>columns</columnContainerPath>
+					<columnNamePath>@name</columnNamePath>
+					<columnDbTypePath>@domain</columnDbTypePath>
+					<relationContainerPath>relationships</relationContainerPath>
+					<relationNamePath>@name</relationNamePath>
+					<relationParentTablePath>@parentTable</relationParentTablePath>
+					<relationChildTablePath>@childTable</relationChildTablePath>
+					<relationParentColumnPath>@parentColumn</relationParentColumnPath>
+					<relationChildColumnPath>@childColumn</relationChildColumnPath>
+					<relationFKContainer>representativeForeignKey</relationFKContainer>
+				</editor>
+				<editor class="com.ataccama.ame.core.imports.RelationalXmiImporter">
+					<entityContainerPath>tables</entityContainerPath>
+					<entityNamePath>@name</entityNamePath>
+					<entityCommentPath>@description</entityCommentPath>
+					<columnContainerPath>columns</columnContainerPath>
+					<columnNamePath>@name</columnNamePath>
+					<columnDbTypePath>@domain</columnDbTypePath>
+					<columnIsMandatoryPath>@required</columnIsMandatoryPath>
+					<columnCommentPath>@description</columnCommentPath>
+					<relationContainerPath>relationships</relationContainerPath>
+					<relationNamePath>@name</relationNamePath>
+					<relationParentTablePath>@parentTable</relationParentTablePath>
+					<relationChildTablePath>@childTable</relationChildTablePath>
+					<relationParentColumnPath>@parentColumn</relationParentColumnPath>
+					<relationChildColumnPath>@childColumn</relationChildColumnPath>
+					<relationFKContainer>representativeForeignKey</relationFKContainer>
+				</editor>
+				<editor xsltTemplate="xslt/import.xsl" label="Import from XMI - configurable" class="com.ataccama.ame.core.imports.ConfigurableXmiStructureImporter"><!--
+				Configuration of ConfigurableXmiStructureImporter  is very similar to XML importer. 
+				The model is first transformed into XML file, on this XML document is applied XLST 
+				transformation and the resulting XML document is parsed using structure information 
+				and commands are generated.
+				
+				For more details about the structure see the description of XmlStructureImporter.
+				
+				If the 'debug' parameter is set to 'true', in the project folder there will be created 
+				files 'xmi-debug-inputXml.xml' and 'xmi-debug-transformedXml.xml' containing input XML 
+				document before XSLT transformation and resulting XML document after XSLT transformation 
+				is executed.  
+				--><debug>true</debug>
+					<structure>
+						<node displayTemplate="{@schema}.{@name}" deletions="IGNORE" containerPath="tables" matchTemplate="{@name}" attributeFilter="name,label,description">
+							<subNodes>
+								<node displayTemplate="Column {@name}: {@dbType}" additions="ACCEPT" deletions="ACCEPT" containerPath="columns" matchTemplate="{@name}" attributeFilter="name,type,dbType,label,description,required,domain">
+				        </node>
+								<node displayTemplate=" Unique Kyes {@name}" additions="ACCEPT" deletions="ACCEPT" containerPath="validations/uniqueKeys" matchTemplate="{@name}" attributeFilter="name,primary">
+									<subNodes>
+										<node displayTemplate="Unique Key Columns {@name}" additions="ACCEPT" deletions="ACCEPT" containerPath="uniqueKeyColumns" matchTemplate="{@name}" attributeFilter="name">
+						</node>
+									</subNodes>
+								</node>
+							</subNodes>
+						</node>
+						<node displayTemplate="Rel {@name}" deletions="IGNORE" containerPath="relationships" matchTemplate="{@name}-{@parentTable}-{@childTable}" attributeFilter="name,parentTable,childTable,label">
+							<subNodes>
+								<node displayTemplate="{@parentColumn}-&gt;{@childColumn}" additions="ACCEPT" deletions="ACCEPT" containerPath="representativeForeignKey" matchTemplate="{@parentColumn}-{@childColumn}" attributeFilter="parentColumn,childColumn">
+				        </node>
+							</subNodes>
+						</node>
+						<node displayTemplate="Domain {@name}" deletions="IGNORE" containerPath="domains" matchTemplate="{@name}" attributeFilter="name,size,type">
+		</node>
+					</structure>
+				</editor>
+			</editors>
+			<description>The RDM Logical Model defines all the configuration related to the reference data itself, its entities, the relationships and the different ways to categorize and organize reference data for usage.</description>
+			<generators>
+				<gen showDialog="false" label="Generate documentation..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+			<!-- Generator does not generate any file, it merely causes the UI to 
+				show the Generate... action. -->
+				</gen>
+				<gen fileNameTemplate="Files/doc/documentation_business_index.html" source="." class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/documentation_business_index.xsl">
+					<parameters>
+						<param name="rdmSecurityRef" source="/security"/>
+						<param name="rdmTableRef" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSystemRef" source="/systems"/>
+						<param name="rdmWorkflowRef" source="/wfConfig"/>
+						<param name="rdmDataSourceRef" source="/dataSources"/>
+					</parameters>
+				</gen>
+				<gen fileNameTemplate="Files/doc/documentation_technical_index.html" source="." class="com.ataccama.ame.core.generators.XsltGenerator" templatePath="xslt/documentation_technical_index.xsl">
+					<parameters>
+						<param name="rdmSecurityRef" source="/security"/>
+						<param name="rdmTableRef" source="/logicalModel"/>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSystemRef" source="/systems"/>
+						<param name="rdmWorkflowRef" source="/wfConfig"/>
+						<param name="rdmDataSourceRef" source="/dataSources"/>
+					</parameters>
+				</gen>
+			</generators>
+			<validations/>
+		</node><!-- Database --><node visible="false" icon="icons/db.png" name="database" id="DatabaseNode" label="Database Preview" visibleInParent="false">
+			<subNodes>
+				<subNode min="1" max="1" id="PhysicalTables"/>
+				<subNode min="1" max="1" id="PhysicalRels"/>
+			</subNodes>
+		</node>
+		<node generated="true" icon="icons/tables.png" name="refDataTables" explorerLeaf="false" id="PhysicalTables" label="Reference data tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="PhysicalTable"/>
+			</subNodes>
+		</node>
+		<node generated="true" icon="icons/fk.png" name="rels" id="PhysicalRels" label="Foreign keys">
+			<subNodes>
+				<subNode min="0" max="-1" id="PhysicalRel"/>
+			</subNodes>
+		</node><!-- App Configuration - app specific --><node expanded="false" icon="icons/gears.png" name="appVariables" explorerLeaf="false" id="appVariables" label="App Variables">
+			<subNodes/>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<attributes>
+				<attribute defaultValue="rdmapp" name="connectionName" label="App Connection Name" type="string" required="true">
+					<description>Name of the HTTP connection configured in server configuration</description>
+					<valuesProvider severity="info" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/servers/genericServer/@name</selectPath>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="Use App Connection Credentials" name="useUrlResourcesForAuthentication" label="Global Authentication Strategy" type="enum" required="true" enumValues="Use App Connection Credentials,Pass Credentials Manually">
+					<description>Determines whether the RDM steps in synchronization and load plans use the credentials from the configured RDM web application connection (App Connection Name) or manually passed credentials from input.</description>
+				</attribute>
+				<attribute name="dbType" label="Database type" type="enum" required="true" enumValues="Apache Derby,MS SQL,Oracle,PostgreSQL">
+					<description>The database type used for the RDM repository.</description>
+				</attribute>
+				<attribute visible="false" defaultValue="gpk" name="generatedPrimaryKeyName" label="Generated PK name" type="string" required="true"/>
+				<attribute defaultValue="20" name="maxPageSize" label="Maximum records per page" type="integer" required="true">
+					<description>Specifies the maximum number of records shown on one page in the RDM web application as a default setting for all users.</description>
+				</attribute>
+				<attribute defaultValue="English" name="language" label="Application GUI language" type="enum" required="true" enumValues="Czech,English,German,Russian">
+					<description>Specifies the language for properties used in the RDM web application as a default setting for all users.</description>
+				</attribute>
+				<attribute defaultValue="English" name="docLanguage" label="Generated documentation language" type="enum" required="true" enumValues="Czech,English">
+					<description>Specifies the language for generated documentation.</description>
+				</attribute>
+				<attribute name="returnEmailAddress" label="Return email address" type="string" required="false">
+					<description>The email address displayed in the From line of received notification email messages.</description>
+				</attribute>
+				<attribute defaultValue="false" name="auditing" label="Auditing" type="boolean" required="true">
+					<description>Specifies whether the RDM web application provides audit logs for defined operations. If set to true, the logging.xml file will be created upon generating web application configuration. </description>
+				</attribute>
+				<attribute defaultValue="1900-01-01 00:00:00" name="fromInfinity" label="Infinity from" type="string">
+					<description>Minimum possible value for a FROM business date.</description>
+				</attribute>
+				<attribute defaultValue="2099-12-31 00:00:00" name="toInfinity" label="Infinity to" type="string">
+					<description>Maximum possible value for a TO business date.</description>
+				</attribute>
+				<attribute defaultValue="false" name="sendLongOperationToThreads" label="Send long operation to threads" type="boolean" required="true">
+					<description>When set to true, the RDM web application will perform long-lasting operations (e.g., publishing thousands of records) in the background, and the user will be able to close the browser tab with RDM without canceling the operation.</description>
+				</attribute>
+				<attribute defaultValue="true" name="initialRecursiveInEdit" label="Edit children recursively" type="boolean" required="true">
+					<description>When set to true, the option &quot;Edit children recursively&quot; is set to true by default in the webapp.</description>
+				</attribute>
+				<attribute defaultValue="true" name="showGeneratedIdsInTables" label="Show generated IDs" type="boolean" required="true">
+					<description>When set to true, columns with generated primary/group ids are displayed in tables by default (users can override this option in the web application).</description>
+				</attribute>
+			</attributes>
+			<description>The App Variables allows setting global settings for the RDM web application and repository.</description>
+		</node>
+		<node visible="false" generated="true" name="dataSources" id="dataSourcesRoot" label="Data Sources" sortChildren="false">
+			<subNodes>
+				<subNode min="0" max="-1" id="dataSourceNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node visible="false" generated="true" name="dataSource" id="dataSourceNode" label="{@name}" sortChildren="false">
+			<subNodes>
+				<subNode min="1" max="1" id="jarFilesWrapper"/>
+			</subNodes>
+			<attributes>
+				<attribute name="name" type="string"/>
+				<attribute name="driverClass" type="string"/>
+				<attribute name="url" type="string"/>
+				<attribute name="user" type="string"/>
+				<attribute name="password" type="string"/>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node expanded="true" visible="false" generated="true" name="jarFiles" id="jarFilesWrapper" label="jar files" sortChildren="false">
+			<subNodes>
+				<subNode min="0" max="-1" id="jarFilesNode"/>
+			</subNodes>
+		</node>
+		<node visible="false" generated="true" name="jarFile" id="jarFilesNode" label="jar file" sortChildren="false">
+			<attributes>
+				<attribute name="file" type="string"/>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node visible="false" generated="true" name="servers" id="serversRoot" label="Servers" sortChildren="false">
+			<subNodes>
+				<subNode min="0" max="-1" id="serverNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node visible="false" generated="true" name="server" abstract="true" id="serverNode" label="{@name}" sortChildren="false">
+			<attributes>
+				<attribute name="name" type="string"/>
+				<attribute name="url" type="string"/>
+				<attribute name="user" type="string"/>
+				<attribute name="password" type="string"/>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node visible="false" generated="true" name="genericServer" id="genericServerNode" label="{@name}" inherits="serverNode" sortChildren="false">
+			<attributes>
+				<attribute name="url" type="string"/>
+				<attribute name="user" type="string"/>
+				<attribute name="password" type="string"/>
+			</attributes>
+		</node>
+		<node visible="false" generated="true" name="jmsServer" id="jmsServerNode" label="{@name}" inherits="serverNode" sortChildren="false">
+			<attributes>
+				<attribute name="connectionFactory" type="string"/>
+				<attribute name="user" type="string"/>
+				<attribute name="password" type="string"/>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="serverPropertiesNode"/>
+			</subNodes>
+		</node>
+		<node visible="false" generated="true" name="properties" id="serverPropertiesNode" sortChildren="false">
+			<subNodes>
+				<subNode min="0" max="-1" id="serverPropertyNode"/>
+			</subNodes>
+		</node>
+		<node visible="false" generated="true" name="property" id="serverPropertyNode" sortChildren="false">
+			<attributes>
+				<attribute name="name" type="string"/>
+				<attribute name="value" type="string"/>
+			</attributes>
+		</node>
+		<node icon="icons/folder_time.png" name="taskScheduler" id="TaskSchedulerNode" label="Task Scheduler">
+			<subNodes>
+				<subNode min="0" max="-1" id="TaskNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New task..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<generators>
+				<gen showDialog="false" label="Generate schedules..." class="com.ataccama.ame.core.generators.PlaceholderGenerator">
+				<!-- Generator does not generate any file, it merely causes the UI to show the Generate... action. -->
+				</gen>
+			</generators>
+			<description>Data exporting/synchronizing workflows can be easily scheduled by the native DQC task scheduler. Scheduler is an online server component that allows scheduling and running generic jobs.</description>
+		</node>
+		<node icon="icons/document_time.png" name="task" id="TaskNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the scheduled task.</description>
+				</attribute>
+				<attribute name="description" label="Description" type="string">
+					<description>Optional description of what the task does.</description>
+				</attribute>
+				<attribute name="job" label="Job" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/syncTasks/syncSFTPTasks/syncSFTPTasksI/syncSFTPTaskI|ancestor::metadata/syncTasks/syncSFTPTasks/syncSFTPTasksE/syncSFTPTaskE|ancestor::metadata/syncTasks/syncDatabaseTasks/syncDatabaseTask</selectPath>
+						<labelTemplate>{@name}{@suffix}.ewf</labelTemplate>
+						<valueTemplate>{@name}{@suffix}.ewf</valueTemplate>
+					</valuesProvider>
+					<description>Name of the job to be scheduled.</description>
+				</attribute>
+				<attribute defaultValue="true" name="enable" label="Enabled" type="boolean" required="true">
+					<description>If ticked, the job will be run as scheduled.</description>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete task" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<subNodes>
+				<subNode min="1" max="1" id="SchedulingNode"/>
+			</subNodes>
+			<generators>
+				<gen fileNameTemplate="Files/schedulers/{@name}.sch" label="Generate schedule..." source="." class="com.ataccama.ame.core.generators.XsltPlanFileGenerator" templatePath="xslt/scheduling.xsl"/>
+			</generators>
+			<description>Data exporting/synchronizing workflows can be easily scheduled by the native DQC task scheduler. Scheduler is an online server component that allows scheduling and running generic jobs.</description>
+		</node>
+		<node expanded="true" name="scheduling" id="SchedulingNode" label="Scheduling definition">
+			<attributes>
+				<attribute name="dayMonth" label="Day of month" type="string" required="true">
+					<description>Day of the month when the job should be run (e.g., 16 means on the 16th day of every month).</description>
+				</attribute>
+				<attribute name="dayWeek" label="Day of week" type="string" required="true">
+					<description>Day of the week when the job should be run (e.g., 4 means every Thursday).</description>
+				</attribute>
+				<attribute name="hour" label="Hour" type="string" required="true">
+					<description>Hour of the day when the job should be run (e.g., 17 means at 5pm).</description>
+				</attribute>
+				<attribute name="minute" label="Min" type="string" required="true">
+					<description>Minute of the hour when the job should be run (e.g., 30 means at 30 minutes of the specified hour).</description>
+				</attribute>
+			</attributes>
+			<description>Definition of the schedule.</description>
+		</node>
+		<node name="setDatabase" id="SetDatabaseNode" label="{@dbType}">
+			<attributes>
+				<attribute name="dbType" label="Database type" type="enum" required="true" enumValues="Apache Derby,MS SQL,Oracle,PostgreSQL"/>
+				<attribute name="columnLength" label="Column length" type="integer" required="true"/>
+				<attribute name="tableLength" label="Table length" type="integer" required="true"/>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="GPKLengthNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete datatabase properties" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+		</node>
+		<node visible="false" name="setDatabases" id="SetDatabasesNode" label="Set Databases">
+			<subNodes>
+				<subNode min="0" max="-1" id="SetDatabaseNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New datatabase properties..." class="com.ataccama.ame.core.editors.CreateChild">
+					<!-- Create child is used when you need to create new node. Standard property dialog will be opened in order to get information about the new node. 
+					MMD configuration has following attributes:
+					class - com.ataccama.ame.core.editors.CreateChild
+					label - optional label for the command which will be displayed in the popup menu. 
+					If not specified, the default label will be used.
+					targetNodePath - optional MD path expression identifying the parent node, where the child node will be edited. 
+					The path is relative to the current node and if not specified the current node will be used. -->
+				</editor>
+			</editors>
+		</node>
+		<node generated="true" name="gpkLength" id="GPKLengthNode" label="GPK Length">
+			<attributes>
+				<attribute name="gpkLength" type="integer"/>
+			</attributes>
+		</node>
+		<node icon="icons/folder_window.png" name="auditing" id="AuditingNode" label="Auditing">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<subNodes>
+				<subNode min="1" max="1" id="AppendersNode"/>
+			</subNodes>
+			<description>Auditing is configured in the Auditing node.</description>
+		</node>
+		<node expanded="true" name="appenders" id="AppendersNode" label="Audit Logs">
+			<subNodes>
+				<subNode min="0" max="-1" id="AppenderNode"/>
+			</subNodes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<severity>ERROR</severity>
+					<selectPath>appender/@pattern</selectPath>
+					<message>File name &#39;{.}&#39; is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<severity>ERROR</severity>
+					<selectPath>appender/@name</selectPath>
+					<message>Name of audit log &#39;{.}&#39; is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node name="appender" id="AppenderNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of Appender</description>
+				</attribute>
+				<attribute name="pattern" label="File" type="string" required="true">
+					<description>Logging file name pattern; both absolute and relative paths can be used (the path is relative to the RDM installation folder). Some special characters can be used in the file name pattern</description>
+				</attribute>
+				<attribute name="limit" label="File size limit" type="integer" required="true">
+					<description>The maximum file size in bytes before the log is rotated.</description>
+				</attribute>
+				<attribute name="count" label="Number of files" type="integer" required="true">
+					<description>Total number of logging files to keep.</description>
+				</attribute>
+				<attribute defaultValue="true" name="append" label="Append" type="boolean" required="true">
+					<description>If true, the log records are appended to the log file.</description>
+				</attribute>
+				<attribute defaultValue="true" name="dataRead" label="Data read" type="boolean" required="true">
+					<description>A user opens a table or record details, refreshes contents of the table by applying a filter, etc.</description>
+				</attribute>
+				<attribute defaultValue="true" name="dataModification" label="Data modification" type="boolean" required="true">
+					<description>A user creates, edits, deletes, sends to publish, or publishes a record.</description>
+				</attribute>
+				<attribute defaultValue="true" name="dataExport" label="Data export" type="boolean" required="true">
+					<description>A user exports data (bulk export or dump).</description>
+				</attribute>
+				<attribute defaultValue="true" name="securityModification" label="Security modification" type="boolean" required="true">
+					<description>Permissions are changed.</description>
+				</attribute>
+				<attribute defaultValue="true" name="workflowAction" label="Workflow action" type="boolean" required="true">
+					<description>A record goes through a workflow state.</description>
+				</attribute>
+				<attribute defaultValue="true" name="systemEvent" label="System event" type="boolean" required="true">
+					<description>User login or logout.</description>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<validations/>
+		</node>
+	</nodes>
+	<fragments>
+		<fragment fileNameTemplate="md/logical/tables/{@name}.md" selectPath="/logicalModel/tables/table"/>
+		<fragment fileNameTemplate="md/logical/relationships/{@name}.md" selectPath="/logicalModel/relationships/relationship"/>
+		<fragment fileNameTemplate="md/logical/valuePresenters.md" selectPath="/logicalModel/valuePresenters"/>
+		<fragment fileNameTemplate="md/logical/domains.md" selectPath="/logicalModel/domains"/>
+		<fragment fileNameTemplate="md/logical/hierarchies/{@hierarchyName}.md" selectPath="/logicalModel/hierarchies/hierarchy"/>
+		<fragment fileNameTemplate="md/logical/views/{@nameView}.md" selectPath="/logicalModel/views/view"/>
+		<fragment fileNameTemplate="md/logical/categories/{@name}.md" selectPath="/logicalModel/categories/category"/>
+		<fragment fileNameTemplate="md/logical/datasets/{@name}.md" selectPath="/logicalModel/datasets/dataset"/>
+	</fragments><!-- ************************  Generator parameters **************************************** --><generatorParameters>
+		<param defaultValue="CREATE_SCRIPT" name="dbMode" label="DB generator mode" type="enum" enumValues="CREATE_SCRIPT,ALTER_SCRIPT,ALTER_DB"/>
+		<param select="/settings/config" name="dbParams" label="DB parameters" type="select" labelTemplate="{@name}"/><!--  <param type="select" label="Target DB" name="targetDB" select="/settings/configurations/config" labelTemplate="{@name}"/> --></generatorParameters><!-- *****************************  Computed content **************************************** --><computedContent><!-- Server --><mountPoint path="/servers">
+			<producers>
+				<contentProducer class="com.ataccama.ame.core.contentproducers.ServerContentProducer"/>
+			</producers>
+		</mountPoint>
+		<mountPoint path="/logicalModel/domains/domain/dqcType">
+			<producers>
+				<contentProducer source=".." class="com.ataccama.ame.core.contentproducers.XsltContentProducer" templatePath="xslt/cc_dqcType.xsl">
+				</contentProducer>
+			</producers>
+		</mountPoint>
+		<mountPoint path="/logicalModel/relationships/relationship/representativeForeignKey/column/ccColumnDataTypes">
+			<producers>
+				<contentProducer source=".." class="com.ataccama.ame.core.contentproducers.XsltContentProducer" templatePath="xslt/cc_foreignKeyColumnDataType.xsl">
+					<parameters>
+						<param name="logicalModel" source="/logicalModel"/>
+						<param name="relationship" source="ancestor::relationship"/>
+					</parameters>
+				</contentProducer>
+			</producers>
+		</mountPoint><!-- Database --><mountPoint path="/dataSources">
+			<producers>
+				<contentProducer class="com.ataccama.ame.core.contentproducers.DataSourceContentProducer"/>
+			</producers>
+		</mountPoint>
+		<mountPoint path="/database/refDataTables">
+			<producers>
+				<contentProducer source="/logicalModel" class="com.ataccama.ame.core.contentproducers.XsltContentProducer" templatePath="xslt/rdm_tables.xsl"/>
+			</producers>
+		</mountPoint>
+		<mountPoint path="/database/rels">
+			<producers>
+				<contentProducer source="/logicalModel" class="com.ataccama.ame.core.contentproducers.XsltContentProducer" templatePath="xslt/rdm_rels.xsl"/>
+			</producers>
+		</mountPoint><!-- Set database properties --><mountPoint path="/setDatabases/setDatabase/gpkLength">
+			<producers>
+				<contentProducer source=".." class="com.ataccama.ame.core.contentproducers.XsltContentProducer" templatePath="xslt/generatedPKLength.xsl">
+					<parameters>
+						<param name="rdmAppVariablesRef" source="/appVariables"/>
+						<param name="rdmSetDatabaseRef" source="/setDatabases/setDatabase"/>
+					</parameters>
+				</contentProducer>
+			</producers>
+		</mountPoint>
+	</computedContent>
+	<sqlLibraryManager/>
+</metametadata>

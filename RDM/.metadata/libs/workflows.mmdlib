@@ -1,0 +1,527 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metametadata-library>
+	<nodes>
+		<node id="WorkflowConfigNode" icon="icons/workflows.png" name="wfConfig" label="Workflow Configuration">
+			<subNodes>
+				<subNode min="1" id="EntitiesNode" max="1"/>
+				<subNode min="1" id="StatusesNode" max="1"/>
+				<subNode min="1" id="EmailsNode" max="1"/>
+				<subNode min="1" id="SummaryNotifsNode" max="1"/>
+			</subNodes>
+			<description>The Workflow Configuration node allows setting up per-table data change approval workflows and email notifications.</description>
+		</node>
+		<node id="StatusesNode" icon="icons/element_add.png" sortChildren="false" name="statuses" label="Statuses">
+			<subNodes>
+				<subNode min="0" id="StatusNode" max="-1"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.editors.CreateChild" label="New status..."/>
+			</editors>
+			<description>Allows defining custom logical states between which records participating in workflows move.</description>
+		</node>
+		<node id="StatusNode" icon="icons/element.png" name="status" label="{@id} : {@label}" explorerLeaf="true">
+			<attributes>
+				<attribute name="id" label="Numeric ID" type="string" required="true">
+					<description>Id of the status; can be used to represent the order of the step in a workflow.</description>
+				</attribute>
+				<attribute name="label" label="Label" type="string" required="true">
+					<description>Label - name of the status (will be shown in the RDM web application in the [ State ] column and Workflow state field of record details).</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../statuses/status/@id</selectPath>
+					<message>Value @id is not unique.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../statuses/status/@label</selectPath>
+					<message>Value @label is not unique.</message>
+				</validation>
+			</validations>
+			<subNodes>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.editors.DeleteChild" label="Delete status"/>
+			</editors>
+			<description>Allows defining custom logical states between which records participating in workflows move.</description>
+		</node>
+		<node id="WorkflowsNode" icon="icons/workflows.png" name="workflows" newTab="true" label="Workflows" expanded="true">
+			<subNodes>
+				<subNode min="0" id="WorkflowNode" max="-1"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.editors.CreateChild" label="New workflow..."/>
+			</editors>
+			<description>In the context of RDM, a workflow is a process, which starts with making changes to the data and ends with publishing them.</description>
+		</node>
+		<node id="WorkflowNode" icon="icons/branch.png" name="workflow" label="{@editOperation} record workflow: {@id}">
+			<attributes>
+				<attribute name="id" label="ID" type="string" required="true">
+					<description>Unique name of the workflow.</description>
+				</attribute>
+				<attribute name="editOperation" label="Edit operation" type="enum" required="true" enumValues="Create,Update,Delete">
+					<description>Type of action which will trigger the workflow.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" id="StepsNode" max="1"/>
+			</subNodes>
+			<validations>
+			</validations>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor targetNodePath="steps" class="com.ataccama.ame.core.editors.CreateChild" label="New wf step..."/>
+				<editor class="com.ataccama.ame.core.editors.FlowVisualization" label="Open diagram">
+					<nodeTypes>
+						<nodeType idPath="@id" selectorPath="steps/step" labelTemplate="{ancestor::wfConfig/statuses/status[@id = $current/@id]/@label}"/>
+					</nodeTypes>
+					<connectionTypes>
+						<connectionType targetIdPath="@transitionTarget" sourceIdPath="@id" selectorPath="steps/step[@transitionTarget!=&#39;&#39;]" labelTemplate="{@transitionLabel}"/>
+					</connectionTypes>
+					<additionalWatchedNodes>
+						<watchNode nodePath="../../../../statuses"/>
+					</additionalWatchedNodes>
+				</editor>
+				<editor class="com.ataccama.ame.core.editors.DeleteChild" label="Delete workflow"/>
+			</editors>
+			<description>In the context of RDM, a workflow is a process, which starts with making changes to the data and ends with publishing them.</description>
+		</node>
+		<node id="StepsNode" sortChildren="false" name="steps" label="Steps" expanded="true">
+			<subNodes>
+				<subNode min="0" id="StepNode" max="-1"/>
+			</subNodes>
+			<editors>
+			</editors>
+			<description>The first step of the workflow always represents the record in the Edited state.&lt;/br&gt;
+The last step of the workflow always represents the record being published. Like step one, this step is purely technical.</description>
+		</node>
+		<node id="StepNode" icon="icons/element.png" name="step" label="{@id} : {ancestor::wfConfig/statuses/status[@id=$current/@id]/@label}" explorerLeaf="true">
+			<attributes>
+				<attribute name="id" label="Step ID" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::wfConfig/statuses/status</selectPath>
+						<valueTemplate>{@id}</valueTemplate>
+						<labelTemplate>{@label} ({@id})</labelTemplate>
+					</valuesProvider>
+					<description>ID of a previously defined status, which is being assigned to this step of the workflow.</description>
+				</attribute>
+				<attribute name="condition" label="Condition" type="text">
+					<description>The condition that the record must satisfy to enter the step. If the record does not satisfy the condition, it will be automatically moved to the next step. The condition uses Ataccama DQC syntax.</description>
+				</attribute>
+				<attribute name="expiresAfterDays" label="Expires after (days)" type="string">
+					<description>After the specified number in days, the workflow automatically moves to the next step.</description>
+				</attribute>
+				<attribute name="transitionTarget" label="Transition target step" type="string" required="false">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::steps/step</selectPath>
+						<valueTemplate>{@id}</valueTemplate>
+						<labelTemplate>{ancestor::wfConfig/statuses/status[@id=$current/@id]/@label} ({@id})</labelTemplate>
+					</valuesProvider>
+					<description>The workflow step that follows the current step. Will be filled after consequent steps are added.</description>
+				</attribute>
+				<attribute name="transitionLabel" label="Transition label" type="string">
+					<description>Label of the transition used in the workflow diagram. Will be filled after consequent steps are added.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" id="ColumnsNode" max="1"/>
+				<subNode min="1" id="StatementsNode" max="1"/>
+				<subNode min="1" id="EmailNotificationsNode" max="1"/>
+				<subNode min="1" id="RejectEmailNotificationsNode" max="1"/>
+			</subNodes>
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor targetNodePath="statements" class="com.ataccama.ame.core.editors.CreateChild" label="New statement..."/>
+				<editor class="com.ataccama.ame.core.editors.DeleteChild" label="Delete wf step"/>
+			</editors>
+			<description>The first step of the workflow always represents the record in the Edited state.&lt;/br&gt;
+The last step of the workflow always represents the record being published. Like step one, this step is purely technical.</description>
+		</node>
+		<node id="EntitiesNode" icon="icons/tablesTree.png" visible="true" name="entities" newTab="true" label="Tables" explorerLeaf="false" expanded="false">
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.editors.CreateChild" label="New table..."/>
+			</editors>
+			<subNodes>
+				<subNode min="0" id="EntityNode" max="-1"/>
+			</subNodes>
+			<description>Allows setting up table-specific workflows and action-triggered email notifications.</description>
+		</node>
+		<node id="EntityNode" abstract="false" icon="icons/table.png" name="entity" newTab="false" label="table: {ancestor::metadata/logicalModel/tables/table[@name=$current/@name]/@label}" explorerLeaf="false">
+			<editors>
+				<editor showTree="true" openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.editors.DeleteChild" label="Delete table"/>
+			</editors>
+			<attributes>
+				<attribute name="name" label="Table name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Allows setting up table-specific workflows and action-triggered email notifications.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" id="ConfirmationNotificationsNode" max="1"/>
+				<subNode min="1" id="PublishNotificationsNode" max="1"/>
+				<subNode min="1" id="RejectNotificationsNode" max="1"/>
+				<subNode min="1" id="WorkflowsNode" max="1"/>
+			</subNodes>
+			<description>Allows setting up table-specific workflows and action-triggered email notifications.</description>
+		</node>
+		<node id="PublishNotificationsNode" visible="true" name="publishNotifications" newTab="true" label="Publish Notifications" expanded="true">
+			<subNodes>
+				<subNode min="1" id="CreateNotificationNode" max="1"/>
+				<subNode min="1" id="UpdateNotificationNode" max="1"/>
+				<subNode min="1" id="DeleteNotificationNode" max="1"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<description>Allows to assign email templates to be sent when a record has been published.</description>
+		</node>
+		<node id="CreateNotificationNode" name="createNotification" label="Notification - create record" expanded="true">
+			<attributes/>
+			<editors/>
+			<subNodes>
+				<subNode min="0" id="EmailCreateNotificationNode" max="-1"/>
+			</subNodes>
+			<description>Allows to assign email templates and roles when the record has been created.</description>
+		</node>
+		<node id="StatementsNode" name="statements" label="Statements" expanded="true">
+			<attributes/>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<subNodes>
+				<subNode min="0" id="StatementNode" max="-1"/>
+			</subNodes>
+			<description>Who and when can approve the change to move the record to the next workflow step.</description>
+		</node>
+		<node id="StatementNode" name="statement" label="statement">
+			<attributes>
+				<attribute name="condition" label="Condition" type="text">
+					<description>Only records satisfying this condition will be available for approval to users with roles in the Roles attribute. The condition uses Ataccama DQC syntax.</description>
+				</attribute>
+				<attribute name="emailNotification" label="Email notification" type="string" required="false">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/wfConfig/emails/email</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>A previously defined email template to be sent when a record arrives to the current step.</description>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.editors.DeleteChild" label="Delete"/>
+			</editors>
+			<subNodes>
+				<subNode min="1" id="RolesNode" max="1"/>
+			</subNodes>
+			<description>Who and when can approve the change to move the record to the next workflow step.</description>
+		</node>
+		<node id="EmailsNode" icon="icons/mail_add.png" name="emails" label="Emails">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.editors.CreateChild" label="New email..."/>
+			</editors>
+			<subNodes>
+				<subNode min="0" id="EmailNode" max="-1"/>
+			</subNodes>
+			<description>Allows creating email templates to be used for per-table record change notifications and workflows and summary notifications.</description>
+		</node>
+		<node id="EmailNode" icon="icons/mail2.png" name="email" label="{@name}">
+			<attributes>
+				<attribute visible="true" name="name" label="Name" type="string" required="true">
+					<description>Name of the email template used in the configuration process.</description>
+				</attribute>
+				<attribute name="subject" label="Subject" type="string" required="true">
+					<description>Subject of the email displayed to the recipient.</description>
+				</attribute>
+				<attribute name="message" label="Message" type="text" extendable="true">
+					<description>Body of the email message in the HTML format.</description>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.editors.DeleteChild" label="Delete email"/>
+			</editors>
+			<description>Allows creating email templates to be used for per-table record change notifications and workflows and summary notifications.</description>
+		</node>
+		<node id="RolesNode" name="roles" label="Roles" expanded="true">
+			<validations>
+				<validation message="Notification should contain at least one role" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<subNodes>
+				<subNode min="0" id="RoleNode" max="-1"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<description>Roles to which the email will be sent.</description>
+		</node>
+		<node id="RoleNode" icon="icons/creditcards.png" name="role" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/security/fileRepository/roles/role</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of role.</description>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.editors.DeleteChild" label="Delete role"/>
+			</editors>
+			<description>Roles to which the email will be sent.</description>
+		</node>
+		<node id="UpdateNotificationNode" name="updateNotification" label="Notification - update record" expanded="true">
+			<attributes/>
+			<subNodes>
+				<subNode min="0" id="EmailUpdateNotificationNode" max="-1"/>
+			</subNodes>
+			<description>Allows to assign email templates and roles when the record has been updated.</description>
+		</node>
+		<node id="DeleteNotificationNode" name="deleteNotification" label="Notification - delete record" expanded="true">
+			<attributes/>
+			<subNodes>
+				<subNode min="0" id="EmailDeleteNotificationNode" max="-1"/>
+			</subNodes>
+			<description>Allows to assign email templates and roles when the record has been deleted.</description>
+		</node>
+		<node id="EmailCreateNotificationNode" icon="icons/mail2.png" visible="true" name="emailCreateNotification" label="{@email}">
+			<attributes>
+				<attribute name="email" label="Email" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/wfConfig/emails/email</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Email template to be used for a given notification.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" id="CreateRolesNode" max="1"/>
+			</subNodes>
+		</node>
+		<node id="UpdateRoleNode" icon="icons/creditcards.png" name="updateRole" label="update role: {@role}">
+			<attributes>
+				<attribute name="role" label="Role" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/security/fileRepository/roles/role</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Users with these roles will receive a given notification.</description>
+				</attribute>
+			</attributes>
+		</node>
+		<node id="DeleteRoleNode" icon="icons/creditcards.png" name="deleteRole" label="delete role: {@role}">
+			<attributes>
+				<attribute name="role" label="Role" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/security/fileRepository/roles/role</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Users with these roles will receive a given notification.</description>
+				</attribute>
+			</attributes>
+		</node>
+		<node id="CreateRoleNode" icon="icons/creditcards.png" name="createRole" label="create role: {@role}">
+			<attributes>
+				<attribute name="role" label="Role" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/security/fileRepository/roles/role</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Users with these roles will receive a given notification.</description>
+				</attribute>
+			</attributes>
+		</node>
+		<node id="CreateRolesNode" name="createRoles" label="Roles" expanded="true">
+			<validations>
+				<validation message="Notification should contain at least one role" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<subNodes>
+				<subNode min="0" id="CreateRoleNode" max="-1"/>
+			</subNodes>
+			<description>Users with these roles will receive a given notification.</description>
+		</node>
+		<node id="EmailDeleteNotificationNode" icon="icons/mail2.png" name="emailDeleteNotification" label="{@email}">
+			<attributes>
+				<attribute name="email" label="Email" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/wfConfig/emails/email</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Email template to be used for a given notification.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" id="DeleteRolesNode" max="1"/>
+			</subNodes>
+		</node>
+		<node id="DeleteRolesNode" name="deleteRoles" label="Roles" expanded="true">
+			<validations>
+				<validation message="Notification should contain at least one role" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<subNodes>
+				<subNode min="0" id="DeleteRoleNode" max="-1"/>
+			</subNodes>
+			<description>Users with these roles will receive a given notification.</description>
+		</node>
+		<node id="EmailUpdateNotificationNode" icon="icons/mail2.png" name="emailUpdateNotification" label="{@email}">
+			<subNodes>
+				<subNode min="1" id="UpdateRolesNode" max="1"/>
+			</subNodes>
+			<attributes>
+				<attribute name="email" label="Email" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/wfConfig/emails/email</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Email template to be used for a given notification.</description>
+				</attribute>
+			</attributes>
+		</node>
+		<node id="UpdateRolesNode" name="updateRoles" label="Roles" expanded="true">
+			<validations>
+				<validation message="Notification should contain at least one role" class="com.ataccama.ame.core.validations.NotEmptyArrayValidator"/>
+			</validations>
+			<subNodes>
+				<subNode min="0" id="UpdateRoleNode" max="-1"/>
+			</subNodes>
+			<description>Users with these roles will receive a given notification.</description>
+		</node>
+		<node id="EmailNotificationsNode" name="emailNotifications" label="Email notification after finishing the step" expanded="true">
+			<subNodes>
+				<subNode min="0" id="EmailNotificationNode" max="-1"/>
+			</subNodes>
+			<description>A previously defined email template to be sent when a record moves to the next step.</description>
+		</node>
+		<node id="EmailNotificationNode" icon="icons/mail2.png" name="emailNotification" label="{@emailNotification}">
+			<attributes>
+				<attribute name="emailNotification" label="Email notification" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/wfConfig/emails/email</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Email template to be sent.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" id="RolesNode" max="1"/>
+			</subNodes>
+			<description>A previously defined email template to be sent when a record moves to the next step.</description>
+		</node>
+		<node id="ColumnsNode" visible="true" name="columns" newTab="true" label="Columns" expanded="true">
+			<subNodes>
+				<subNode min="0" id="ColumnNode" max="-1"/>
+			</subNodes>
+			<description>Specify which columns can be modified in this workflow step by step participants.</description>
+		</node>
+		<node id="ColumnNode" sortChildren="true" name="column" label="Column" explorerLeaf="true">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table[@name=$current/ancestor::entity/@name]/columns/column</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Name of column.</description>
+				</attribute>
+			</attributes>
+			<description>Specify which columns can be modified in this workflow step by step participants.</description>
+		</node>
+		<node id="ConfirmationNotificationsNode" visible="true" name="confirmationNotifications" newTab="true" label="Confirmation Notifications" expanded="true">
+			<subNodes>
+				<subNode min="1" id="CreateNotificationNode" max="1"/>
+				<subNode min="1" id="UpdateNotificationNode" max="1"/>
+				<subNode min="1" id="DeleteNotificationNode" max="1"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<description>Allows to assign email templates to be sent when a record has been sent to publish.</description>
+		</node>
+		<node id="SummaryNotifsNode" icon="icons/mail2.png" name="summaryNotifs" label="Summary notifications">
+			<subNodes/>
+			<attributes>
+				<attribute name="confirmSummaryMailRef" label="Publish summary email" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/wfConfig/emails/email</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Allows assigning an email template for a mass publish action.</description>
+				</attribute>
+				<attribute name="genericSummaryMailRef" label="Generic summary email" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/wfConfig/emails/email</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Allows assigning an email template for a mass status change action (records moving between statuses in a workflow).</description>
+				</attribute>
+				<attribute name="moveSummaryMailRef" label="Confirmation summary  email" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/wfConfig/emails/email</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Allows assigning an email template for a mass move to publish action.</description>
+				</attribute>
+				<attribute name="maxMessagePerSession" label="Maximum messages per session" type="integer">
+					<description>Defines the threshold for the &quot;mass email&quot; trigger.</description>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<description>Allows assigning email templates to notifications triggered by actions simultaneously performed on multiple records.</description>
+		</node>
+		<node id="RejectNotificationsNode" name="rejectNotifications" newTab="true" label="Publish Reject Notifications" expanded="true">
+			<subNodes>
+				<subNode min="1" id="CreateNotificationNode" max="1"/>
+				<subNode min="1" id="UpdateNotificationNode" max="1"/>
+				<subNode min="1" id="DeleteNotificationNode" max="1"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<description>Allows to assign email templates to be sent when a record has been rejected.</description>
+		</node>
+		<node id="RejectEmailNotificationsNode" name="rejectEmailNotifications" label="Reject email notifications" expanded="true">
+			<subNodes>
+				<subNode min="0" id="RejectEmailNotificationNode" max="-1"/>
+			</subNodes>
+			<description>A previously defined email template to be sent when a record is rejected in the current step (and moved to the previous step).</description>
+		</node>
+		<node id="RejectEmailNotificationNode" icon="icons/mail2.png" name="rejectEmailNotification" label="{@emailNotification}">
+			<subNodes>
+				<subNode min="1" id="RolesNode" max="1"/>
+			</subNodes>
+			<attributes>
+				<attribute name="emailNotification" label="Email notification" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/wfConfig/emails/email</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+						<labelTemplate>{@name}</labelTemplate>
+					</valuesProvider>
+					<description>Email template to sent.</description>
+				</attribute>
+			</attributes>
+			<description>A previously defined email template to be sent when a record is rejected in the current step (and moved to the previous step).</description>
+		</node>
+	</nodes>
+</metametadata-library>

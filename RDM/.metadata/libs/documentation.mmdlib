@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metametadata-library>
+	<nodes>
+		<node id="documentationRoot" icon="icons/folder2_red.png" generated="false" name="documentations" label="Documentation">
+			<editors>
+      		
+      	</editors>
+			<subNodes>
+				<subNode min="1" id="docTechnicalNode" max="1"/>
+				<subNode min="1" id="docBusinessNode" max="1"/>
+			</subNodes>
+			<generators/>
+		</node>
+		<node id="docTechnicalNode" icon="icons/document_text.png" visible="true" generated="true" name="docTechnicalNode" label="Technical documentation" explorerLeaf="false">
+			<attributes>
+				<attribute name="technicalDocumentationIndex" type="string"/>
+				<attribute name="businessDocumentationIndex" type="string"/>
+			</attributes>
+			<subNodes/>
+			<editors>
+				<editor class="com.ataccama.ame.core.editors.FileOpener" label="Open Technical documentation" fileNameTemplate="Files/doc/documentation_technical_index.html"/>
+			</editors>
+			<generators/>
+		</node>
+		<node id="docBusinessNode" icon="icons/document_text.png" generated="true" name="docBusinessNode" label="Business documentation">
+			<editors>
+				<editor class="com.ataccama.ame.core.editors.FileOpener" label="Open Business documentation" fileNameTemplate="Files/doc/documentation_business_index.html"/>
+			</editors>
+			<generators/>
+			<subNodes/>
+		</node>
+	</nodes>
+</metametadata-library>

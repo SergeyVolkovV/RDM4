@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<signingInfo>
+   <signedFiles>
+      <file signature="X20lfTVCF32T8rxlSAdWoZExuJFsiML5Ta9liCssyZF0vGlMO5fitdtE/cIz+OBeCT2bpZSJU7YU/d9LmfDRQQ==" name="meta.mmd"></file>
+      <file signature="FOzUlkflFVUlK3+sqo9GXw1bYVVxlO2WgpaGySXmi3bbtHI9shIiDl//+IKFsC82Ck59Y1s78o89EFojP1l2vQ==" name="libs/logical.mmdlib"></file>
+      <file signature="QRC7fCtPqgb9rno6wIaiZv7f0qKIDPRirfSJMsQguYS32NQo+Qn1fazUfjwV8JPj3S7XDrO8sciadnKTTAtn4A==" name="libs/sync.mmdlib"></file>
+      <file signature="bmaTRZ4yxvbYQSYsbqPVxuLSPMlnRUdCotCpr12i358UoiYWvoukYJVO50Z0TwGudTCA2yeO1GOkncGNG7Vn+Q==" name="libs/systems.mmdlib"></file>
+      <file signature="TZBWSOc3nWbMT+mxyPLadEa98Qg+zwBE57Wf+vubCGjuOjccTl+joySbLNzkIxsCuJYGaWmcnvPllde5ycwoGw==" name="libs/workflows.mmdlib"></file>
+      <file signature="GtNT3QioPcnq8C+d2hxCNbYHJ42SCr11wopafdQJBiUmV4N79ikdj295UCFuDbaOU9qJ34m/j0j94rLRcwXPgA==" name="libs/appConfiguration.mmdlib"></file>
+      <file signature="YfHBteHRAN92+sPe4M7sB9TfLEtwlAsxuOI0E0cramLR77jGPNezY7/PeveonzBgZdyI1GL4acFJ6pf1eXVVMA==" name="libs/database.mmdlib"></file>
+      <file signature="SAd7GW8HDfmQVpAeegF8PkNmKIcp37SRarXdn7CJguMQkXOTkP0o/GXtertedvWwUhCSgeQUT+3LmXzYxlDkHA==" name="libs/documentation.mmdlib"></file>
+      <file signature="YMJ5qurSqiK0HHJ0o7kl0GKK4g50UzdU0FlKgqhd9368V/buc6ehUhkptPatBnCxJl/elZ6uVRWexw6jpmus1A==" name="libs/security.mmdlib"></file>
+      <file signature="nr45LvM9rPUzyNVKLTafhPHa3CnYAh02HHebrKE9Vii85XwkIzHmmeFeCZSrjXumaFpnGjjXidQEJUe8F+7TEw==" name="manifest.xml"></file>
+   </signedFiles>
+</signingInfo>

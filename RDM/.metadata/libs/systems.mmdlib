@@ -1,0 +1,333 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metametadata-library>
+	<nodes>
+		<node icon="icons/server_earth.png" name="systems" id="SystemsNode" label="Connected Systems">
+			<subNodes>
+				<subNode min="1" max="1" id="DatabaseSystemsNode"/>
+				<subNode min="1" max="1" id="SFTPSystemsNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<description>The Connected Systems node allows defining systems dependent on information managed by RDM.</description>
+		</node>
+		<node icon="icons/tablesTree.png" name="databaseSystem" explorerLeaf="false" id="DatabaseSystemNode" label="{@name}">
+			<references>
+				<reference ignoreCaseInValue="true" parentId="tables/table/@name">
+					<idRefs>
+						<idRef childId="relationships/relationship/@childTable"/>
+						<idRef childId="relationships/relationship/@parentTable"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="relationships/relationship" groupBy="@childTable" childId="foreignKey/relationship/@childColumn"/>
+					</idRefs>
+				</reference>
+				<reference parentObject="tables/table" groupBy="@name" ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childObject="relationships/relationship" groupBy="@parentTable" childId="foreignKey/relationship/@parentColumn"/>
+					</idRefs>
+				</reference>
+			</references>
+			<subNodes>
+				<subNode min="1" max="1" id="LogicalTablesNode"/>
+				<subNode min="1" max="1" id="LogicalRelationshipsNode"/>
+			</subNodes>
+			<attributes>
+				<attribute name="name" label="System name" type="string" required="true">
+					<description>Name of the connected system.</description>
+				</attribute>
+				<attribute name="dataSourceName" label="Database connection" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/dataSources/dataSource/@name</selectPath>
+					</valuesProvider>
+					<description>Name of the previously defined database connection.</description>
+				</attribute>
+				<attribute name="description" label="Description" type="text">
+					<description>Optional description of the connected system.</description>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor class="com.ataccama.ame.core.editors.RelationEditor">
+					<tableTypes>
+						<tableType icon="icons/table.png" name="Table">
+							<tableContainerSelectorPath>tables</tableContainerSelectorPath>
+							<tableNamePath>@name</tableNamePath>
+							<columnSelectorPath>columns/column</columnSelectorPath>
+							<columnDisplayTemplate>{@name}: {@dbType}</columnDisplayTemplate>
+							<entityColorings>
+								<coloring color="#dd00dd" test="."/>
+							</entityColorings>
+						</tableType>
+					</tableTypes>
+					<relationshipTypes>
+						<relationshipType name="Relation">
+							<relationshipContainerSelectorPath>relationships</relationshipContainerSelectorPath>
+							<relationshipNamePath>@name</relationshipNamePath>
+							<relationshipParentPath>@parentTable</relationshipParentPath>
+							<relationshipChildPath>@childTable</relationshipChildPath>
+						</relationshipType>
+					</relationshipTypes>
+				</editor>
+				<editor class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor class="com.ataccama.ame.core.imports.DatabaseStructureImporter">
+					<entityContainerPath>tables</entityContainerPath>
+					<entityNamePath>@name</entityNamePath>
+					<columnContainerPath>columns</columnContainerPath>
+					<columnNamePath>@name</columnNamePath>
+					<columnTypePath>@type</columnTypePath>
+					<columnDbTypePath>@dbType</columnDbTypePath>
+					<relationContainerPath>relationships</relationContainerPath>
+					<relationNamePath>@name</relationNamePath>
+					<relationParentTablePath>@parentTable</relationParentTablePath>
+					<relationChildTablePath>@childTable</relationChildTablePath>
+					<relationParentColumnPath>@parentColumn</relationParentColumnPath>
+					<relationChildColumnPath>@childColumn</relationChildColumnPath>
+					<relationFKContainer>foreignKey</relationFKContainer>
+				</editor>
+				<editor class="com.ataccama.ame.core.imports.RelationalXmiImporter">
+					<entityContainerPath>tables</entityContainerPath>
+					<entityNamePath>@name</entityNamePath>
+					<columnContainerPath>columns</columnContainerPath>
+					<columnNamePath>@name</columnNamePath>
+					<columnDbTypePath>@dbType</columnDbTypePath>
+					<relationContainerPath>relationships</relationContainerPath>
+					<relationNamePath>@name</relationNamePath>
+					<relationParentTablePath>@parentTable</relationParentTablePath>
+					<relationChildTablePath>@childTable</relationChildTablePath>
+					<relationParentColumnPath>@parentColumn</relationParentColumnPath>
+					<relationChildColumnPath>@childColumn</relationChildColumnPath>
+					<relationFKContainer>foreignKey</relationFKContainer>
+				</editor>
+				<editor label="Delete system" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<description>DB systems contain reference entities managed by RDM and consume its information to stay up to date.</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>[^&lt;&gt;&quot;:\\/|?*]+</valueExpr>
+					<message>Unsupported characters are less than &gt; : &quot; / \ | ? *</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.RegexpValidation">
+					<selectPath>./@name</selectPath>
+					<valueExpr>^\S+(?: \S+)*$</valueExpr>
+					<message>System name cannot start or end with white-space character.</message>
+				</validation>
+			</validations>
+		</node><!-- tables --><node expanded="false" icon="icons/tables.png" name="tables" id="LogicalTablesNode" label="Tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalTableNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New table..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>Allows adding tables of the connected system (can be added via XMI or database metadata import).</description>
+		</node>
+		<node icon="icons/table.png" name="table" explorerLeaf="true" id="LogicalTableNode" label="{@name}">
+			<references>
+				<reference ignoreCaseInValue="true" parentId="columns/column/@name">
+					<idRefs>
+						<idRef childId="rdmKey/rdmSystemRel/@systemColumn"/>
+					</idRefs>
+				</reference>
+			</references>
+			<attributes>
+				<attribute name="name" label="Table name" type="string" required="true">
+					<description>Name of the table in the connected system.</description>
+				</attribute>
+				<attribute name="synchronizeWith" label="Synchronize with RDM table" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the counterpart table in the RDM model.</description>
+				</attribute>
+				<attribute name="periodicity" label="Synchronize periodicity" type="string">
+					<description>How often the table should be synchronized (for documentation purposes only).</description>
+				</attribute>
+				<attribute name="description" label="Description" type="text">
+					<description>Optional description of the table.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MaxLengthValidation">
+					<selectPath>@name</selectPath>
+					<maxLength>22</maxLength>
+					<message>Value {@name} exceeds maximum allowed value length 22 char</message>
+				</validation>
+			</validations>
+			<subNodes>
+				<subNode min="1" max="1" id="LogicalColumnsNode"/>
+				<subNode min="1" max="1" id="RdmKeyNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete table" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<description>Allows adding tables of the connected system (can be added via XMI or database metadata import).</description>
+		</node>
+		<node expanded="true" name="columns" explorerLeaf="false" id="LogicalColumnsNode" label="Input columns">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalColumnNode"/>
+			</subNodes>
+			<description>Columns&#39; mapping - column from rdm system table and column from connected system table.</description>
+		</node>
+		<node expanded="false" name="column" explorerLeaf="true" id="LogicalColumnNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the column in the connected system table.</description>
+				</attribute>
+				<attribute name="type" label="Type" type="enum" required="true" enumValues="string,integer,long,datetime,boolean,float">
+					<description>Data type of the column.</description>
+				</attribute>
+				<attribute name="mappedColumn" label="Mappped rdm column name" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table[@name=$current/ancestor::table/@synchronizeWith]/columns/column</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the counterpart column in the RDM table, with which the column in the system table will be synchronized.</description>
+				</attribute>
+				<attribute name="dbType" label="Database type" type="string" required="true">
+					<description>Database data type of the column.</description>
+				</attribute>
+				<attribute defaultValue="false" name="required" label="Required" type="boolean">
+					<description>Specifies whether records can have this column empty.</description>
+				</attribute>
+			</attributes>
+			<description>Columns&#39; mapping - column from rdm system table and column from connected system table.</description>
+		</node><!-- Logical data model: relationships --><node expanded="false" icon="icons/relationships.png" name="relationships" explorerLeaf="false" id="LogicalRelationshipsNode" label="Relationships">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalRelationshipNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New relationship..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>Allows adding relationships between tables of the DB connected system (can added via XMI or database metadata import).</description>
+		</node>
+		<node icon="icons/relationships.png" name="relationship" explorerLeaf="true" id="LogicalRelationshipNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of the relationship.</description>
+				</attribute>
+				<attribute name="parentTable" label="Parent table" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::databaseSystem/tables/table/@name</selectPath>
+					</valuesProvider>
+					<description>Name of the parent DB system table.</description>
+				</attribute>
+				<attribute name="childTable" label="Child table" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::databaseSystem/tables/table/@name</selectPath>
+					</valuesProvider>
+					<description>Name of the child DB system table.</description>
+				</attribute>
+			</attributes>
+			<subNodes>
+				<subNode min="1" max="1" id="LogicalForeignKeyNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete relationship" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<description>Allows adding relationships between tables of the DB connected system (can added via XMI or database metadata import).</description>
+		</node>
+		<node expanded="true" name="foreignKey" explorerLeaf="false" id="LogicalForeignKeyNode" label="Foreign key">
+			<subNodes>
+				<subNode min="0" max="-1" id="LogicalForeignKeyItemNode"/>
+			</subNodes>
+			<description>Defines the relationship between the parent and child system table.</description>
+		</node>
+		<node name="relationship" explorerLeaf="true" id="LogicalForeignKeyItemNode" label="{@parentColumn} &lt;- {@childColumn}">
+			<attributes>
+				<attribute name="parentColumn" label="Parent column" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::databaseSystem/tables/table[@name=$current/ancestor::relationship/@parentTable]/columns/column</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the column defining the relationship in the parent table.</description>
+				</attribute>
+				<attribute name="childColumn" label="Child column" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::databaseSystem/tables/table[@name=$current/ancestor::relationship/@childTable]/columns/column</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of the column defining the relationship in the child table.</description>
+				</attribute>
+			</attributes>
+			<description>Defines the relationship between the parent and child DB system table.</description>
+		</node>
+		<node expanded="true" name="rdmKey" explorerLeaf="false" id="RdmKeyNode" label="RDM Key">
+			<subNodes>
+				<subNode min="0" max="-1" id="RdmKeyItemNode"/>
+			</subNodes>
+			<description>Attributes (ideally primary keys) that determine the relation between the RDM table and the system table.</description>
+		</node>
+		<node name="rdmSystemRel" explorerLeaf="true" id="RdmKeyItemNode" label="rdmSystemRel">
+			<attributes>
+				<attribute name="rdmColumn" label="RDM table column" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table[@name=$current/ancestor::table/@synchronizeWith]/columns/column</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Key in the RDM table.</description>
+				</attribute>
+				<attribute name="systemColumn" label="System table column" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::table/columns/column</selectPath>
+						<labelTemplate>{@name}</labelTemplate>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Key in the system table.</description>
+				</attribute>
+			</attributes>
+			<description>Attributes (ideally primary keys) that determine the relation between the RDM table and the system table.</description>
+		</node>
+		<node icon="icons/server_connection.png" name="databaseSystems" id="DatabaseSystemsNode" label="Databases">
+			<subNodes>
+				<subNode min="0" max="-1" id="DatabaseSystemNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New system..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>DB systems contain reference entities managed by RDM and consume its information to stay up to date.</description>
+		</node>
+		<node icon="icons/filetrans_connection.png" name="SFTPSystems" id="SFTPSystemsNode" label="Servers">
+			<subNodes>
+				<subNode min="0" max="-1" id="SFTPSystemNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New system..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>RDM can synchronize its repository with external systems via text file transfers to and from remote servers.</description>
+		</node>
+		<node icon="icons/filetrans.png" name="SFTPSystem" id="SFTPSystemNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="System name" type="string" required="true">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/servers/genericServer/@name</selectPath>
+					</valuesProvider>
+					<description>Name of a previously defined server connection in part - Define a server connection in the IDE: switch to the File Explorer view, right-click Servers &gt; New Server.</description>
+				</attribute>
+				<attribute name="knownHosts" label="Known hosts file" type="string" required="true">
+					<description>Path to the known_hosts file. A known hosts file stores public keys of previously accessed SSH servers. The file is usually located in [user_home_directory]/.ssh/ for both Windows and Linux.</description>
+				</attribute>
+				<attribute name="description" label="Description" type="string">
+					<description>Description of the server.</description>
+				</attribute>
+			</attributes>
+			<subNodes/>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete system" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<description>RDM can synchronize its repository with external systems via text file transfers to and from remote servers.</description>
+		</node>
+	</nodes>
+</metametadata-library>

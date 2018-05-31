@@ -1,0 +1,523 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metametadata-library>
+	<nodes>
+		<node icon="icons/permissionsMenuIcon.png" name="security" id="SecurityNode" label="Security">
+			<subNodes>
+				<subNode min="1" max="1" id="FileRepositoryNode"/>
+				<subNode min="1" max="1" id="LDAPRepositoriesNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<attributes>
+				<attribute name="userRepository" label="User account repository" type="enum" required="true" enumValues="File repository,File repository with fixed permissions,LDAP repository,Federated repository">
+					<description>All actions within RDM require permissions that are based on user roles. These roles are typically stored in web servers, directory services, or a database.&lt;/br&gt;
+File repository - the RDM web application will check user credentials against a file located on the application server.&lt;/br&gt;
+File repository with fixed permissions - the RDM web application will check user credentials against a file located on the application server. The roles and permissions are stored directly in configuration files.&lt;/br&gt;
+
+LDAP repository - the RDM web application will check user credentials against an LDAP directory.&lt;/br&gt;
+Federated repository - the RDM web application will use both the file and LDAP directory.&lt;/br&gt;</description>
+				</attribute>
+				<attribute defaultValue="false" name="enableCustomDomains" label="Enable custom domains" type="boolean" required="true"/>
+			</attributes>
+			<description>File repository - the RDM web application will check user credentials against a file located on the application server.&lt;/br&gt;
+File repository with fixed permissions - the RDM web application will check user credentials against a file located on the application server. The roles and permissions are stored directly in configuration files.&lt;/br&gt;
+LDAP repository - the RDM web application will check user credentials against an LDAP directory.&lt;/br&gt;
+Federated repository - the RDM web application will use both the file and LDAP directory.&lt;/br&gt;</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<severity>ERROR</severity>
+					<inverseCondition>true</inverseCondition>
+					<expression>.[LDAPRepositories/LDAPRepository and count(LDAPRepositories/LDAPRepository/LDAPDomain[@defaultOption=&#39;true&#39;])&lt;1]</expression>
+					<message>One domain has to be defined as default domain.</message>
+				</validation>
+			</validations>
+		</node>
+		<node icon="icons/address_book2.png" name="fileRepository" id="FileRepositoryNode" label="File repository">
+			<references>
+				<reference ignoreCaseInValue="true" parentId="users/user/@name">
+					<idRefs>
+						<idRef childId="roles/role/userRoles/userRole/@user"/>
+					</idRefs>
+				</reference>
+			</references>
+			<subNodes>
+				<subNode min="1" max="1" id="UsersNode"/>
+				<subNode min="1" max="1" id="RolesNode"/>
+			</subNodes>
+			<description>The RDM web application will check user credentials against a file located on the application server.</description>
+		</node>
+		<node expanded="false" icon="icons/address_book.png" name="LDAPRepository" id="LDAPRepositoryNode" label="LDAP repository ({connection/@host})">
+			<attributes/>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete LDAP repository" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<subNodes>
+				<subNode min="1" max="1" id="GroupResolversNode"/>
+				<subNode min="1" max="1" id="ConnectionNode"/>
+				<subNode min="1" max="1" id="AccountNode"/>
+				<subNode min="1" max="1" id="AdministrativeRoleNode"/>
+				<subNode min="1" max="1" id="LDAPDomainNode"/>
+			</subNodes>
+			<description>Configuring an LDAP connection in the RDM model allows importing user names and roles from the user directory to the RDM web application and assigning system rights to selected roles (such users can manage viewing and editing permissions inside the web application).</description>
+		</node>
+		<node icon="icons/users3_add.png" name="users" id="UsersNode" label="Users">
+			<subNodes>
+				<subNode min="0" max="-1" id="UserNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New user..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>Users added in the RDM model will be imported to the web application where roles can be assigned to them.</description>
+		</node>
+		<node icon="icons/user2.png" name="user" id="UserNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>User name. The best practice is to used letters, numbers and underscore. The name should start with a letter.</description>
+				</attribute>
+				<attribute name="email" label="Email" type="string" required="true">
+					<description>User email, to which the RDM web application will send notifications. There is no real-time validation of the format of the email.</description>
+				</attribute>
+				<attribute defaultValue="false" name="permissionsAdministrator" label="Permissions administrator" type="boolean" required="true">
+					<description>If checked, this user will see the Permissions link in the RDM web application and will be able to manage table-viewing and -editing permissions for other users.</description>
+				</attribute>
+			</attributes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete user" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<description>Users added in the RDM model will be imported to the web application where roles can be assigned to them.</description>
+		</node>
+		<node icon="icons/creditcards_add.png" name="roles" id="RolesNode" label="Roles">
+			<subNodes>
+				<subNode min="0" max="-1" id="RoleNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New role..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>At the modeling level, roles need to be preliminarily defined to be re-used for workflows and email notifications.</description>
+		</node>
+		<node icon="icons/creditcards.png" name="role" id="RoleNode" label="{@name}">
+			<subNodes>
+				<subNode min="1" max="1" id="UserRolesNode"/>
+				<subNode min="1" max="1" id="RoleEntitiesNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete role" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<description>Name of role.</description>
+				</attribute>
+				<attribute name="description" label="Description" type="string">
+					<description>Description of role.</description>
+				</attribute>
+			</attributes>
+			<description>At the modeling level, roles need to be preliminarily defined to be re-used for workflows and email notifications.</description>
+		</node>
+		<node expanded="false" visible="true" name="userRoles" id="UserRolesNode" label="Users" visibleInParent="true">
+			<subNodes>
+				<subNode min="0" max="-1" id="UserRoleNode"/>
+			</subNodes>
+			<description>The list of users.</description>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node visible="true" icon="icons/user2.png" name="userRole" id="UserRoleNode" label="{@user}">
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="Delete mapping" class="com.ataccama.ame.core.editors.DeleteChild"/>
+			</editors>
+			<attributes>
+				<attribute name="user" label="User" type="string">
+					<valuesProvider class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/security/fileRepository/users/user</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+					<description>Name of user.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../userRoles/userRole/@user</selectPath>
+					<message>Value @user is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="true" visible="true" name="groupResolvers" id="GroupResolversNode" label="Group Resolvers" newTab="true">
+			<subNodes>
+				<subNode min="1" max="1" id="RdmMemberAttributeResolver"/>
+				<subNode min="1" max="1" id="RdmGroupByMemberResolver"/>
+			</subNodes>
+			<attributes>
+				<attribute defaultValue="RdmGroupByMemberResolver" name="resolverType" label="Type of group resolver" type="enum" required="true" enumValues="RdmMemberAttributeResolver,RdmGroupByMemberResolver">
+					<description>Group resolvers are used to retrieve names of the authenticated user groups. For each group there will be created a role with the same name as the group.</description>
+				</attribute>
+			</attributes>
+			<description>Group resolvers are used to retrieve names of the authenticated user groups. For each group there will be created a role with the same name as the group.</description>
+		</node>
+		<node expanded="true" name="RdmMemberAttributeResolver" explorerLeaf="false" id="RdmMemberAttributeResolver" label="RdmMemberAttributeResolver" visibleInParent="true">
+			<attributes>
+				<attribute name="attribute" label="Attribute" type="string">
+					<description>Name of the attribute containing user names.</description>
+				</attribute>
+			</attributes>
+			<description>Name of the group (role) will be retrieved from the attribute of the authenticated users node. The name of the attribute is defined in the Attribute attribute. If the value is valid distinguished name, the group name will be the value from the most specific key-value pair of the distinguished name.</description>
+		</node>
+		<node expanded="true" name="RdmGroupByMemberResolver" explorerLeaf="true" id="RdmGroupByMemberResolver" label="RdmGroupByMemberResolver" visibleInParent="true">
+			<attributes>
+				<attribute name="attribute" label="Attribute" type="string">
+					<description>Name of the attribute containing user names.</description>
+				</attribute>
+				<attribute name="basePath" label="Base path" type="string">
+					<description>The node where the search should start.</description>
+				</attribute>
+			</attributes>
+			<description>Tests if some of the groups contains the authenticated user&#39;s distinguished name in the Attribute attribute. The difference from RdmMemberAttributeResolver is that the search is recursive starting from the node defined in the Base path attribute.</description>
+		</node>
+		<node expanded="true" name="connection" id="ConnectionNode" label="Connection">
+			<attributes>
+				<attribute name="host" label="Host" type="string">
+					<description>Host ID (IP address or domain name service (DNS) name) of the LDAP server.</description>
+				</attribute>
+				<attribute name="port" label="Port" type="string">
+					<description>Host port of the LDAP server.</description>
+				</attribute>
+				<attribute name="basePath" label="Base" type="string" required="false">
+					<description>Where users are stored in the LDAP, the starting point when searching for a user.</description>
+				</attribute>
+				<attribute name="userQuery" label="Query" type="string">
+					<description>LDAP search filter used to select the user entry.</description>
+				</attribute>
+			</attributes>
+		</node>
+		<node expanded="true" name="account" id="AccountNode" label="Account">
+			<attributes>
+				<attribute name="authUser" label="Username" type="string">
+					<description>User ID (LDAP login) of the server administrator. The user must at least have reading privileges for LDAP.</description>
+				</attribute>
+				<attribute name="authPass" label="Password" type="string">
+					<description>Password corresponding to the user ID.</description>
+				</attribute>
+				<attribute name="authType" label="Type of authorization" type="enum" required="false" enumValues="simple">
+					<description>Which type of authorization to use.</description>
+				</attribute>
+			</attributes>
+		</node>
+		<node expanded="true" name="administrativeRoles" id="AdministrativeRoleNode" label="Administrative Roles">
+			<attributes>
+				<attribute name="systemGroupName" label="System group role name" type="string">
+					<description>Users with this role will see the Permissions link in the RDM web application and will be able to manage table-viewing and -editing permissions for other users.</description>
+				</attribute>
+				<attribute name="appLoginRole" label="Login user role name" type="string">
+					<description>Users with this role will have regular access to the RDM web application and will be able to work with reference data.</description>
+				</attribute>
+				<attribute name="userNameAttrName" label="User name attribute name" type="string">
+					<description>LDAP attribute containing username.</description>
+				</attribute>
+				<attribute name="mailAttrName" label="Email attribute name" type="string">
+					<description>LDAP attribute containing user email address.</description>
+				</attribute>
+				<attribute name="groupRegexFilter" label="Role filter" type="string" required="false">
+					<description>A regular expression used to filter user roles that will be available for the web application.</description>
+				</attribute>
+				<attribute defaultValue="100" name="pageSize" label="Page size" type="integer" required="true">
+					<description>Limits the maximum number of objects that are returned in a single search result.</description>
+				</attribute>
+				<attribute defaultValue="false" name="debug" label="Debug LDAP connection activity" type="boolean" required="true">
+					<description>When set to true, DEBUG-level notifications will be written to the console (stdout) about LDAP connection activities.</description>
+				</attribute>
+			</attributes>
+		</node>
+		<node icon="icons/address_book_add.png" name="LDAPRepositories" id="LDAPRepositoriesNode" label="LDAP repositories">
+			<subNodes>
+				<subNode min="0" max="-1" id="LDAPRepositoryNode"/>
+			</subNodes>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+				<editor label="New LDAP repository..." class="com.ataccama.ame.core.editors.CreateChild"/>
+			</editors>
+			<description>The RDM web application will check user credentials against an LDAP directory.</description>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation">
+					<severity>ERROR</severity>
+					<inverseCondition>true</inverseCondition>
+					<expression>.[count(LDAPRepository/LDAPDomain[@defaultOption=&#39;true&#39;])&gt;1]</expression>
+					<message>Only one domain can be defined as default domain.</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="false" icon="icons/tablesMenuIcon.png" name="roleEntities" explorerLeaf="false" id="RoleEntitiesNode" label="Entities">
+			<subNodes>
+				<subNode min="1" max="1" id="RoleTablesNode"/>
+				<subNode min="1" max="1" id="RoleViewsNode"/>
+				<subNode min="1" max="1" id="RoleDatasetsNode"/>
+			</subNodes>
+			<description>The list of entities</description>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+			<validations>
+				<validation severity="info" class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[(roleTables/roleTable or roleViews/roleView or roleDatasets/roleDataset) and ../../../../@userRepository!=&#39;File repository with fixed permissions&#39;]</expression>
+					<message>Permission defined here won&#39;t have any effect, because on the node &quot;Security&quot; is not setted option &quot;File repository with fixed permissions&quot;.</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="false" icon="icons/table.png" name="roleTable" explorerLeaf="false" id="RoleTableNode" label="{@name}">
+			<subNodes>
+				<subNode min="1" max="1" id="RoleTableColumnsNode"/>
+			</subNodes>
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider fillColumns="true" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/tables/table</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="true" name="view" columnWidth="8" label="View" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="create" columnWidth="8" label="Create" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="modify" columnWidth="8" label="Modify" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="delete" columnWidth="8" label="Delete" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="publish" columnWidth="8" label="Publish" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="allColumnsView" columnWidth="20" label="View for All Columns" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="allColumnsModify" columnWidth="20" label="Modify for All Columns" type="boolean" required="true"/>
+				<attribute name="viewRowsFilter" syntax="sql" label="View Rows Filter" type="text">
+					<description>An SQL condition that shows only chosen part of rows for view.</description>
+				</attribute>
+				<attribute name="editRowsFilter" syntax="sql" label="Edit Rows Filter" type="text">
+					<description>An SQL condition that shows only chosen part of rows for edit.</description>
+				</attribute>
+				<attribute name="publishRowsFilter" syntax="sql" label="Publish Rows Filter" type="text">
+					<description>An SQL condition that shows only chosen part of rows for publish.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[(@create=&#39;true&#39; or @delete=&#39;true&#39;) and @modify=&#39;false&#39;] </expression>
+					<message>For adding create or delete permission modify permission has to be added.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[@allColumnsView=&#39;true&#39; and roleTableColumns/roleTableColumn/@view=&#39;true&#39;]</expression>
+					<message>Option &quot;View for All Columns &quot; enabled. Remove selected columns with enabled View permission from the list or disable option &quot;View for All Columns&quot;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[@allColumnsModify=&#39;true&#39; and roleTableColumns/roleTableColumn/@modify=&#39;true&#39;]</expression>
+					<message>Option &quot;Modify for All Columns &quot; enabled. Remove selected columns with enabled Modify permission from the list or disable option &quot;Modify for All Columns&quot;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[(@view=&#39;false&#39;) and (@allColumnsView=&#39;true&#39; or roleTableColumns/roleTableColumn/@view=&#39;true&#39;)]</expression>
+					<message>Some column has permitted view, but corresponding table has view not permitted.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[(@modify=&#39;false&#39;) and (@allColumnsModify=&#39;true&#39; or roleTableColumns/roleTableColumn/@modify=&#39;true&#39;)]</expression>
+					<message>Some column has permitted modify, but corresponding table has modify not permitted.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../roleTables/roleTable/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+			</validations>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node expanded="true" name="roleTableColumns" explorerLeaf="false" id="RoleTableColumnsNode" label="Columns">
+			<subNodes>
+				<subNode min="0" max="-1" id="RoleTableColumnNode"/>
+			</subNodes>
+			<description>The list of columns.</description>
+		</node>
+		<node expanded="false" name="roleTableColumn" explorerLeaf="false" id="RoleTableColumnNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider fillColumns="true" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/tables/table[@name=$current/ancestor::roleTable/@name]/columns/column/@name</selectPath>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="true" name="view" label="Permission for view" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="modify" label="Permission for modify" type="boolean" required="true"/>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../roleTableColumns/roleTableColumn/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="true" name="roleTables" explorerLeaf="false" id="RoleTablesNode" label="Tables">
+			<subNodes>
+				<subNode min="0" max="-1" id="RoleTableNode"/>
+			</subNodes>
+			<description>The list of tables.</description>
+		</node>
+		<node expanded="true" name="roleViews" explorerLeaf="false" id="RoleViewsNode" label="Views">
+			<subNodes>
+				<subNode min="0" max="-1" id="RoleViewNode"/>
+			</subNodes>
+			<description>The list of views.</description>
+		</node>
+		<node expanded="true" name="roleDatasets" explorerLeaf="false" id="RoleDatasetsNode" label="Datasets">
+			<subNodes>
+				<subNode min="0" max="-1" id="RoleDatasetNode"/>
+			</subNodes>
+			<description>The list of datasets.</description>
+		</node>
+		<node expanded="false" icon="icons/view.png" name="roleView" explorerLeaf="false" id="RoleViewNode" label="{@name}">
+			<subNodes>
+				<subNode min="1" max="1" id="RoleViewColumnsNode"/>
+			</subNodes>
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider fillColumns="true" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/views/view</selectPath>
+						<valueTemplate>{@nameView}</valueTemplate>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="true" name="view" columnWidth="8" label="View" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="create" columnWidth="8" label="Create" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="modify" columnWidth="8" label="Modify" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="delete" columnWidth="8" label="Delete" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="publish" columnWidth="8" label="Publish" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="allColumnsView" columnWidth="20" label="View for All Columns" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="allColumnsModify" columnWidth="20" label="Modify for All Columns" type="boolean" required="true"/>
+				<attribute name="viewRowsFilter" syntax="sql" label="View Rows Filter" type="text">
+					<description>An SQL condition that shows only chosen part of rows for view.</description>
+				</attribute>
+				<attribute name="editRowsFilter" syntax="sql" label="Edit Rows Filter" type="text">
+					<description>An SQL condition that shows only chosen part of rows for edit.</description>
+				</attribute>
+				<attribute name="publishRowsFilter" syntax="sql" label="Publish Rows Filter" type="text">
+					<description>An SQL condition that shows only chosen part of rows for publish.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[(@create=&#39;true&#39; or @delete=&#39;true&#39;) and @modify=&#39;false&#39;] </expression>
+					<message>For adding create or delete permission modify permission has to be added.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[@allColumnsModify=&#39;true&#39; and roleViewColumns/roleViewColumn/@modify=&#39;true&#39;]</expression>
+					<message>Option &quot;Modify for All Columns &quot; enabled. Remove selected columns with enabled Modify permission from the list or disable option &quot;Modify for All Columns&quot;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[@allColumnsView=&#39;true&#39; and roleViewColumns/roleViewColumn/@view=&#39;true&#39;]</expression>
+					<message>Option &quot;View for All Columns &quot; enabled. Remove selected columns with enabled View permission from the list or disable option &quot;View for All Columns&quot;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[(@view=&#39;false&#39;) and (@allColumnsView=&#39;true&#39; or roleViewColumns/roleViewColumn/@view=&#39;true&#39;)]</expression>
+					<message>Some column has permitted view, but corresponding table has view not permitted.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[(@modify=&#39;false&#39;) and (@allColumnsModify=&#39;true&#39; or roleViewColumns/roleViewColumn/@modify=&#39;true&#39;)]</expression>
+					<message>Some column has permitted modify, but corresponding table has modify not permitted.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../roleViews/roleView/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+			</validations>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node expanded="false" icon="icons/data_set.png" name="roleDataset" explorerLeaf="false" id="RoleDatasetNode" label="{@name}">
+			<subNodes>
+				<subNode min="1" max="1" id="RoleDatasetColumnsNode"/>
+			</subNodes>
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider fillColumns="true" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>ancestor::metadata/logicalModel/datasets/dataset</selectPath>
+						<valueTemplate>{@name}</valueTemplate>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="true" name="view" columnWidth="8" label="View" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="allColumnsView" columnWidth="20" label="View for All Columns" type="boolean" required="true"/>
+				<attribute name="viewRowsFilter" syntax="sql" label="View Rows Filter" type="text">
+					<description>An SQL condition that shows only chosen part of rows for view.</description>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[@allColumnsView=&#39;true&#39; and roleDatasetColumns/roleDatasetColumn]</expression>
+					<message>Option &quot;View for All Columns &quot; enabled. Remove selected columns with enabled View permission from the list or disable option &quot;View for All Columns&quot;.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.MDPathValidation" inverseCondition="true">
+					<expression>.[(@view=&#39;false&#39;) and (@allColumnsView=&#39;true&#39; or roleDatasetColumns/roleDatasetColumn)]</expression>
+					<message>Some column has permitted view, but corresponding table has view not permitted.</message>
+				</validation>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../roleDatasets/roleDataset/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+			</validations>
+			<editors>
+				<editor openModal="true" class="com.ataccama.ame.core.editors.PropertyEditor"/>
+			</editors>
+		</node>
+		<node expanded="true" name="roleViewColumns" id="RoleViewColumnsNode" label="Columns">
+			<subNodes>
+				<subNode min="0" max="-1" id="RoleViewColumnNode"/>
+			</subNodes>
+			<description>The list of columns.</description>
+		</node>
+		<node expanded="false" name="roleViewColumn" explorerLeaf="false" id="RoleViewColumnNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider fillColumns="true" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/views/view[@nameView=$current/ancestor::roleView/@name]/viewColumns/viewColumn/@alias|/logicalModel/views/view[@nameView=$current/ancestor::roleView/@name]//viewParentTables/viewParentTable/viewColumns/viewColumn/@alias</selectPath>
+					</valuesProvider>
+				</attribute>
+				<attribute defaultValue="true" name="view" label="Permission for view" type="boolean" required="true"/>
+				<attribute defaultValue="true" name="modify" label="Permission for modify" type="boolean" required="true"/>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../roleViewColumns/roleViewColumn/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="true" name="roleDatasetColumns" id="RoleDatasetColumnsNode" label="Columns">
+			<subNodes>
+				<subNode min="0" max="-1" id="RoleDatasetColumnNode"/>
+			</subNodes>
+			<description>The list of columns.</description>
+		</node>
+		<node expanded="false" name="roleDatasetColumn" id="RoleDatasetColumnNode" label="{@name}">
+			<attributes>
+				<attribute name="name" label="Name" type="string" required="true">
+					<valuesProvider fillColumns="true" class="com.ataccama.ame.core.assist.PathValuesProvider">
+						<selectPath>/logicalModel/datasets/dataset[@name=$current/ancestor::roleDataset/@name]/columns/datasetColumn/@name</selectPath>
+					</valuesProvider>
+				</attribute>
+			</attributes>
+			<validations>
+				<validation class="com.ataccama.ame.core.validations.UniqueValuesValidation">
+					<selectPath>../../roleDatasetColumns/roleDatasetColumn/@name</selectPath>
+					<message>Value @name is not unique.</message>
+				</validation>
+			</validations>
+		</node>
+		<node expanded="true" name="LDAPDomain" id="LDAPDomainNode" newTab="false">
+			<subNodes/>
+			<attributes>
+				<attribute name="value" type="string">
+					<description>Specifies the suffix to be appended to the username.</description>
+				</attribute>
+				<attribute name="label" type="string">
+					<description>How the domain will be displayed to the user in the login screen combo box.</description>
+				</attribute>
+				<attribute defaultValue="false" name="defaultOption" type="boolean" required="true">
+					<description>Specifies the option to be selected by default (on the first access)update main RDM.</description>
+				</attribute>
+			</attributes>
+		</node>
+	</nodes>
+</metametadata-library>
