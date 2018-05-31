@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><physicalAdjustments><afterTableCreationCommands><cmd><tableNameRegex>.*</tableNameRegex><command><sql>
+	begin
+  dbms_stats.set_table_stats
+    (
+      ownname       =&gt;'REF',
+      tabname       =&gt; upper('$tableName$'), 
+      numrows      =&gt; 200000
+    );
+    for i in (select index_name from user_indexes where table_name = '$tableName$') loop
+  dbms_stats.set_index_stats
+    (
+      ownname       =&gt;'REF',
+      indname       =&gt; i.index_name, 
+      numrows      =&gt; 200000
+    );    
+    end loop;
+    DBMS_STATS.LOCK_TABLE_STATS(  
+      ownname       =&gt;'REF',
+      tabname       =&gt; upper('$tableName$'));
+    end;
+    			</sql></command></cmd></afterTableCreationCommands></physicalAdjustments>

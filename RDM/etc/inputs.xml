@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inputs>
+	<entities>
+		<entity name="COUNTRIES">
+			<inputs>
+				<input name="HR_COUNTRIES">
+					<columns>
+						<column mappedName="COUNTRY_ID" name="COUNTRY_ID" type="string"/>
+						<column mappedName="COUNTRY_NAME" name="COUNTRY_NAME" type="string"/>
+						<column mappedName="REGION_ID" name="REGION_ID" type="integer"/>
+					</columns>
+				</input>
+			</inputs>
+		</entity>
+		<entity name="DEPARTMENTS">
+			<inputs>
+				<input name="HR_DEPARTMENTS">
+					<columns>
+						<column mappedName="DEPARTMENT_ID" name="DEPARTMENT_ID" type="integer"/>
+						<column mappedName="DEPARTMENT_NAME" name="DEPARTMENT_NAME" type="string"/>
+						<column mappedName="MANAGER_ID" name="MANAGER_ID" type="integer"/>
+						<column mappedName="LOCATION_ID" name="LOCATION_ID" type="integer"/>
+					</columns>
+				</input>
+			</inputs>
+		</entity>
+		<entity name="JOBS">
+			<inputs>
+				<input name="HR_JOBS">
+					<columns>
+						<column mappedName="JOB_ID" name="JOB_ID" type="string"/>
+						<column mappedName="JOB_TITLE" name="JOB_TITLE" type="string"/>
+						<column mappedName="MIN_SALARY" name="MIN_SALARY" type="integer"/>
+						<column mappedName="MAX_SALARY" name="MAX_SALARY" type="integer"/>
+					</columns>
+				</input>
+			</inputs>
+		</entity>
+		<entity name="EMPLOYEES">
+			<inputs>
+				<input name="HR_EMPLOYEES">
+					<columns>
+						<column mappedName="EMPLOYEE_ID" name="EMPLOYEE_ID" type="integer"/>
+						<column mappedName="FIRST_NAME" name="FIRST_NAME" type="string"/>
+						<column mappedName="LAST_NAME" name="LAST_NAME" type="string"/>
+						<column mappedName="EMAIL" name="EMAIL" type="string"/>
+						<column mappedName="PHONE_NUMBER" name="PHONE_NUMBER" type="string"/>
+						<column mappedName="HIRE_DATE" name="HIRE_DATE" type="datetime"/>
+						<column mappedName="JOB_ID" name="JOB_ID" type="string"/>
+						<column mappedName="SALARY" name="SALARY" type="float"/>
+						<column mappedName="COMMISSION_PCT" name="COMMISSION_PCT" type="float"/>
+						<column mappedName="MANAGER_ID" name="MANAGER_ID" type="integer"/>
+						<column mappedName="DEPARTMENT_ID" name="DEPARTMENT_ID" type="integer"/>
+					</columns>
+				</input>
+			</inputs>
+		</entity>
+		<entity name="LOCATIONS">
+			<inputs>
+				<input name="HR_LOCATIONS">
+					<columns>
+						<column mappedName="LOCATION_ID" name="LOCATION_ID" type="integer"/>
+						<column mappedName="STREET_ADDRESS" name="STREET_ADDRESS" type="string"/>
+						<column mappedName="POSTAL_CODE" name="POSTAL_CODE" type="string"/>
+						<column mappedName="CITY" name="CITY" type="string"/>
+						<column mappedName="STATE_PROVINCE" name="STATE_PROVINCE" type="string"/>
+						<column mappedName="COUNTRY_ID" name="COUNTRY_ID" type="string"/>
+					</columns>
+				</input>
+			</inputs>
+		</entity>
+		<entity name="REGIONS">
+			<inputs>
+				<input name="HR_REGIONS">
+					<columns>
+						<column mappedName="REGION_ID" name="REGION_ID" type="integer"/>
+						<column mappedName="REGION_NAME" name="REGION_NAME" type="string"/>
+					</columns>
+				</input>
+			</inputs>
+		</entity>
+	</entities>
+</inputs>

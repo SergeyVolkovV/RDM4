@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system-config>
+	<systems>
+		<system name="HR">
+			<tables>
+				<table input="HR_REGIONS" name="REGIONS">
+					<depends/>
+				</table>
+				<table input="HR_COUNTRIES" name="COUNTRIES">
+					<depends/>
+				</table>
+				<table input="HR_LOCATIONS" name="LOCATIONS">
+					<depends/>
+				</table>
+				<table input="HR_EMPLOYEES" name="EMPLOYEES">
+					<depends/>
+				</table>
+				<table input="HR_DEPARTMENTS" name="DEPARTMENTS">
+					<depends/>
+				</table>
+				<table input="HR_JOBS" name="JOBS">
+					<depends/>
+				</table>
+			</tables>
+			<users/>
+		</system>
+	</systems>
+</system-config>

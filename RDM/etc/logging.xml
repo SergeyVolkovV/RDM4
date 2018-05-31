@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loggingConfig class="com.ataccama.dqc.commons.logging.config.LoggingConfigImpl">
+	<appenders>
+		<iLogAppenderFactory class="com.ataccama.dqc.commons.logging.factories.StdOutLogAppenderFactory" name="stdout" useStdErr="false"/>
+	</appenders>
+	<loggingRules>
+		<loggingRule appender="stdout" level="INFO">
+			<trace>
+				<item>System event</item>
+			</trace>
+		</loggingRule>
+	</loggingRules>
+</loggingConfig>

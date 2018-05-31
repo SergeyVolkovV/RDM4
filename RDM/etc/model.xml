@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+	<entities>
+		<entity name="COUNTRIES" showInAllTables="false" label="COUNTRIES" description="">
+			<businessOwners>
+				<roles/>
+			</businessOwners>
+			<additionalOwners>
+				<roles/>
+			</additionalOwners>
+			<columns>
+				<column displayMode="normal" domain="string" generated="false" name="COUNTRY_ID" required="false" label="COUNTRY_ID" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="COUNTRY_NAME" required="false" label="COUNTRY_NAME" description=""/>
+				<column displayMode="normal" domain="integer" generated="false" name="REGION_ID" required="false" label="REGION_ID" description=""/>
+			</columns>
+			<systems/>
+		</entity>
+		<entity name="DEPARTMENTS" showInAllTables="false" label="DEPARTMENTS" description="">
+			<businessOwners>
+				<roles/>
+			</businessOwners>
+			<additionalOwners>
+				<roles/>
+			</additionalOwners>
+			<columns>
+				<column displayMode="normal" domain="integer" generated="false" name="DEPARTMENT_ID" required="false" label="DEPARTMENT_ID" description=""/>
+				<column displayMode="normal" domain="integer" generated="false" name="DEPARTMENT_NAME" required="false" label="DEPARTMENT_NAME" description=""/>
+				<column displayMode="normal" domain="integer" generated="false" name="MANAGER_ID" required="false" label="MANAGER_ID" description=""/>
+				<column displayMode="normal" domain="integer" generated="false" name="LOCATION_ID" required="false" label="LOCATION_ID" description=""/>
+			</columns>
+			<systems/>
+		</entity>
+		<entity name="JOBS" showInAllTables="false" label="JOBS" description="">
+			<businessOwners>
+				<roles/>
+			</businessOwners>
+			<additionalOwners>
+				<roles/>
+			</additionalOwners>
+			<columns>
+				<column displayMode="normal" domain="string" generated="false" name="JOB_ID" required="false" label="JOB_ID" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="JOB_TITLE" required="false" label="JOB_TITLE" description=""/>
+				<column displayMode="normal" domain="integer" generated="false" name="MIN_SALARY" required="false" label="MIN_SALARY" description=""/>
+				<column displayMode="normal" domain="integer" generated="false" name="MAX_SALARY" required="false" label="MAX_SALARY" description=""/>
+			</columns>
+			<systems/>
+		</entity>
+		<entity name="EMPLOYEES" showInAllTables="false" label="EMPLOYEES" description="">
+			<businessOwners>
+				<roles/>
+			</businessOwners>
+			<additionalOwners>
+				<roles/>
+			</additionalOwners>
+			<columns>
+				<column displayMode="normal" domain="integer" generated="false" name="EMPLOYEE_ID" required="false" label="EMPLOYEE_ID" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="FIRST_NAME" required="false" label="FIRST_NAME" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="LAST_NAME" required="false" label="LAST_NAME" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="EMAIL" required="false" label="EMAIL" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="PHONE_NUMBER" required="false" label="PHONE_NUMBER" description=""/>
+				<column displayMode="normal" domain="datetime" generated="false" name="HIRE_DATE" required="false" label="HIRE_DATE" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="JOB_ID" required="false" label="JOB_ID" description=""/>
+				<column displayMode="normal" domain="float" generated="false" name="SALARY" required="false" label="SALARY" description=""/>
+				<column displayMode="normal" domain="float" generated="false" name="COMMISSION_PCT" required="false" label="COMMISSION_PCT" description=""/>
+				<column displayMode="normal" domain="integer" generated="false" name="MANAGER_ID" required="false" label="MANAGER_ID" description=""/>
+				<column displayMode="normal" domain="integer" generated="false" name="DEPARTMENT_ID" required="false" label="DEPARTMENT_ID" description=""/>
+			</columns>
+			<systems/>
+		</entity>
+		<entity name="LOCATIONS" showInAllTables="false" label="LOCATIONS" description="">
+			<businessOwners>
+				<roles/>
+			</businessOwners>
+			<additionalOwners>
+				<roles/>
+			</additionalOwners>
+			<columns>
+				<column displayMode="normal" domain="integer" generated="false" name="LOCATION_ID" required="false" label="LOCATION_ID" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="STREET_ADDRESS" required="false" label="STREET_ADDRESS" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="POSTAL_CODE" required="false" label="POSTAL_CODE" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="CITY" required="false" label="CITY" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="STATE_PROVINCE" required="false" label="STATE_PROVINCE" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="COUNTRY_ID" required="false" label="COUNTRY_ID" description=""/>
+			</columns>
+			<systems/>
+		</entity>
+		<entity name="REGIONS" showInAllTables="false" label="REGIONS" description="">
+			<businessOwners>
+				<roles/>
+			</businessOwners>
+			<additionalOwners>
+				<roles/>
+			</additionalOwners>
+			<columns>
+				<column displayMode="normal" domain="integer" generated="false" name="REGION_ID" required="false" label="REGION_ID" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="REGION_NAME" required="false" label="REGION_NAME" description=""/>
+			</columns>
+			<systems/>
+		</entity>
+	</entities>
+	<valuePresenters/>
+	<uniqueKeys>
+		<key entity="COUNTRIES" name="COUNTRY_ID" primary="true">
+			<columns>
+				<column name="COUNTRY_ID"/>
+			</columns>
+		</key>
+		<key entity="DEPARTMENTS" name="DEPARTMENT_ID" primary="true">
+			<columns>
+				<column name="DEPARTMENT_ID"/>
+			</columns>
+		</key>
+		<key entity="EMPLOYEES" name="EMPLOYEE_ID" primary="true">
+			<columns>
+				<column name="EMPLOYEE_ID"/>
+			</columns>
+		</key>
+		<key entity="LOCATIONS" name="LOCATION_ID" primary="true">
+			<columns>
+				<column name="LOCATION_ID"/>
+			</columns>
+		</key>
+		<key entity="REGIONS" name="REGION_ID" primary="true">
+			<columns>
+				<column name="REGION_ID"/>
+			</columns>
+		</key>
+	</uniqueKeys>
+	<views/>
+	<relationships>
+		<relationship childEntity="COUNTRIES" label="" lookupType="window" name="COUNTR_REG_FK" parentEntity="REGIONS">
+			<columns>
+				<reference childKeyColumn="REGION_ID" parentKeyColumn="REGION_ID"/>
+			</columns>
+		</relationship>
+		<relationship childEntity="EMPLOYEES" label="" lookupType="window" name="EMP_JOB_FK" parentEntity="JOBS">
+			<columns>
+				<reference childKeyColumn="JOB_ID" parentKeyColumn="JOB_ID"/>
+			</columns>
+		</relationship>
+		<relationship childEntity="EMPLOYEES" label="" lookupType="window" name="EMP_MANAGER_FK" parentEntity="EMPLOYEES">
+			<columns>
+				<reference childKeyColumn="MANAGER_ID" parentKeyColumn="EMPLOYEE_ID"/>
+			</columns>
+		</relationship>
+		<relationship childEntity="LOCATIONS" label="" lookupType="window" name="LOC_C_ID_FK" parentEntity="COUNTRIES">
+			<columns>
+				<reference childKeyColumn="COUNTRY_ID" parentKeyColumn="COUNTRY_ID"/>
+			</columns>
+		</relationship>
+		<relationship childEntity="EMPLOYEES" label="" lookupType="window" name="EMP_DEPT_FK" parentEntity="DEPARTMENTS">
+			<columns>
+				<reference childKeyColumn="DEPARTMENT_ID" parentKeyColumn="DEPARTMENT_ID"/>
+			</columns>
+		</relationship>
+		<relationship childEntity="DEPARTMENTS" label="" lookupType="window" name="DEPT_LOC_FK" parentEntity="LOCATIONS">
+			<columns>
+				<reference childKeyColumn="LOCATION_ID" parentKeyColumn="LOCATION_ID"/>
+			</columns>
+		</relationship>
+		<relationship childEntity="DEPARTMENTS" label="" lookupType="window" name="DEPT_MGR_FK" parentEntity="EMPLOYEES">
+			<columns>
+				<reference childKeyColumn="MANAGER_ID" parentKeyColumn="EMPLOYEE_ID"/>
+			</columns>
+		</relationship>
+	</relationships>
+	<domains>
+		<domain name="string" size="255" type="STRING" errorMsg=""/>
+		<domain name="datetime" type="DATETIME"/>
+		<domain name="integer" type="INTEGER"/>
+		<domain name="long" type="LONG_INTEGER"/>
+		<domain name="boolean" type="BOOLEAN"/>
+		<domain name="float" type="FLOAT"/>
+	</domains>
+	<categoryModel>
+		<items/>
+	</categoryModel>
+	<dataSets/>
+</model>

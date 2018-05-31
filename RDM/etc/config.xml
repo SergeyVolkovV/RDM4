@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdm-config>
+	<model appServer="http://localhost:8081/rdm" hierarchiesConfigFile="hierarchies.xml" inputsConfigFile="inputs.xml" modelConfigFile="model.xml" moveOperationToBackgroundIntervalSecs="10" pkColumnName="gpk" systemsConfigFile="systems.xml" tasksConfigFile="tasks.xml" usersConfigFile="users.xml" validatorsConfigFile="validators.xml" workflowConfigFile="workflow.xml" dbType="DERBY" useInputs="false" sendLongOperationToThreads="true"/>
+	<customizations helpPageConfigFile="help.xml" initialRecursiveInEdit="true" maxPageSize="20" showGeneratedIdsInTables="False" welcomePageConfigFile="welcome.xml" guiLocale="en"/>
+</rdm-config>

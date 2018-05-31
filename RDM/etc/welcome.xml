@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<welcome-config enabled="false">
+	<header>
+		<div style="font-size: 20px; color: red; margin: 20px 5px 20px 20px;">Welcome to the Reference Data Management site</div>
+		<div style="margin: 5px 10px 5px 10px">Here you may find reference books taken on the centralized maintenance in our bank.</div>
+		<div style="margin: 10px 10px 0px 10px;">List of supported reference books:</div>
+	</header>
+	<footer>
+		<div style="margin: 10px">If you have any questions related to the system, please contact Data Quality Group team via mail<br/>
+		</div>
+	</footer>
+</welcome-config>

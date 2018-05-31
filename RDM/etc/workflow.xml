@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+	<entities/>
+	<emails fromAddress="">
+		<emails>
+			<email name="email: publishing of created new record" subject="New published record">
+				<template>&lt;p&gt;Dear colleagues,&lt;p&gt;
+			
+&lt;p&gt;the new record has been created in the reference book $tableLabel$:&lt;br/&gt;
+$changes:{item|$item.columnLabel$: &lt;i&gt;$item.value$&lt;/i&gt;&lt;br/&gt;}$&lt;/p&gt;
+			
+&lt;p&gt;You can see the new record in the system by clicking on this link:
+&lt;a href="$detail_href$"&gt;created record detail&lt;/a&gt;&lt;/p&gt;
+			
+&lt;p&gt;Best regards,&lt;br/&gt;
+Reference Data Management System&lt;/p&gt;</template>
+			</email>
+			<email name="email: publishing of updated record" subject="Published edited record">
+				<template>&lt;p&gt;Dear colleagues,&lt;/p&gt;
+			
+&lt;p&gt;the record has been updated in the reference book $tableLabel$:&lt;br/&gt;
+$changes:{item|old value: &lt;i&gt;$item.oldValue$&lt;/i&gt; -&gt; new value: &lt;i&gt;$item.value$&lt;/i&gt; for column &lt;i&gt;$item.columnLabel$&lt;/i&gt;&lt;br/&gt;}$&lt;/i&gt;&lt;/p&gt;
+			
+&lt;p&gt;The changes are now available in the system by clicking on this link:
+&lt;a href="$detail_href$"&gt;updated record detail&lt;/a&gt;&lt;/p&gt;
+			
+&lt;p&gt;Best regards,&lt;br/&gt;
+Reference Data Management System&lt;/p&gt;</template>
+			</email>
+			<email name="email: publishing of deleted record" subject="Published deleted record">
+				<template>&lt;p&gt;Dear colleagues,&lt;p&gt;
+			
+&lt;p&gt;A record has been deleted in the reference book $tableLabel$:&lt;br/&gt;
+$columns:{item|$item.columnLabel$: &lt;i&gt;$item.value$&lt;/i&gt;&lt;br/&gt;}$
+username: $username$&lt;/p&gt;
+			
+&lt;p&gt;You can see the deleted record in the system by clicking on this link:
+&lt;a href="$detail_href$"&gt;deleted record detail&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Best regards,&lt;br/&gt;
+Reference Data Management System&lt;/p&gt;</template>
+			</email>
+			<email name="email: rejected record" subject="Rejecteded record">
+				<template>&lt;p&gt;Dear colleagues,&lt;p&gt;
+			
+&lt;p&gt;A record has been rejected in the reference book $tableLabel$:&lt;br/&gt;
+$columns:{item|$item.columnLabel$: &lt;i&gt;$item.value$&lt;/i&gt;&lt;br/&gt;}$
+username: $username$&lt;/p&gt;
+			
+&lt;p&gt;You can see the rejected record in the system by clicking on this link:
+&lt;a href="$detail_href$"&gt;rejected record detail&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Best regards,&lt;br/&gt;
+Reference Data Management System&lt;/p&gt;</template>
+			</email>
+		</emails>
+	</emails>
+</workflow>
