@@ -1,9 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <users-config>
-	<usersProvider class="com.ataccama.rdm.manager.config.RdmXmlFileUsersProviderConfig">
+	<usersProvider class="com.ataccama.rdm.manager.config.RdmXmlFileUsersRolesProviderConfig">
 		<users>
 			<user email="-" name="admin" system="true"/>
 			<user email="-" name="user" system="false"/>
 		</users>
+		<userRoles>
+			<userRole rolename="Admin" username="admin"/>
+			<userRole rolename="User" username="user"/>
+		</userRoles>
 	</usersProvider>
+	<rolesDefinitionsProvider class="com.ataccama.rdm.manager.config.security.RdmRolesProviderBean">
+		<roles>
+			<role name="Admin">
+				<entities>
+					<entity create="" delete="" name="COUNTRIES" type="V">
+						<columns>
+							<column name="COUNTRY_ID"/>
+							<column name="COUNTRY_NAME"/>
+							<column name="REGION_ID"/>
+						</columns>
+					</entity>
+					<entity create="true" delete="true" name="COUNTRIES" type="E">
+						<columns>
+							<column name="COUNTRY_ID"/>
+							<column name="COUNTRY_NAME"/>
+							<column name="REGION_ID"/>
+						</columns>
+					</entity>
+					<entity create="" delete="" name="COUNTRIES" type="C"/>
+					<entity create="" delete="" name="DEPARTMENTS" type="V">
+						<columns>
+							<column name="DEPARTMENT_ID"/>
+							<column name="DEPARTMENT_NAME"/>
+							<column name="MANAGER_ID"/>
+							<column name="LOCATION_ID"/>
+						</columns>
+					</entity>
+					<entity create="true" delete="true" name="DEPARTMENTS" type="E">
+						<columns>
+							<column name="DEPARTMENT_ID"/>
+							<column name="DEPARTMENT_NAME"/>
+							<column name="MANAGER_ID"/>
+							<column name="LOCATION_ID"/>
+						</columns>
+					</entity>
+					<entity create="" delete="" name="DEPARTMENTS" type="C"/>
+					<entity create="" delete="" name="EMPLOYEES" type="V">
+						<columns>
+							<column name="EMPLOYEE_ID"/>
+							<column name="FIRST_NAME"/>
+							<column name="LAST_NAME"/>
+							<column name="EMAIL"/>
+							<column name="PHONE_NUMBER"/>
+							<column name="HIRE_DATE"/>
+							<column name="JOB_ID"/>
+							<column name="SALARY"/>
+							<column name="COMMISSION_PCT"/>
+							<column name="MANAGER_ID"/>
+							<column name="DEPARTMENT_ID"/>
+						</columns>
+					</entity>
+					<entity create="true" delete="true" name="EMPLOYEES" type="E">
+						<columns>
+							<column name="EMPLOYEE_ID"/>
+							<column name="FIRST_NAME"/>
+							<column name="LAST_NAME"/>
+							<column name="EMAIL"/>
+							<column name="PHONE_NUMBER"/>
+							<column name="HIRE_DATE"/>
+							<column name="JOB_ID"/>
+							<column name="SALARY"/>
+							<column name="COMMISSION_PCT"/>
+							<column name="MANAGER_ID"/>
+							<column name="DEPARTMENT_ID"/>
+						</columns>
+					</entity>
+					<entity create="" delete="" name="EMPLOYEES" type="C"/>
+					<entity create="" delete="" name="JOBS" type="V">
+						<columns>
+							<column name="JOB_ID"/>
+							<column name="JOB_TITLE"/>
+							<column name="MIN_SALARY"/>
+							<column name="MAX_SALARY"/>
+						</columns>
+					</entity>
+					<entity create="true" delete="true" name="JOBS" type="E">
+						<columns>
+							<column name="JOB_ID"/>
+							<column name="JOB_TITLE"/>
+							<column name="MIN_SALARY"/>
+							<column name="MAX_SALARY"/>
+						</columns>
+					</entity>
+					<entity create="" delete="" name="JOBS" type="C"/>
+					<entity create="" delete="" name="LOCATIONS" type="V">
+						<columns>
+							<column name="LOCATION_ID"/>
+							<column name="STREET_ADDRESS"/>
+							<column name="POSTAL_CODE"/>
+							<column name="CITY"/>
+							<column name="STATE_PROVINCE"/>
+							<column name="COUNTRY_ID"/>
+						</columns>
+					</entity>
+					<entity create="true" delete="true" name="LOCATIONS" type="E">
+						<columns>
+							<column name="LOCATION_ID"/>
+							<column name="STREET_ADDRESS"/>
+							<column name="POSTAL_CODE"/>
+							<column name="CITY"/>
+							<column name="STATE_PROVINCE"/>
+							<column name="COUNTRY_ID"/>
+						</columns>
+					</entity>
+					<entity create="" delete="" name="LOCATIONS" type="C"/>
+					<entity create="" delete="" name="REGIONS" type="V">
+						<columns>
+							<column name="REGION_ID"/>
+							<column name="REGION_NAME"/>
+						</columns>
+					</entity>
+					<entity create="true" delete="true" name="REGIONS" type="E">
+						<columns>
+							<column name="REGION_ID"/>
+							<column name="REGION_NAME"/>
+						</columns>
+					</entity>
+					<entity create="" delete="" name="REGIONS" type="C"/>
+				</entities>
+			</role>
+			<role name="Supervisor">
+				<entities/>
+			</role>
+			<role name="User">
+				<entities>
+					<entity create="" delete="" name="REGIONS" type="V">
+						<columns>
+							<column name="REGION_ID"/>
+							<column name="REGION_NAME"/>
+						</columns>
+					</entity>
+					<entity create="true" delete="true" name="REGIONS" type="E">
+						<columns>
+							<column name="REGION_ID"/>
+							<column name="REGION_NAME"/>
+						</columns>
+					</entity>
+					<entity create="" delete="" name="REGIONS" type="C"/>
+				</entities>
+			</role>
+			<role name="Business Super User">
+				<entities/>
+			</role>
+		</roles>
+	</rolesDefinitionsProvider>
 </users-config>

@@ -213,7 +213,7 @@ Reference Data Management System&lt;/p&gt;</message>
 		</emails>
 		<summaryNotifs maxMessagePerSession="" confirmSummaryMailRef="" genericSummaryMailRef="" moveSummaryMailRef=""/>
 	</wfConfig>
-	<security userRepository="File repository" enableCustomDomains="false">
+	<security userRepository="File repository with fixed permissions" enableCustomDomains="false">
 		<fileRepository>
 			<users>
 				<user elemId="17425314" name="admin" permissionsAdministrator="true" email="-"/>
@@ -221,9 +221,48 @@ Reference Data Management System&lt;/p&gt;</message>
 			</users>
 			<roles>
 				<role elemId="17426384" name="Admin" description="">
-					<userRoles/>
+					<userRoles>
+						<userRole elemId="27501636" user="admin"/>
+					</userRoles>
 					<roleEntities>
-						<roleTables/>
+						<roleTables>
+							<roleTable allColumnsModify="true" elemId="27501924" modify="true" view="true" allColumnsView="true" publish="true" name="COUNTRIES" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27502119" modify="true" view="true" allColumnsView="true" publish="true" name="DEPARTMENTS" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27502120" modify="true" view="true" allColumnsView="true" publish="true" name="EMPLOYEES" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27502121" modify="true" view="true" allColumnsView="true" publish="true" name="JOBS" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27502122" modify="true" view="true" allColumnsView="true" publish="true" name="LOCATIONS" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27502123" modify="true" view="true" allColumnsView="true" publish="true" name="REGIONS" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+						</roleTables>
 						<roleViews/>
 						<roleDatasets/>
 					</roleEntities>
@@ -237,9 +276,18 @@ Reference Data Management System&lt;/p&gt;</message>
 					</roleEntities>
 				</role>
 				<role elemId="17426386" name="User" description="">
-					<userRoles/>
+					<userRoles>
+						<userRole elemId="27501780" user="user"/>
+					</userRoles>
 					<roleEntities>
-						<roleTables/>
+						<roleTables>
+							<roleTable allColumnsModify="true" elemId="27502322" modify="true" view="true" allColumnsView="true" publish="true" name="REGIONS" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+						</roleTables>
 						<roleViews/>
 						<roleDatasets/>
 					</roleEntities>
