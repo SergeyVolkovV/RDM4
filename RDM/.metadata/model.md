@@ -29,8 +29,123 @@
 		<databaseSystems>
 			<databaseSystem elemId="27497367" name="HR" dataSourceName="HR">
 				<description></description>
-				<tables/>
-				<relationships/>
+				<tables>
+					<table elemId="27499305" synchronizeWith="REGIONS" name="REGIONS" periodicity="">
+						<description></description>
+						<columns>
+							<column elemId="27499306" name="REGION_ID" dbType="NUMBER(38,-1)" type="integer" required="false" mappedColumn="REGION_ID"/>
+							<column elemId="27499307" name="REGION_NAME" dbType="VARCHAR2(25)" type="string" required="false" mappedColumn="REGION_NAME"/>
+						</columns>
+						<rdmKey>
+							<rdmSystemRel elemId="27501325" systemColumn="REGION_ID" rdmColumn="REGION_ID"/>
+						</rdmKey>
+					</table>
+					<table elemId="27499308" synchronizeWith="COUNTRIES" name="COUNTRIES" periodicity="">
+						<description></description>
+						<columns>
+							<column elemId="27499309" name="COUNTRY_ID" dbType="CHAR(2)" type="string" required="false" mappedColumn="COUNTRY_ID"/>
+							<column elemId="27499310" name="COUNTRY_NAME" dbType="VARCHAR2(40)" type="string" required="false" mappedColumn="COUNTRY_NAME"/>
+							<column elemId="27499311" name="REGION_ID" dbType="NUMBER(38,-1)" type="integer" required="false" mappedColumn="REGION_ID"/>
+						</columns>
+						<rdmKey>
+							<rdmSystemRel elemId="27500411" systemColumn="COUNTRY_ID" rdmColumn="COUNTRY_ID"/>
+						</rdmKey>
+					</table>
+					<table elemId="27499312" synchronizeWith="LOCATIONS" name="LOCATIONS" periodicity="">
+						<description></description>
+						<columns>
+							<column elemId="27499313" name="LOCATION_ID" dbType="NUMBER(4,0)" type="integer" required="false" mappedColumn="LOCATION_ID"/>
+							<column elemId="27499314" name="STREET_ADDRESS" dbType="VARCHAR2(40)" type="string" required="false" mappedColumn="STREET_ADDRESS"/>
+							<column elemId="27499315" name="POSTAL_CODE" dbType="VARCHAR2(12)" type="string" required="false" mappedColumn="POSTAL_CODE"/>
+							<column elemId="27499316" name="CITY" dbType="VARCHAR2(30)" type="string" required="false" mappedColumn="CITY"/>
+							<column elemId="27499317" name="STATE_PROVINCE" dbType="VARCHAR2(25)" type="string" required="false" mappedColumn="STATE_PROVINCE"/>
+							<column elemId="27499318" name="COUNTRY_ID" dbType="CHAR(2)" type="string" required="false" mappedColumn="COUNTRY_ID"/>
+						</columns>
+						<rdmKey>
+							<rdmSystemRel elemId="27500987" systemColumn="LOCATION_ID" rdmColumn="LOCATION_ID"/>
+						</rdmKey>
+					</table>
+					<table elemId="27499319" synchronizeWith="EMPLOYEES" name="EMPLOYEES" periodicity="">
+						<description></description>
+						<columns>
+							<column elemId="27499320" name="EMPLOYEE_ID" dbType="NUMBER(6,0)" type="integer" required="false" mappedColumn="EMPLOYEE_ID"/>
+							<column elemId="27499321" name="FIRST_NAME" dbType="VARCHAR2(20)" type="string" required="false" mappedColumn="FIRST_NAME"/>
+							<column elemId="27499322" name="LAST_NAME" dbType="VARCHAR2(25)" type="string" required="false" mappedColumn="LAST_NAME"/>
+							<column elemId="27499323" name="EMAIL" dbType="VARCHAR2(25)" type="string" required="false" mappedColumn="EMAIL"/>
+							<column elemId="27499324" name="PHONE_NUMBER" dbType="VARCHAR2(20)" type="string" required="false" mappedColumn="PHONE_NUMBER"/>
+							<column elemId="27499325" name="HIRE_DATE" dbType="DATE" type="datetime" required="false" mappedColumn="HIRE_DATE"/>
+							<column elemId="27499326" name="JOB_ID" dbType="VARCHAR2(10)" type="string" required="false" mappedColumn="JOB_ID"/>
+							<column elemId="27499327" name="SALARY" dbType="NUMBER(8,2)" type="float" required="false" mappedColumn="SALARY"/>
+							<column elemId="27499328" name="COMMISSION_PCT" dbType="NUMBER(2,2)" type="float" required="false" mappedColumn="COMMISSION_PCT"/>
+							<column elemId="27499329" name="MANAGER_ID" dbType="NUMBER(6,0)" type="integer" required="false" mappedColumn="MANAGER_ID"/>
+							<column elemId="27499330" name="DEPARTMENT_ID" dbType="NUMBER(4,0)" type="integer" required="false" mappedColumn="DEPARTMENT_ID"/>
+						</columns>
+						<rdmKey>
+							<rdmSystemRel elemId="27500699" systemColumn="EMPLOYEE_ID" rdmColumn="EMPLOYEE_ID"/>
+						</rdmKey>
+					</table>
+					<table elemId="27499331" synchronizeWith="DEPARTMENTS" name="DEPARTMENTS" periodicity="">
+						<description></description>
+						<columns>
+							<column elemId="27499332" name="DEPARTMENT_ID" dbType="NUMBER(4,0)" type="integer" required="false" mappedColumn="DEPARTMENT_ID"/>
+							<column elemId="27499333" name="DEPARTMENT_NAME" dbType="VARCHAR2(30)" type="string" required="false" mappedColumn="DEPARTMENT_NAME"/>
+							<column elemId="27499334" name="MANAGER_ID" dbType="NUMBER(6,0)" type="integer" required="false" mappedColumn="MANAGER_ID"/>
+							<column elemId="27499335" name="LOCATION_ID" dbType="NUMBER(4,0)" type="integer" required="false" mappedColumn="LOCATION_ID"/>
+						</columns>
+						<rdmKey>
+							<rdmSystemRel elemId="27500555" systemColumn="DEPARTMENT_ID" rdmColumn="DEPARTMENT_ID"/>
+						</rdmKey>
+					</table>
+					<table elemId="27499336" synchronizeWith="JOBS" name="JOBS" periodicity="">
+						<description></description>
+						<columns>
+							<column elemId="27499337" name="JOB_ID" dbType="VARCHAR2(10)" type="string" required="false" mappedColumn="JOB_ID"/>
+							<column elemId="27499338" name="JOB_TITLE" dbType="VARCHAR2(35)" type="string" required="false" mappedColumn="JOB_TITLE"/>
+							<column elemId="27499339" name="MIN_SALARY" dbType="NUMBER(6,0)" type="integer" required="false" mappedColumn="MIN_SALARY"/>
+							<column elemId="27499340" name="MAX_SALARY" dbType="NUMBER(6,0)" type="integer" required="false" mappedColumn="MAX_SALARY"/>
+						</columns>
+						<rdmKey>
+							<rdmSystemRel elemId="27500843" systemColumn="JOB_ID" rdmColumn="JOB_ID"/>
+						</rdmKey>
+					</table>
+				</tables>
+				<relationships>
+					<relationship childTable="DEPARTMENTS" elemId="27499341" name="DEPT_MGR_FK" parentTable="EMPLOYEES">
+						<foreignKey>
+							<relationship elemId="27499342" childColumn="MANAGER_ID" parentColumn="EMPLOYEE_ID"/>
+						</foreignKey>
+					</relationship>
+					<relationship childTable="DEPARTMENTS" elemId="27499343" name="DEPT_LOC_FK" parentTable="LOCATIONS">
+						<foreignKey>
+							<relationship elemId="27499344" childColumn="LOCATION_ID" parentColumn="LOCATION_ID"/>
+						</foreignKey>
+					</relationship>
+					<relationship childTable="EMPLOYEES" elemId="27499345" name="EMP_MANAGER_FK" parentTable="EMPLOYEES">
+						<foreignKey>
+							<relationship elemId="27499346" childColumn="MANAGER_ID" parentColumn="EMPLOYEE_ID"/>
+						</foreignKey>
+					</relationship>
+					<relationship childTable="EMPLOYEES" elemId="27499347" name="EMP_JOB_FK" parentTable="JOBS">
+						<foreignKey>
+							<relationship elemId="27499348" childColumn="JOB_ID" parentColumn="JOB_ID"/>
+						</foreignKey>
+					</relationship>
+					<relationship childTable="COUNTRIES" elemId="27499349" name="COUNTR_REG_FK" parentTable="REGIONS">
+						<foreignKey>
+							<relationship elemId="27499350" childColumn="REGION_ID" parentColumn="REGION_ID"/>
+						</foreignKey>
+					</relationship>
+					<relationship childTable="EMPLOYEES" elemId="27499351" name="EMP_DEPT_FK" parentTable="DEPARTMENTS">
+						<foreignKey>
+							<relationship elemId="27499352" childColumn="DEPARTMENT_ID" parentColumn="DEPARTMENT_ID"/>
+						</foreignKey>
+					</relationship>
+					<relationship childTable="LOCATIONS" elemId="27499353" name="LOC_C_ID_FK" parentTable="COUNTRIES">
+						<foreignKey>
+							<relationship elemId="27499354" childColumn="COUNTRY_ID" parentColumn="COUNTRY_ID"/>
+						</foreignKey>
+					</relationship>
+				</relationships>
 			</databaseSystem>
 		</databaseSystems>
 		<SFTPSystems/>

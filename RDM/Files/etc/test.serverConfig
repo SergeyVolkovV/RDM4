@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<server>
+	<port>7777</port>
+	<runtimeConfiguration>test.runtimeConfig</runtimeConfiguration>
+	<serverComponents>
+		<component disabled="false" class="com.ataccama.dqc.web.HttpDispatcher">
+			<filters/>
+			<listeners>
+				<listenerBean backlog="50" port="8888" threadPoolTimeout="10000" readTimeout="5000" name="default" threads="10" persistentConnectionTimeout="10000" ssl="false"/>
+			</listeners>
+			<workerQueues/>
+		</component>
+		<component dataSourceRefreshRate="60" pathVariableRefreshRate="60" disabled="false" class="com.ataccama.dqc.server.services.HealthStateProviders"/>
+		<component listeners="all" disabled="false" cacheTemplate="true" class="com.ataccama.dqc.web.console.WebConsoleComponent">
+			<customMenuCategories/>
+			<customMenuItems/>
+		</component>
+		<component disabled="false" class="com.ataccama.dqc.web.health.HealthStateWebConsole"/>
+		<component port="1527" dataDir="../storage/derby" disabled="true" class="com.ataccama.server.component.derby.DerbyServerComponent"/>
+		<component listeners="all" disabled="false" class="com.ataccama.dqc.online.OnlineServicesComponent">
+			<serviceLookupFolders>
+				<configFolder>../onlineServices</configFolder>
+			</serviceLookupFolders>
+		</component>
+		<component logLevel="2" httpListener="all" disabled="false" class="com.ataccama.adt.web.WorkflowServerComponent" resourcesFolder="../workflows/resources">
+			<sources>
+				<sourceConfigBean path="../workflows" id="RDM"/>
+			</sources>
+			<stateStorageProvider class="com.ataccama.adt.runtime.state.storage.FileStateStorageProvider"/>
+		</component>
+		<component disabled="false" class="com.ataccama.adt.scheduler.server.SchedulerServerComponent" resourcesFolder="../schedulers/resources">
+			<resultPersister class="com.ataccama.adt.scheduler.persister.FileStateResultPersister"/>
+			<sources>
+				<sourceConfigBean path="../schedulers" id="RDM"/>
+			</sources>
+		</component>
+	</serverComponents>
+</server>

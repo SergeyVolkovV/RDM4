@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<runtimeconfig>
+
+    <!--
+      Configuration for named url resources (used in steps like Soap Call, etc.)
+    -->
+	<contributedConfigs>
+    	<config class="com.ataccama.dqc.processor.support.UrlResourceContributor">
+        	<urls>
+            	<url name="rdmapp" url="http://localhost:8081/rdm" user="alice" password="xxx" />
+            	<url name="rdmpublish" url="http://localhost:8888" user="" password="" />
+          	</urls>
+        </config>
+    </contributedConfigs>
+
+	<dataSources>
+    	<!--<dataSource driverclass="org.apache.derby.jdbc.ClientDriver" name="rdm_db"
+    				user="rdm" password="rdm"
+    				url="jdbc:derby://localhost:1527/rdm;create=true"></dataSource> -->
+    	
+		<dataSource driverclass="oracle.jdbc.OracleDriver" name="rdmt_db"
+    			url="jdbc:oracle:thin:@localhost:1521:test"
+    			user="rdmt" password="rdmt"/>
+    			
+    	<dataSource driverclass="oracle.jdbc.OracleDriver" name="HR"
+    			url="jdbc:oracle:thin:@localhost:1521:test"
+    			user="HR" password="HR"/>		
+    	
+		<!--<dataSource driverclass="org.postgresql.Driver" name="pgsql"
+    			url="jdbc:postgresql://localhost:5432/test"
+    			user="test" password="crypted:DES:uj3hAwlJSWwwD1Jp62KwJRz8lUK36qMUto5HhuV6Izg="/>
+    	
+		<dataSource driverclass="org.gjt.mm.mysql.Driver" name="mysql"
+    			url="jdbc:mysql://localhost:3306/test"
+    			user="test" password="crypted:DES:uj3hAwlJSWwwD1Jp62KwJRz8lUK36qMUto5HhuV6Izg="/>
+    	-->
+	</dataSources>	
+</runtimeconfig>
