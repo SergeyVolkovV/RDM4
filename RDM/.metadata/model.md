@@ -218,11 +218,15 @@ Reference Data Management System&lt;/p&gt;</message>
 			<users>
 				<user elemId="17425314" name="admin" permissionsAdministrator="true" email="-"/>
 				<user elemId="17425315" name="user" permissionsAdministrator="false" email="-"/>
+				<user elemId="27502804" name="super" permissionsAdministrator="false" email="-"/>
+				<user elemId="27503683" name="test" permissionsAdministrator="false" email="-"/>
+				<user elemId="27504164" name="alice" permissionsAdministrator="false" email="-"/>
 			</users>
 			<roles>
 				<role elemId="17426384" name="Admin" description="">
 					<userRoles>
 						<userRole elemId="27501636" user="admin"/>
+						<userRole elemId="27502517" user="user"/>
 					</userRoles>
 					<roleEntities>
 						<roleTables>
@@ -268,9 +272,48 @@ Reference Data Management System&lt;/p&gt;</message>
 					</roleEntities>
 				</role>
 				<role elemId="17426385" name="Supervisor" description="">
-					<userRoles/>
+					<userRoles>
+						<userRole elemId="27503191" user="super"/>
+					</userRoles>
 					<roleEntities>
-						<roleTables/>
+						<roleTables>
+							<roleTable allColumnsModify="true" elemId="27503335" modify="true" view="true" allColumnsView="true" publish="true" name="COUNTRIES" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27503336" modify="true" view="true" allColumnsView="true" publish="true" name="DEPARTMENTS" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27503337" modify="true" view="true" allColumnsView="true" publish="true" name="JOBS" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27503338" modify="true" view="true" allColumnsView="true" publish="true" name="EMPLOYEES" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27503339" modify="true" view="true" allColumnsView="true" publish="true" name="LOCATIONS" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27503340" modify="true" view="true" allColumnsView="true" publish="true" name="REGIONS" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
+						</roleTables>
 						<roleViews/>
 						<roleDatasets/>
 					</roleEntities>
@@ -278,6 +321,8 @@ Reference Data Management System&lt;/p&gt;</message>
 				<role elemId="17426386" name="User" description="">
 					<userRoles>
 						<userRole elemId="27501780" user="user"/>
+						<userRole elemId="27503877" user="test"/>
+						<userRole elemId="27504308" user="alice"/>
 					</userRoles>
 					<roleEntities>
 						<roleTables>
@@ -337,7 +382,11 @@ Reference Data Management System&lt;/p&gt;</message>
 		<loginXml/>
 	</appConfiguration>
 	<documentations/>
-	<taskScheduler/>
+	<taskScheduler>
+		<task elemId="27505799" enable="true" name="LoadRegion" description="LoadRegion" job="LRW.ewf">
+			<scheduling hour="*" dayWeek="*" dayMonth="*" minute="1"/>
+		</task>
+	</taskScheduler>
 	<setDatabases>
 		<setDatabase elemId="23653417" columnLength="127" dbType="Apache Derby" tableLength="127"/>
 		<setDatabase elemId="17389944" columnLength="127" dbType="MS SQL" tableLength="127"/>

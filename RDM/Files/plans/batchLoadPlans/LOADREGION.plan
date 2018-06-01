@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<purity-config version="11.3.0.manual-2017-11-22">
+	<references/>
+	<component-mappings>
+		<propertyMappings/>
+	</component-mappings>
+
+<!-- (Jdbc Reader) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.io.jdbc.read.JdbcReader" disabled="false" id="Jdbc Reader">
+		<properties queryString="select REGION_ID, REGION_NAME from HR.REGIONS" dataSourceName="HR@Oracle:localhost/test">
+			<columns>
+				<jdbcReaderColumn name="REGION_ID" type="INTEGER"/>
+				<jdbcReaderColumn name="REGION_NAME" type="STRING"/>
+			</columns>
+			<shadowColumns/>
+		</properties>
+		<visual-constraints layout="vertical" bounds="120,72,48,48"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Jdbc Reader"/>
+		<target endpoint="in" step="Rdm Importer"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<!-- (Rdm Importer) --><step mode="NORMAL" className="com.ataccama.rdm.manager.steps.RdmImportStep" disabled="false" id="Rdm Importer">
+		<properties importTable="false" moveToEditAction="MOVE_TO_CONFIRM" incremental="true" tablename="REGIONS" url="rdmapp">
+			<allowedEditStates>
+				<rdmEditedState>CHANGED</rdmEditedState>
+				<rdmEditedState>DELETED</rdmEditedState>
+				<rdmEditedState>NEW</rdmEditedState>
+			</allowedEditStates>
+			<columns>
+				<rdmImportStepColumnMapping columnType="NORMAL" inColumn="REGION_ID" name="REGION_ID" type="INTEGER"/>
+				<rdmImportStepColumnMapping columnType="NORMAL" inColumn="REGION_NAME" name="REGION_NAME" type="STRING"/>
+			</columns>
+		</properties>
+		<visual-constraints layout="vertical" bounds="120,168,48,48"/>
+	</step>
+
+</purity-config>

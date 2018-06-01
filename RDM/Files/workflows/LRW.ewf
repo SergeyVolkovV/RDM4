@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns:vis="http://www.ataccama.com/purity/visual" version="11.3.0.manual-2017-11-22">
+	<continueOnFailure>false</continueOnFailure>
+	<groups/>
+	<multiplicity>0</multiplicity>
+	<name>LRW</name>
+	<variables>
+		<derived/>
+		<input/>
+	</variables>
+	<tasks>
+		<task mode="NORMAL" acceptMode="ALL_VALID" name="LR" disabled="false" id="LR" priority="0">
+			<executable parallelismLevel="1" class="com.ataccama.adt.task.exec.EwfDqcTask" planFile="../plans/batchLoadPlans/LOADREGION.plan"/>
+			<vis:visualConstraints bounds="157,72,54,54"/>
+		</task>
+	</tasks>
+</workflow>
