@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <scheduleDefinition>
-	<description>LoadRegion</description>
+	<description>LoadRegionWorkflow</description>
 	<enabled>true</enabled>
 	<job class="com.ataccama.adt.scheduler.job.WorkflowJob">
-		<workflow>RDM:LRW.ewf</workflow>
+		<workflow>RDM:LoadRegionWorkflow.ewf</workflow>
 	</job>
-	<scheduling>1 * * *</scheduling>
+	<scheduling>* * * *</scheduling>
 </scheduleDefinition>

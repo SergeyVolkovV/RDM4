@@ -122,19 +122,23 @@
 						</columns>
 					</entity>
 					<entity create="" delete="" name="LOCATIONS" type="C"/>
-					<entity create="" delete="" name="REGIONS" type="V">
+					<entity create="" delete="" name="REGIONS2" type="V">
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
+							<column name="REGION_NAME4D"/>
+							<column name="FIELD2"/>
 						</columns>
 					</entity>
-					<entity create="true" delete="true" name="REGIONS" type="E">
+					<entity create="true" delete="true" name="REGIONS2" type="E">
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
+							<column name="REGION_NAME4D"/>
+							<column name="FIELD2"/>
 						</columns>
 					</entity>
-					<entity create="" delete="" name="REGIONS" type="C"/>
+					<entity create="" delete="" name="REGIONS2" type="C"/>
 				</entities>
 			</role>
 			<role name="Supervisor">
@@ -240,36 +244,44 @@
 						</columns>
 					</entity>
 					<entity create="" delete="" name="LOCATIONS" type="C"/>
-					<entity create="" delete="" name="REGIONS" type="V">
+					<entity create="" delete="" name="REGIONS2" type="V">
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
+							<column name="REGION_NAME4D"/>
+							<column name="FIELD2"/>
 						</columns>
 					</entity>
-					<entity create="true" delete="true" name="REGIONS" type="E">
+					<entity create="true" delete="true" name="REGIONS2" type="E">
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
+							<column name="REGION_NAME4D"/>
+							<column name="FIELD2"/>
 						</columns>
 					</entity>
-					<entity create="" delete="" name="REGIONS" type="C"/>
+					<entity create="" delete="" name="REGIONS2" type="C"/>
 				</entities>
 			</role>
 			<role name="User">
 				<entities>
-					<entity create="" delete="" name="REGIONS" type="V">
+					<entity create="" delete="" name="REGIONS2" type="V">
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
+							<column name="REGION_NAME4D"/>
+							<column name="FIELD2"/>
 						</columns>
 					</entity>
-					<entity create="true" delete="true" name="REGIONS" type="E">
+					<entity create="true" delete="true" name="REGIONS2" type="E">
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
+							<column name="REGION_NAME4D"/>
+							<column name="FIELD2"/>
 						</columns>
 					</entity>
-					<entity create="" delete="" name="REGIONS" type="C"/>
+					<entity create="" delete="" name="REGIONS2" type="C"/>
 				</entities>
 			</role>
 			<role name="Business Super User">

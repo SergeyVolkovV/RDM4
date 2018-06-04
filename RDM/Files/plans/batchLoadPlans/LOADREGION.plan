@@ -6,10 +6,11 @@
 	</component-mappings>
 
 <!-- (Jdbc Reader) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.io.jdbc.read.JdbcReader" disabled="false" id="Jdbc Reader">
-		<properties queryString="select REGION_ID, REGION_NAME from HR.REGIONS" dataSourceName="HR@Oracle:localhost/test">
+		<properties queryString="select REGION_ID, REGION_NAME,REGION_NAME4D from HR.REGIONS" dataSourceName="HR">
 			<columns>
 				<jdbcReaderColumn name="REGION_ID" type="INTEGER"/>
 				<jdbcReaderColumn name="REGION_NAME" type="STRING"/>
+				<jdbcReaderColumn name="REGION_NAME4D" type="STRING"/>
 			</columns>
 			<shadowColumns/>
 		</properties>
@@ -26,15 +27,16 @@
 
 
 <!-- (Rdm Importer) --><step mode="NORMAL" className="com.ataccama.rdm.manager.steps.RdmImportStep" disabled="false" id="Rdm Importer">
-		<properties importTable="false" moveToEditAction="MOVE_TO_CONFIRM" incremental="true" tablename="REGIONS" url="rdmapp">
+		<properties importTable="false" moveToEditAction="CONFIRM" incremental="false" tablename="REGIONS2" url="rdmapp">
 			<allowedEditStates>
 				<rdmEditedState>CHANGED</rdmEditedState>
 				<rdmEditedState>DELETED</rdmEditedState>
 				<rdmEditedState>NEW</rdmEditedState>
 			</allowedEditStates>
 			<columns>
-				<rdmImportStepColumnMapping columnType="NORMAL" inColumn="REGION_ID" name="REGION_ID" type="INTEGER"/>
+				<rdmImportStepColumnMapping columnType="PRIMARY_KEY" inColumn="REGION_ID" name="REGION_ID" type="INTEGER"/>
 				<rdmImportStepColumnMapping columnType="NORMAL" inColumn="REGION_NAME" name="REGION_NAME" type="STRING"/>
+				<rdmImportStepColumnMapping columnType="NORMAL" inColumn="REGION_NAME4D" name="REGION_NAME4D" type="STRING"/>
 			</columns>
 		</properties>
 		<visual-constraints layout="vertical" bounds="120,168,48,48"/>

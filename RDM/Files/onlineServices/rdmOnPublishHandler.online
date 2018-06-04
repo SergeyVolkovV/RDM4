@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ServiceConfig xmlns:mrg="http://www.ataccama.com/dqc/plan-merge" version="11.3.0">
+	<services>
+		<serviceBean configFile="../plans/synchronization/onPublish/onPublishHandler.plan" maxPoolSize="5" minPoolSize="1" name="rdmOnPublishHandler" parallelismLevel="0">
+			<additionalActions/>
+			<method class="com.ataccama.dqc.online.cfg.SoapOverHttpMethod" location="/rdmOnPublishHandler" soapAction="rdmOnPublishService" soapVersion="SOAP11">
+				<inputFormat namespace="http://www.example.com/ws" schemaValidation="false">
+					<rootSection>
+						<columns/>
+						<sections/>
+					</rootSection>
+				</inputFormat>
+				<outputFormat namespace="http://www.example.com/ws">
+					<rootSection>
+						<columns/>
+						<sections/>
+					</rootSection>
+				</outputFormat>
+			</method>
+		</serviceBean>
+	</services>
+</ServiceConfig>

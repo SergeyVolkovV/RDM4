@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+	<head>
+		<META content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<style type="text/css">
+@media print {
+h1{page-break-before:always;}}
+
+
+.footNote {
+	font-size: 11px;
+	}  
+.tableVerticalHeader {
+	text-align:left;
+	}
+.fixedVerticalHeader {
+	width:160px;
+	}
+.cellAlignCenter {
+	text-align:center;
+	}
+.border{
+	border-bottom:1px solid #D9D9D9;
+	}
+.lowerCase {
+	text-transform:lowercase;
+	}
+.embeddedTable {
+	width:380px;
+	border-width:0px;
+	border-style:none;
+	}
+.embedded {
+	border-width:0px;
+	border-style:none;
+	}
+.embeddedFixed {
+	width:240px;
+	}
+
+body {
+    counter-reset: section_h1;
+	}	
+p   {font:13px Candara,Calibri,Seoge,Optima,Arial,sans-serif;
+		}
+h1  {font:100% Candara,Calibri,Seoge,Optima,Arial,sans-serif;
+		font-weight:bold;
+		font-size: 16px;
+		margin-bottom:13px;
+		padding-left:9px;
+		background-color:#595959;
+		color:white;
+		text-transform:uppercase;
+		counter-increment: section_h1;	
+		counter-reset: sub-section_h2;
+		page-break-after: avoid;
+	}
+h1:before {
+        content: counter(section_h1) " ";
+  }
+h2	{font:100% Candara,Calibri,Seoge,Optima,Arial,sans-serif;
+		font-weight:bold;
+		font-size: 15px;
+		margin-bottom:10px;
+		text-transform:uppercase;
+		border-bottom:1px solid #D9D9D9;
+		counter-increment: sub-section_h2;
+		counter-reset: sub-section_h3;
+	}
+h2:before {
+        content: counter(section_h1) "." counter(sub-section_h2) " ";
+  }
+h3	{font:100% Candara,Calibri,Seoge,Optima,Arial,sans-serif;
+		font-weight:bold;
+		font-size: 14px;
+		margin-bottom:10px;
+		background-color:#F2F2F2;
+		counter-increment: sub-section_h3;
+		counter-reset: sub-section_h4;
+	}
+h3:before {
+        content: counter(section_h1) "." counter(sub-section_h2) "." counter(sub-section_h3) " ";
+  }	
+h4  {font:100% Candara,Calibri,Seoge,Optima,Arial,sans-serif;
+		font-weight:bold;
+		font-size: 13px;
+		margin-bottom:10px;
+		counter-increment: sub-section_h4;
+	}
+h4:before {
+        content: counter(section_h1) "." counter(sub-section_h2) "." counter(sub-section_h3) "." counter(sub-section_h4) " ";
+  }
+table {
+		width:635px;
+	}
+table,tr,td {
+		font-size:11px;
+		border-width:1px;
+		border-style:solid;
+		border-color:#BFBFBF;
+		padding:2px 5px 2px 5px;
+		margin:0;
+		border-collapse:collapse;
+		text-decoration:none;
+		background-color:transparent
+	}
+th	{font-size:11px;
+		
+		border-width:1px;
+		border-style:solid;
+		border-color:#BFBFBF;
+		padding:2px 5px 2px 5px;
+		margin:0;
+		border-collapse:collapse;
+		text-decoration:none;
+		background-color:#D9D9D9;
+	}
+ul {
+	font-size:12px;
+	}
+</style>
+	</head>
+	<body>
+		<img align="right" alt="Logo" src="../img/logo.png"/>
+		<br/>
+		<br/>
+		<p class="border"/>
+		<h1>Table specification</h1>
+		<p>Basic information about the table is shown below:</p>
+		<p>
+			<table class="tableVerticalHeader">
+				<tr>
+					<th class="fixedVerticalHeader">Table name</th>
+					<td>REGIONS</td>
+				</tr>
+				<tr>
+					<th class="fixedVerticalHeader">Table description</th>
+					<td/>
+				</tr>
+				<tr>
+					<th class="fixedVerticalHeader">Table business owner</th>
+					<td/>
+					<tr/>
+					<th class="fixedVerticalHeader">Workflow required</th>
+					<td>NO</td>
+				</tr>
+				<tr>
+					<th class="fixedVerticalHeader">Hierarchy required</th>
+					<td>NO</td>
+				</tr>
+				<tr>
+					<th class="fixedVerticalHeader">Synchronization type</th>
+					<td>NO</td>
+				</tr>
+			</table>
+		</p>
+		<p>Content characteristics:</p>
+		<p>
+			<table class="tableVerticalHeader">
+				<tr>
+					<th class="fixedVerticalHeader">Expected amount of data</th>
+					<td/>
+				</tr>
+				<tr>
+					<th class="fixedVerticalHeader">Expected amount of changes</th>
+					<td/>
+				</tr>
+			</table>
+		</p>
+		<br/>
+		<p>Related documents:</p>
+		<p>
+			<table>
+				<tr>
+					<th>Document#</th>
+					<th>Document name</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#D01</td>
+					<td class="lowerCase">
+						<i>
+							<a href="doc_COUNTRIES.html">COUNTRIES</a>
+						</i>
+					</td>
+					<td/>
+				</tr>
+			</table>
+		</p>
+		<br/>
+		<h1>Data model architecture</h1>
+		<p>
+			<i>Detailed description of the data model, data structures, mapping, etc.</i>
+		</p>
+		<h2>Logical model</h2>
+		<p>[data model schema]</p>
+		<br/>
+		<h3>Master data repository schema</h3>
+		<p>
+			<i>Description of the table, including information such as the label for the table in the web application and further specification of its attributes, including validation rules, etc.</i>
+		</p>
+		<p>
+			<table>
+				<tr>
+					<th>Table #</th>
+					<th>Table name</th>
+					<th>Table label</th>
+					<th>Table description</th>
+					<th>Comment</th>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#T01</td>
+					<td>REGIONS</td>
+					<td>REGIONS</td>
+					<td/>
+					<td/>
+				</tr>
+			</table>
+		</p>
+		<br/>
+		<p>
+			<table>
+				<tr>
+					<th>Attribute #</th>
+					<th>Attribute name</th>
+					<th>Attribute label</th>
+					<th>Data type</th>
+					<th>Length</th>
+					<th>PK</th>
+					<th>FK</th>
+					<th>M</th>
+					<th>Comment</th>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#A01</td>
+					<td>REGION_ID</td>
+					<td>REGION_ID</td>
+					<td class="cellAlignCenter">INTEGER</td>
+					<td class="cellAlignCenter"/>
+					<td class="cellAlignCenter">*</td>
+					<td class="cellAlignCenter"/>
+					<td class="cellAlignCenter"/>
+					<td/>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#A02</td>
+					<td>REGION_NAME</td>
+					<td>REGION_NAME</td>
+					<td class="cellAlignCenter">STRING</td>
+					<td class="cellAlignCenter">255</td>
+					<td class="cellAlignCenter"/>
+					<td class="cellAlignCenter"/>
+					<td class="cellAlignCenter"/>
+					<td/>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#A03</td>
+					<td>FIELD1</td>
+					<td>FIELD1</td>
+					<td class="cellAlignCenter">STRING</td>
+					<td class="cellAlignCenter">255</td>
+					<td class="cellAlignCenter"/>
+					<td class="cellAlignCenter"/>
+					<td class="cellAlignCenter"/>
+					<td/>
+				</tr>
+			</table>
+		</p>
+		<br/>
+		<p>
+			<i>Relationship specifications between tables (foreign keys)</i>
+		</p>
+		<p>
+			<table>
+				<tr>
+					<th>Relationship #</th>
+					<th>Relationship name</th>
+					<th>Relationship label</th>
+					<th>Parent table.attribute</th>
+					<th>Child table.attribute</th>
+					<th>Lookup type</th>
+					<th>Comment</th>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#R01</td>
+					<td>COUNTR_REG_FK</td>
+					<td/>
+					<td>REGIONS.<br/>REGION_ID</td>
+					<td>COUNTRIES.<br/>REGION_ID</td>
+					<td>window</td>
+					<td/>
+				</tr>
+			</table>
+			<i class="footNote">* Combo - provides combo-box in application for value selection. Window - provides dialog window for value selection/lookup. Window is typically used for more complex tables or tables with a lot of records.</i>
+		</p>
+		<br/>
+		<h1>RDM workflow</h1>
+		<p>Detailed description of the relevant RDM processes - creation of data, update data, delete data (CRUD operations).</p>
+		<h2>User roles</h2>
+		<p>Description of user roles involved in the process and their access rights.</p>
+		<p>
+			<i>Following table enlists the defined user roles and access rights to the table:</i>
+		</p>
+		<p>
+			<table>
+				<tr>
+					<th>Role #</th>
+					<th>User role name</th>
+					<th>Role description</th>
+					<th>CRUD</th>
+					<th>Attribute</th>
+					<th>Comment</th>
+				</tr>
+			</table>
+			<i class="footNote">* For more information about CRUD operations http://en.wikipedia.org/wiki/Create,_read,_update_and_delete;  </i>
+			<i class="footNote">* If the rights are limited to certain attributes only, please list or reference the data model.</i>
+		</p>
+		<br/>
+		<h2>RDM workflow design</h2>
+		<h3>Create record</h3>
+		<p>Business process of a new record creation in reference table REGIONS.</p>
+		<p>[process schema]</p>
+		<br/>
+		<p>
+			<table>
+				<tr>
+					<th>Process step #</th>
+					<th>Process step description</th>
+					<th>Next step</th>
+					<th>Role and notification</th>
+					<th>Comment</th>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#P01</td>
+					<td>Edit</td>
+					<td>Publish</td>
+					<td>
+						<table class="embeddedTable"/>
+					</td>
+					<td/>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#P02</td>
+					<td>Publish</td>
+					<td/>
+					<td>
+						<table class="embeddedTable"/>
+					</td>
+					<td/>
+				</tr>
+			</table>
+		</p>
+		<h3>Update record</h3>
+		<p>Business process of a record update in reference table REGIONS.</p>
+		<p>[process schema]</p>
+		<br/>
+		<p>
+			<table>
+				<tr>
+					<th>Process step #</th>
+					<th>Process step description</th>
+					<th>Next step</th>
+					<th>Role and notification</th>
+					<th>Comment</th>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#P01</td>
+					<td>Edit</td>
+					<td>Publish</td>
+					<td>
+						<table class="embeddedTable"/>
+					</td>
+					<td/>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#P02</td>
+					<td>Publish</td>
+					<td/>
+					<td>
+						<table class="embeddedTable"/>
+					</td>
+					<td/>
+				</tr>
+			</table>
+		</p>
+		<h3>Delete record</h3>
+		<p>Business process of a record delete in reference table REGIONS.</p>
+		<p>[process schema]</p>
+		<br/>
+		<p>
+			<table>
+				<tr>
+					<th>Process step #</th>
+					<th>Process step description</th>
+					<th>Next step</th>
+					<th>Role and notification</th>
+					<th>Comment</th>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#P01</td>
+					<td>Edit</td>
+					<td>Publish</td>
+					<td>
+						<table class="embeddedTable"/>
+					</td>
+					<td/>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#P02</td>
+					<td>Publish</td>
+					<td/>
+					<td>
+						<table class="embeddedTable"/>
+					</td>
+					<td/>
+				</tr>
+			</table>
+		</p>
+		<h3>Notifications</h3>
+		<p>
+			<i>List of e-mail notifications and template specifications for e-mail communication.</i>
+		</p>
+		<p>
+			<table>
+				<tr>
+					<th>Notification #</th>
+					<th>Notification</th>
+					<th>Email text</th>
+					<th>Comment</th>
+				</tr>
+			</table>
+		</p>
+		<br/>
+		<h1>Synchronization architecture</h1>
+		<p>
+			<i>Description of synchronization/integration scenarios, participating systems, interfaces, etc.</i>
+		</p>
+		<p>[architecture schema]</p>
+		<br/>
+		<p>
+			<i>The following table describes the components/systems that are part of an integration scenario:</i>
+		</p>
+		<p>
+			<table>
+				<tr>
+					<th>Component #</th>
+					<th>Component/System name</th>
+					<th>Component description</th>
+					<th>Technical platform</th>
+					<th>Comment</th>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#C01</td>
+					<td>HR</td>
+					<td/>
+					<td/>
+					<td/>
+				</tr>
+			</table>
+		</p>
+		<h2>Data-flows description</h2>
+		<p>
+			<i>Description of the expected flow of data between systems and RDM interface, including type and frequency.</i>
+		</p>
+		<p>
+			<table>
+				<tr>
+					<th>Interface #</th>
+					<th>Provider</th>
+					<th>Consumer</th>
+					<th>Direction</th>
+					<th>Interface type</th>
+					<th>Frequency</th>
+					<th>Comment</th>
+				</tr>
+				<tr>
+					<td class="cellAlignCenter">#I01</td>
+					<td>RDM</td>
+					<td>HR</td>
+					<td class="cellAlignCenter">--&gt;</td>
+					<td>ETL</td>
+					<td/>
+					<td/>
+				</tr>
+			</table>
+		</p>
+		<br/>
+		<h2>Detailed description of interfaces</h2>
+		<p>
+			<i>Description of all related interfaces, including detailed specification of interface, connectivity parameters etc.
+	<ul>
+					<li>For table/ETL interfaces, provide table structures (ideally DDL scripts), connectives, protocols</li>
+					<li>For web services, provide WSDL schema, XSD, etc.</li>
+				</ul>
+			</i>
+		</p>
+		<br/>
+		<h3>Source and target system data mappings</h3>
+		<p>
+			<i>The following section should provide specification of source system data (snapshots). This section is only used in case the reference table is synchronized with other systems (either downloads or uploads data). </i>
+		</p>
+		<br/>
+		<h3>Source/target system mapping - HR</h3>
+		<p>
+			<table>
+				<tr>
+					<th>Table #</th>
+					<th>Table name</th>
+					<th>Table description</th>
+					<th>Comment</th>
+				</tr>
+			</table>
+		</p>
+		<br/>
+		<p>
+			<table>
+				<tr>
+					<th>Attribute #</th>
+					<th>Table name</th>
+					<th>Attribute name</th>
+					<th>Data type</th>
+					<th>M</th>
+					<th>Comment</th>
+				</tr>
+			</table>
+		</p>
+		<br/>
+		<p>
+			<table>
+				<tr>
+					<th>Attribute #</th>
+					<th>RDM table.attribute</th>
+					<th>Source/target table.attribute</th>
+					<th>Mapping rule</th>
+					<th>Comment</th>
+				</tr>
+			</table>
+		</p>
+		<br/>
+		<p class="border"/>
+		<p>This document was generated based on metadata </p>
+	</body>
+</html>

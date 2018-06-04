@@ -7,7 +7,7 @@
 			<table ame:include="md/logical/tables/JOBS.md"/>
 			<table ame:include="md/logical/tables/EMPLOYEES.md"/>
 			<table ame:include="md/logical/tables/LOCATIONS.md"/>
-			<table ame:include="md/logical/tables/REGIONS.md"/>
+			<table ame:include="md/logical/tables/REGIONS2.md"/>
 		</tables>
 		<relationships>
 			<relationship ame:include="md/logical/relationships/COUNTR_REG_FK.md"/>
@@ -30,7 +30,7 @@
 			<databaseSystem elemId="27497367" name="HR" dataSourceName="HR">
 				<description></description>
 				<tables>
-					<table elemId="27499305" synchronizeWith="REGIONS" name="REGIONS" periodicity="">
+					<table elemId="27499305" synchronizeWith="REGIONS2" name="REGIONS" periodicity="">
 						<description></description>
 						<columns>
 							<column elemId="27499306" name="REGION_ID" dbType="NUMBER(38,-1)" type="integer" required="false" mappedColumn="REGION_ID"/>
@@ -260,7 +260,7 @@ Reference Data Management System&lt;/p&gt;</message>
 								<publishRowsFilter></publishRowsFilter>
 								<roleTableColumns/>
 							</roleTable>
-							<roleTable allColumnsModify="true" elemId="27502123" modify="true" view="true" allColumnsView="true" publish="true" name="REGIONS" create="true" delete="true">
+							<roleTable allColumnsModify="true" elemId="27502123" modify="true" view="true" allColumnsView="true" publish="true" name="REGIONS2" create="true" delete="true">
 								<viewRowsFilter></viewRowsFilter>
 								<editRowsFilter></editRowsFilter>
 								<publishRowsFilter></publishRowsFilter>
@@ -307,7 +307,7 @@ Reference Data Management System&lt;/p&gt;</message>
 								<publishRowsFilter></publishRowsFilter>
 								<roleTableColumns/>
 							</roleTable>
-							<roleTable allColumnsModify="true" elemId="27503340" modify="true" view="true" allColumnsView="true" publish="true" name="REGIONS" create="true" delete="true">
+							<roleTable allColumnsModify="true" elemId="27503340" modify="true" view="true" allColumnsView="true" publish="true" name="REGIONS2" create="true" delete="true">
 								<viewRowsFilter></viewRowsFilter>
 								<editRowsFilter></editRowsFilter>
 								<publishRowsFilter></publishRowsFilter>
@@ -326,7 +326,7 @@ Reference Data Management System&lt;/p&gt;</message>
 					</userRoles>
 					<roleEntities>
 						<roleTables>
-							<roleTable allColumnsModify="true" elemId="27502322" modify="true" view="true" allColumnsView="true" publish="true" name="REGIONS" create="true" delete="true">
+							<roleTable allColumnsModify="true" elemId="27502322" modify="true" view="true" allColumnsView="true" publish="true" name="REGIONS2" create="true" delete="true">
 								<viewRowsFilter></viewRowsFilter>
 								<editRowsFilter></editRowsFilter>
 								<publishRowsFilter></publishRowsFilter>
@@ -383,8 +383,8 @@ Reference Data Management System&lt;/p&gt;</message>
 	</appConfiguration>
 	<documentations/>
 	<taskScheduler>
-		<task elemId="27505799" enable="true" name="LoadRegion" description="LoadRegion" job="LRW.ewf">
-			<scheduling hour="*" dayWeek="*" dayMonth="*" minute="1"/>
+		<task elemId="27505799" enable="true" name="LoadRegionWorkflow" description="LoadRegionWorkflow" job="LoadRegionWorkflow.ewf">
+			<scheduling hour="*" dayWeek="*" dayMonth="*" minute="*"/>
 		</task>
 	</taskScheduler>
 	<setDatabases>

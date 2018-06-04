@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<table elemId="27497647" useUrlResourcesForAuthentication="Use global settings (from App Variables)" batchInterfaceHistory="false" showInAllTables="false" batchInterface="false" amountOfRecords="" name="REGIONS" label="REGIONS" amountOfChanges="">
+<table elemId="27497647" useUrlResourcesForAuthentication="Use global settings (from App Variables)" batchInterfaceHistory="false" showInAllTables="false" batchInterface="false" amountOfRecords="" name="REGIONS2" label="REGIONS" amountOfChanges="">
 	<description></description>
 	<columns>
 		<column elemId="27497648" generatedID="false" generated="false" domain="integer" name="REGION_ID" valuePresenter="" dbType="" label="REGION_ID" displayMode="normal" required="false">
@@ -7,6 +7,14 @@
 			<description></description>
 		</column>
 		<column elemId="27497649" generatedID="false" generated="false" domain="string" name="REGION_NAME" valuePresenter="" dbType="" label="REGION_NAME" displayMode="normal" required="false">
+			<defaultValue></defaultValue>
+			<description></description>
+		</column>
+		<column elemId="27511217" generatedID="false" generated="false" domain="string" name="REGION_NAME4D" valuePresenter="" dbType="" label="REGION_NAME4D" displayMode="normal" required="false">
+			<defaultValue></defaultValue>
+			<description></description>
+		</column>
+		<column elemId="27511560" generatedID="false" generated="false" domain="string" name="FIELD2" valuePresenter="" dbType="" label="FIELD2" displayMode="normal" required="false">
 			<defaultValue></defaultValue>
 			<description></description>
 		</column>

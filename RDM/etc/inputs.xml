@@ -69,7 +69,7 @@
 				</input>
 			</inputs>
 		</entity>
-		<entity name="REGIONS">
+		<entity name="REGIONS2">
 			<inputs>
 				<input name="HR_REGIONS">
 					<columns>

@@ -84,7 +84,7 @@
 			</columns>
 			<systems/>
 		</entity>
-		<entity name="REGIONS" showInAllTables="false" label="REGIONS" description="">
+		<entity name="REGIONS2" showInAllTables="false" label="REGIONS" description="">
 			<businessOwners>
 				<roles/>
 			</businessOwners>
@@ -94,6 +94,8 @@
 			<columns>
 				<column displayMode="normal" domain="integer" generated="false" name="REGION_ID" required="false" label="REGION_ID" description=""/>
 				<column displayMode="normal" domain="string" generated="false" name="REGION_NAME" required="false" label="REGION_NAME" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="REGION_NAME4D" required="false" label="REGION_NAME4D" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="FIELD2" required="false" label="FIELD2" description=""/>
 			</columns>
 			<systems/>
 		</entity>
@@ -120,7 +122,7 @@
 				<column name="LOCATION_ID"/>
 			</columns>
 		</key>
-		<key entity="REGIONS" name="REGION_ID" primary="true">
+		<key entity="REGIONS2" name="REGION_ID" primary="true">
 			<columns>
 				<column name="REGION_ID"/>
 			</columns>
@@ -128,7 +130,7 @@
 	</uniqueKeys>
 	<views/>
 	<relationships>
-		<relationship childEntity="COUNTRIES" label="" lookupType="window" name="COUNTR_REG_FK" parentEntity="REGIONS">
+		<relationship childEntity="COUNTRIES" label="" lookupType="window" name="COUNTR_REG_FK" parentEntity="REGIONS2">
 			<columns>
 				<reference childKeyColumn="REGION_ID" parentKeyColumn="REGION_ID"/>
 			</columns>

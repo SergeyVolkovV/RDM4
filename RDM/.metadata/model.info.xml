@@ -1,2 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<root></root>
+<root>
+	<item path="/logicalModel">
+		<positions>
+			<item id="27497614" value="1134,33,-1,-1"/>
+			<item id="27497618" value="484,24,-1,-1"/>
+			<item id="27497623" value="484,156,-1,-1"/>
+			<item id="27497628" value="159,97,-1,-1"/>
+			<item id="27497640" value="809,7,-1,-1"/>
+			<item id="27497647" value="1473,41,-1,-1"/>
+			<item id="27497650" value="1328,68,-1,-1"/>
+			<item id="27497652" value="353,200,-1,-1"/>
+			<item id="27497654" value="7,200,-1,-1"/>
+			<item id="27497656" value="1003,68,-1,-1"/>
+			<item id="27497658" value="353,134,-1,-1"/>
+			<item id="27497660" value="678,68,-1,-1"/>
+			<item id="27497662" value="7,68,-1,-1"/>
+		</positions>
+	</item>
+</root>

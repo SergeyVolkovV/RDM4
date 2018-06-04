@@ -3,7 +3,7 @@
 	<continueOnFailure>false</continueOnFailure>
 	<groups/>
 	<multiplicity>0</multiplicity>
-	<name>LRW</name>
+	<name>LoadRegionWorkflow</name>
 	<variables>
 		<derived/>
 		<input/>
