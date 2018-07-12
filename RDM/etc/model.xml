@@ -94,8 +94,8 @@
 			<columns>
 				<column displayMode="normal" domain="integer" generated="false" name="REGION_ID" required="false" label="REGION_ID" description=""/>
 				<column displayMode="normal" domain="string" generated="false" name="REGION_NAME" required="false" label="REGION_NAME" description=""/>
-				<column displayMode="normal" domain="string" generated="false" name="REGION_NAME4D" required="false" label="REGION_NAME4D" description=""/>
 				<column displayMode="normal" domain="string" generated="false" name="FIELD2" required="false" label="FIELD2" description=""/>
+				<column displayMode="normal" domain="string" generated="false" name="FIELD1" required="false" label="FIELD1" description=""/>
 			</columns>
 			<systems/>
 		</entity>
@@ -167,7 +167,7 @@
 		</relationship>
 	</relationships>
 	<domains>
-		<domain name="string" size="255" type="STRING" errorMsg=""/>
+		<domain name="string" size="200" type="STRING" errorMsg=""/>
 		<domain name="datetime" type="DATETIME"/>
 		<domain name="integer" type="INTEGER"/>
 		<domain name="long" type="LONG_INTEGER"/>

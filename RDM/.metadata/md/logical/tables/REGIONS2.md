@@ -6,15 +6,15 @@
 			<defaultValue></defaultValue>
 			<description></description>
 		</column>
-		<column elemId="27497649" generatedID="false" generated="false" domain="string" name="REGION_NAME" valuePresenter="" dbType="" label="REGION_NAME" displayMode="normal" required="false">
-			<defaultValue></defaultValue>
-			<description></description>
-		</column>
-		<column elemId="27511217" generatedID="false" generated="false" domain="string" name="REGION_NAME4D" valuePresenter="" dbType="" label="REGION_NAME4D" displayMode="normal" required="false">
+		<column elemId="27509224" generatedID="false" generated="false" domain="string" name="REGION_NAME" valuePresenter="" dbType="" label="REGION_NAME" displayMode="normal" required="false">
 			<defaultValue></defaultValue>
 			<description></description>
 		</column>
 		<column elemId="27511560" generatedID="false" generated="false" domain="string" name="FIELD2" valuePresenter="" dbType="" label="FIELD2" displayMode="normal" required="false">
+			<defaultValue></defaultValue>
+			<description></description>
+		</column>
+		<column elemId="27507183" generatedID="false" generated="false" domain="string" name="FIELD1" valuePresenter="" dbType="" label="FIELD1" displayMode="normal" required="false">
 			<defaultValue></defaultValue>
 			<description></description>
 		</column>

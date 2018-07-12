@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hierarchyRoot>
-	<hierarchies/>
+	<hierarchies>
+		<hierarchy name="test" rootEntityName="EMPLOYEES">
+			<structure>
+				<references>
+					<reference name="EMP_MANAGER_FK"/>
+				</references>
+				<views/>
+				<orders>
+					<order desc="false" name="LAST_NAME"/>
+				</orders>
+			</structure>
+		</hierarchy>
+	</hierarchies>
 </hierarchyRoot>

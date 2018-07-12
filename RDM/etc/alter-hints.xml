@@ -1,0 +1,13 @@
+<alter-hints>
+<entities>
+<entity sourceName="REGIONS2" targetName="REGIONS2">
+<columns>
+<column
+targetName="newStringColumn"
+expression="'string enclosed in single quotes'"
+permissionsFrom="FIELD2"
+/>
+</columns>
+</entity>
+</entities>
+</alter-hints>

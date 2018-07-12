@@ -1,0 +1,146 @@
+<purity-config xmlns:mrg="http://www.ataccama.com/dqc/plan-merge" version="11.3.0">
+	<step className="com.ataccama.dqc.tasks.expressions.ColumnAssigner" disabled="false" id="Column Assigner" mode="NORMAL">
+		<properties>
+			<assignments>
+				<assignment column="timestamp" expression="now()">
+					<scorer>
+						<scoringEntries>
+							<scoringEntry explain="false" explainAs="CA_CHANGED" key="CA_CHANGED" score="0"/>
+						</scoringEntries>
+					</scorer>
+				</assignment>
+			</assignments>
+		</properties>
+		<visual-constraints bounds="600,48,-1,-1" layout="vertical"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Column Assigner"/>
+		<target endpoint="in" step="Multiplicator"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+	<step className="com.ataccama.dqc.tasks.generator.RandomRecordGenerator" disabled="false" id="Random Record Generator" mode="NORMAL">
+		<properties recordCount="1">
+			<columns>
+				<iColumnGenerator class="com.ataccama.dqc.tasks.generator.generators.ColumnGeneratorDate" maximumDate="2017-11-13 11:58:14" minimumDate="2017-09-13 11:58:14" name="timestamp" type="DATETIME">
+					<formats/>
+				</iColumnGenerator>
+			</columns>
+			<shadowColumns/>
+		</properties>
+		<visual-constraints bounds="600,-24,-1,-1" layout="vertical"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Random Record Generator"/>
+		<target endpoint="in" step="Column Assigner"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+	<step className="com.ataccama.dqc.tasks.flow.Multiplicator" disabled="false" id="Multiplicator" mode="NORMAL">
+		<properties/>
+		<visual-constraints bounds="600,120,-1,-1" layout="vertical"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Multiplicator"/>
+		<target endpoint="parameters" step="root_EMPLOYEES"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+	<modelComment backgroundColor="255,128,255" borderColor="255,0,128" bounds="-144,0,532,121" foregroundColor="51,51,51">INSTRUCTIONS:
+--------------------------------------------------------
+1) insert input or configure Column Assigner and Random Record generator for parameters
+
+2) place Incremental Timestamp column to the RDM Extended Reader step if you want to use History table
+	</modelComment>
+	<step className="com.ataccama.rdm.manager.steps.RdmSynchronizeStep" disabled="false" id="root_EMPLOYEES" mode="NORMAL">
+		<properties atDate="timestamp" mrg:retainNodes="input,deduplicateIncrement,sqlFilter,ignoreBusinessDates" tablename="EMPLOYEES" url="rdmapp">
+			<columns>
+				<rdmStepColumn columnType="NORMAL" name="EMPLOYEE_ID" type="INTEGER"/>
+				<rdmStepColumn columnType="NORMAL" name="FIRST_NAME" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="LAST_NAME" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="EMAIL" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="PHONE_NUMBER" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="HIRE_DATE" type="DATETIME"/>
+				<rdmStepColumn columnType="NORMAL" name="JOB_ID" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="SALARY" type="FLOAT"/>
+				<rdmStepColumn columnType="NORMAL" name="COMMISSION_PCT" type="FLOAT"/>
+				<rdmStepColumn columnType="NORMAL" name="MANAGER_ID" type="INTEGER"/>
+				<rdmStepColumn columnType="NORMAL" name="DEPARTMENT_ID" type="INTEGER"/>
+				<rdmStepColumn columnType="CHANGE_TYPE" name="change_type" type="STRING"/>
+				<rdmStepColumn columnType="PRIMARY_KEY" name="primary_key" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="HCN" name="hcn" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="FROM" name="date_from" type="DATETIME"/>
+				<rdmStepColumn columnType="TO" name="date_to" type="DATETIME"/>
+			</columns>
+		</properties>
+		<visual-constraints bounds="816,216,-1,-1" layout="vertical"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="root_EMPLOYEES"/>
+		<target endpoint="insert_root_EMPLOYEES" step="Complex Xml Writer"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Multiplicator"/>
+		<target endpoint="parameters" step="1_EMPLOYEES"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+	<step className="com.ataccama.rdm.manager.steps.RdmSynchronizeStep" disabled="false" id="1_EMPLOYEES" mode="NORMAL">
+		<properties atDate="timestamp" mrg:retainNodes="input,deduplicateIncrement,sqlFilter,ignoreBusinessDates" tablename="EMPLOYEES" url="rdmapp">
+			<columns>
+				<rdmStepColumn columnType="NORMAL" name="EMPLOYEE_ID" type="INTEGER"/>
+				<rdmStepColumn columnType="NORMAL" name="FIRST_NAME" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="LAST_NAME" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="EMAIL" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="PHONE_NUMBER" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="HIRE_DATE" type="DATETIME"/>
+				<rdmStepColumn columnType="NORMAL" name="JOB_ID" type="STRING"/>
+				<rdmStepColumn columnType="NORMAL" name="SALARY" type="FLOAT"/>
+				<rdmStepColumn columnType="NORMAL" name="COMMISSION_PCT" type="FLOAT"/>
+				<rdmStepColumn columnType="NORMAL" name="MANAGER_ID" type="INTEGER"/>
+				<rdmStepColumn columnType="NORMAL" name="DEPARTMENT_ID" type="INTEGER"/>
+				<rdmStepColumn columnType="CHANGE_TYPE" name="change_type" type="STRING"/>
+				<rdmStepColumn columnType="PRIMARY_KEY" name="primary_key" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="HCN" name="hcn" type="LONG_INTEGER"/>
+				<rdmStepColumn columnType="FROM" name="date_from" type="DATETIME"/>
+				<rdmStepColumn columnType="TO" name="date_to" type="DATETIME"/>
+			</columns>
+		</properties>
+		<visual-constraints bounds="672,216,-1,-1" layout="vertical"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="1_EMPLOYEES"/>
+		<target endpoint="insert_1_EMPLOYEES" step="Complex Xml Writer"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+	<step className="com.ataccama.dqc.tasks.io.xml.writer.ComplexXmlWriter" disabled="false" id="Complex Xml Writer" mode="NORMAL">
+		<properties encoding="UTF-8" fileName="test_export.xml" indenting="true" maximumRecordsInMemory="10000">
+			<dataFormatParameters dateFormatLocale="en_US" dateTimeFormat="yyyy-MM-dd HH:mm:ss" dayFormat="yyyy-MM-dd" decimalSeparator="." falseValue="false" thousandsSeparator="" trueValue="true"/>
+			<objects>
+				<complexXmlWriterObjectStreamCfg name="insert_root_EMPLOYEES">
+					<subObjects>
+						<complexXmlWriterObjectSubstreamCfg columnBinding="EMPLOYEE_ID=MANAGER_ID" name="insert_1_EMPLOYEES">
+							<subObjects/>
+							<template>&lt;EMPLOYEES&gt;&lt;EMPLOYEE_ID&gt;{EMPLOYEE_ID}&lt;/EMPLOYEE_ID&gt;&lt;FIRST_NAME&gt;{FIRST_NAME}&lt;/FIRST_NAME&gt;&lt;LAST_NAME&gt;{LAST_NAME}&lt;/LAST_NAME&gt;&lt;EMAIL&gt;{EMAIL}&lt;/EMAIL&gt;&lt;PHONE_NUMBER&gt;{PHONE_NUMBER}&lt;/PHONE_NUMBER&gt;&lt;HIRE_DATE&gt;{HIRE_DATE}&lt;/HIRE_DATE&gt;&lt;JOB_ID&gt;{JOB_ID}&lt;/JOB_ID&gt;&lt;SALARY&gt;{SALARY}&lt;/SALARY&gt;&lt;COMMISSION_PCT&gt;{COMMISSION_PCT}&lt;/COMMISSION_PCT&gt;&lt;MANAGER_ID&gt;{MANAGER_ID}&lt;/MANAGER_ID&gt;&lt;DEPARTMENT_ID&gt;{DEPARTMENT_ID}&lt;/DEPARTMENT_ID&gt;&lt;/EMPLOYEES&gt;</template>
+						</complexXmlWriterObjectSubstreamCfg>
+					</subObjects>
+					<template>&lt;EMPLOYEES&gt;&lt;EMPLOYEE_ID&gt;{EMPLOYEE_ID}&lt;/EMPLOYEE_ID&gt;&lt;FIRST_NAME&gt;{FIRST_NAME}&lt;/FIRST_NAME&gt;&lt;LAST_NAME&gt;{LAST_NAME}&lt;/LAST_NAME&gt;&lt;EMAIL&gt;{EMAIL}&lt;/EMAIL&gt;&lt;PHONE_NUMBER&gt;{PHONE_NUMBER}&lt;/PHONE_NUMBER&gt;&lt;HIRE_DATE&gt;{HIRE_DATE}&lt;/HIRE_DATE&gt;&lt;JOB_ID&gt;{JOB_ID}&lt;/JOB_ID&gt;&lt;SALARY&gt;{SALARY}&lt;/SALARY&gt;&lt;COMMISSION_PCT&gt;{COMMISSION_PCT}&lt;/COMMISSION_PCT&gt;&lt;MANAGER_ID&gt;{MANAGER_ID}&lt;/MANAGER_ID&gt;&lt;DEPARTMENT_ID&gt;{DEPARTMENT_ID}&lt;/DEPARTMENT_ID&gt;&lt;insert_1_EMPLOYEES/&gt;&lt;/EMPLOYEES&gt;</template>
+				</complexXmlWriterObjectStreamCfg>
+			</objects>
+			<template>&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;hierarchy name="test"&gt;
+	&lt;insert_root_EMPLOYEES/&gt;
+&lt;/hierarchy&gt;</template>
+		</properties>
+		<visual-constraints bounds="600,432,-1,-1" layout="vertical"/>
+	</step>
+</purity-config>

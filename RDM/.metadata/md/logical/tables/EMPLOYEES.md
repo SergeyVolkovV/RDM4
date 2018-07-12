@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<table elemId="27497628" useUrlResourcesForAuthentication="Use global settings (from App Variables)" batchInterfaceHistory="false" showInAllTables="false" batchInterface="false" amountOfRecords="" name="EMPLOYEES" label="EMPLOYEES" amountOfChanges="">
+<table elemId="27497628" useUrlResourcesForAuthentication="Use global settings (from App Variables)" batchInterfaceHistory="false" showInAllTables="false" batchInterface="true" amountOfRecords="" name="EMPLOYEES" label="EMPLOYEES" amountOfChanges="">
 	<description></description>
 	<columns>
 		<column elemId="27497629" generatedID="false" generated="false" domain="integer" name="EMPLOYEE_ID" valuePresenter="" dbType="" label="EMPLOYEE_ID" displayMode="normal" required="false">

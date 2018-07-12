@@ -126,16 +126,16 @@
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
-							<column name="REGION_NAME4D"/>
 							<column name="FIELD2"/>
+							<column name="FIELD1"/>
 						</columns>
 					</entity>
 					<entity create="true" delete="true" name="REGIONS2" type="E">
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
-							<column name="REGION_NAME4D"/>
 							<column name="FIELD2"/>
+							<column name="FIELD1"/>
 						</columns>
 					</entity>
 					<entity create="" delete="" name="REGIONS2" type="C"/>
@@ -248,16 +248,16 @@
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
-							<column name="REGION_NAME4D"/>
 							<column name="FIELD2"/>
+							<column name="FIELD1"/>
 						</columns>
 					</entity>
 					<entity create="true" delete="true" name="REGIONS2" type="E">
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
-							<column name="REGION_NAME4D"/>
 							<column name="FIELD2"/>
+							<column name="FIELD1"/>
 						</columns>
 					</entity>
 					<entity create="" delete="" name="REGIONS2" type="C"/>
@@ -269,19 +269,50 @@
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
-							<column name="REGION_NAME4D"/>
 							<column name="FIELD2"/>
+							<column name="FIELD1"/>
 						</columns>
 					</entity>
 					<entity create="true" delete="true" name="REGIONS2" type="E">
 						<columns>
 							<column name="REGION_ID"/>
 							<column name="REGION_NAME"/>
-							<column name="REGION_NAME4D"/>
 							<column name="FIELD2"/>
+							<column name="FIELD1"/>
 						</columns>
 					</entity>
 					<entity create="" delete="" name="REGIONS2" type="C"/>
+					<entity create="" delete="" name="EMPLOYEES" type="V">
+						<columns>
+							<column name="EMPLOYEE_ID"/>
+							<column name="FIRST_NAME"/>
+							<column name="LAST_NAME"/>
+							<column name="EMAIL"/>
+							<column name="PHONE_NUMBER"/>
+							<column name="HIRE_DATE"/>
+							<column name="JOB_ID"/>
+							<column name="SALARY"/>
+							<column name="COMMISSION_PCT"/>
+							<column name="MANAGER_ID"/>
+							<column name="DEPARTMENT_ID"/>
+						</columns>
+					</entity>
+					<entity create="true" delete="true" name="EMPLOYEES" type="E">
+						<columns>
+							<column name="EMPLOYEE_ID"/>
+							<column name="FIRST_NAME"/>
+							<column name="LAST_NAME"/>
+							<column name="EMAIL"/>
+							<column name="PHONE_NUMBER"/>
+							<column name="HIRE_DATE"/>
+							<column name="JOB_ID"/>
+							<column name="SALARY"/>
+							<column name="COMMISSION_PCT"/>
+							<column name="MANAGER_ID"/>
+							<column name="DEPARTMENT_ID"/>
+						</columns>
+					</entity>
+					<entity create="" delete="" name="EMPLOYEES" type="C"/>
 				</entities>
 			</role>
 			<role name="Business Super User">

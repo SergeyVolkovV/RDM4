@@ -20,7 +20,9 @@
 		</relationships>
 		<domains ame:include="md/logical/domains.md"/>
 		<valuePresenters ame:include="md/logical/valuePresenters.md"/>
-		<hierarchies/>
+		<hierarchies>
+			<hierarchy ame:include="md/logical/hierarchies/test.md"/>
+		</hierarchies>
 		<views/>
 		<categories/>
 		<datasets/>
@@ -332,6 +334,12 @@ Reference Data Management System&lt;/p&gt;</message>
 								<publishRowsFilter></publishRowsFilter>
 								<roleTableColumns/>
 							</roleTable>
+							<roleTable allColumnsModify="true" elemId="27508200" modify="true" view="true" allColumnsView="true" publish="true" name="EMPLOYEES" create="true" delete="true">
+								<viewRowsFilter></viewRowsFilter>
+								<editRowsFilter></editRowsFilter>
+								<publishRowsFilter></publishRowsFilter>
+								<roleTableColumns/>
+							</roleTable>
 						</roleTables>
 						<roleViews/>
 						<roleDatasets/>
@@ -383,8 +391,8 @@ Reference Data Management System&lt;/p&gt;</message>
 	</appConfiguration>
 	<documentations/>
 	<taskScheduler>
-		<task elemId="27505799" enable="true" name="LoadRegionWorkflow" description="LoadRegionWorkflow" job="LoadRegionWorkflow.ewf">
-			<scheduling hour="*" dayWeek="*" dayMonth="*" minute="*"/>
+		<task elemId="27505799" enable="false" name="LoadRegionWorkflow" description="LoadRegionWorkflow" job="LoadRegionWorkflow.ewf">
+			<scheduling hour="*" dayWeek="*" dayMonth="*" minute="10"/>
 		</task>
 	</taskScheduler>
 	<setDatabases>

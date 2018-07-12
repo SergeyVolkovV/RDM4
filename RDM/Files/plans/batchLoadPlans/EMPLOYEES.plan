@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<purity-config version="11.3.0.manual-2017-11-22">
+	<references/>
+	<component-mappings>
+		<propertyMappings/>
+	</component-mappings>
+
+<!-- (Errors) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.io.text.write.TextFileWriter" disabled="false" id="Errors">
+		<properties writeHeader="true" fileName="errors/EMPLOYEES.txt" fieldSeparator=";" generateMetadata="true" stringQualifierEscape="&quot;" writeAllColumns="true" encoding="UTF-8" lineSeparator="\n" stringQualifier="&quot;" useStringQualifierOnAllColumns="false">
+			<columns/>
+			<dataFormatParameters falseValue="false" dateTimeFormat="yyyy-MM-dd HH:mm:ss" decimalSeparator="." dayFormat="yyyy-MM-dd" trueValue="true" dateFormatLocale="en_US" thousandsSeparator=""/>
+		</properties>
+		<visual-constraints layout="vertical" bounds="312,408,-1,-1"/>
+	</step>
+
+
+
+<!-- (Jdbc Reader) --><step mode="NORMAL" className="com.ataccama.dqc.tasks.io.jdbc.read.JdbcReader" disabled="false" id="Jdbc Reader">
+		<properties queryString="select EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, HIRE_DATE, JOB_ID, SALARY, COMMISSION_PCT, MANAGER_ID, DEPARTMENT_ID, DID from HR.EMPLOYEES" dataSourceName="HR">
+			<columns>
+				<jdbcReaderColumn name="EMPLOYEE_ID" type="INTEGER"/>
+				<jdbcReaderColumn name="FIRST_NAME" type="STRING"/>
+				<jdbcReaderColumn name="LAST_NAME" type="STRING"/>
+				<jdbcReaderColumn name="EMAIL" type="STRING"/>
+				<jdbcReaderColumn name="PHONE_NUMBER" type="STRING"/>
+				<jdbcReaderColumn name="HIRE_DATE" type="DATETIME"/>
+				<jdbcReaderColumn name="JOB_ID" type="STRING"/>
+				<jdbcReaderColumn name="SALARY" type="FLOAT"/>
+				<jdbcReaderColumn name="COMMISSION_PCT" type="FLOAT"/>
+				<jdbcReaderColumn name="MANAGER_ID" type="INTEGER"/>
+				<jdbcReaderColumn name="DEPARTMENT_ID" type="INTEGER"/>
+				<jdbcReaderColumn name="DID" type="FLOAT"/>
+			</columns>
+			<shadowColumns/>
+		</properties>
+		<visual-constraints layout="vertical" bounds="360,192,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="out" step="Jdbc Reader"/>
+		<target endpoint="in" step="Rdm Importer"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<!-- (Rdm Importer) --><step mode="NORMAL" className="com.ataccama.rdm.manager.steps.RdmImportStep" disabled="false" id="Rdm Importer">
+		<properties importTable="false" moveToEditAction="MOVE_TO_CONFIRM" incremental="false" tablename="EMPLOYEES" url="rdmapp">
+			<columns>
+				<rdmImportStepColumnMapping inColumn="EMPLOYEE_ID" name="EMPLOYEE_ID" type="INTEGER"/>
+				<rdmImportStepColumnMapping inColumn="FIRST_NAME" name="FIRST_NAME" type="STRING"/>
+				<rdmImportStepColumnMapping inColumn="LAST_NAME" name="LAST_NAME" type="STRING"/>
+				<rdmImportStepColumnMapping inColumn="EMAIL" name="EMAIL" type="STRING"/>
+				<rdmImportStepColumnMapping inColumn="PHONE_NUMBER" name="PHONE_NUMBER" type="STRING"/>
+				<rdmImportStepColumnMapping inColumn="HIRE_DATE" name="HIRE_DATE" type="DATETIME"/>
+				<rdmImportStepColumnMapping inColumn="JOB_ID" name="JOB_ID" type="STRING"/>
+				<rdmImportStepColumnMapping inColumn="SALARY" name="SALARY" type="FLOAT"/>
+				<rdmImportStepColumnMapping inColumn="COMMISSION_PCT" name="COMMISSION_PCT" type="FLOAT"/>
+				<rdmImportStepColumnMapping inColumn="MANAGER_ID" name="MANAGER_ID" type="INTEGER"/>
+				<rdmImportStepColumnMapping inColumn="DEPARTMENT_ID" name="DEPARTMENT_ID" type="INTEGER"/>
+			</columns>
+			<allowedEditStates>
+				<rdmEditedState>CHANGED</rdmEditedState>
+				<rdmEditedState>DELETED</rdmEditedState>
+				<rdmEditedState>NEW</rdmEditedState>
+			</allowedEditStates>
+		</properties>
+		<visual-constraints layout="vertical" bounds="264,264,-1,-1"/>
+	</step>
+	<connection className="com.ataccama.dqc.model.elements.connections.StandardFlowConnection" disabled="false">
+		<source endpoint="err" step="Rdm Importer"/>
+		<target endpoint="in" step="Errors"/>
+		<visual-constraints>
+			<bendpoints/>
+		</visual-constraints>
+	</connection>
+
+
+
+<modelComment backgroundColor="255,128,255" borderColor="255,0,128" bounds="20,24,245,121" foregroundColor="51,51,51">INSTRUCTIONS:
+--------------------------------------------------------
+1) insert input step for the source data
+ 
+2) insert input for parameters
+
+3) place your mapping into the RDM Import step
+	</modelComment>
+
+</purity-config>

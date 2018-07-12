@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<settings>
+  <connector>
+    <saved-state fixedSizes="false" escapeSequence="" fieldSeparator=";" stringQualifierEscapeSequence="&quot;" recordLength="-1" numberOfLinesInFooter="0" encoding="UTF-8" lineWithColumnNames="1" ignoredRowRegEx="" recordSeparator="\n" stringQualifier="&quot;" numberOfLinesInHeader="1">
+      <columns>
+        <textColumnMetaData useInReaderOut="true" decimalSeparator="." booleanTrueValue="true" booleanFalseValue="false" dataType="INTEGER" name="lineNo" columnWidth="0" maxDecimalPlaces="0" dateFormatLocale="en_US" numberGroupSeparator="" maxWidth="-1"/>
+        <textColumnMetaData useInReaderOut="true" decimalSeparator="." booleanTrueValue="true" booleanFalseValue="false" dataType="STRING" name="error" columnWidth="0" maxDecimalPlaces="0" dateFormatLocale="en_US" numberGroupSeparator="" maxWidth="-1"/>
+      </columns>
+    </saved-state>
+  </connector>
+</settings>
